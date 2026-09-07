@@ -1,69 +1,646 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect } from "react";
 
 export default function Home() {
+  useEffect(() => {
+    const trigger = document.querySelector(
+      ".header-module-scss-module__N7vucW__trigger button"
+    );
+    if (trigger) {
+      trigger.addEventListener("click", () => {
+        document.body.classList.toggle("menu-open");
+      });
+    }
+
+    const menuLinks = document.querySelectorAll(
+      ".header-module-scss-module__N7vucW__menu > ul > li > a"
+    );
+    menuLinks.forEach((a) => {
+      a.addEventListener("click", (e) => {
+        const sub = (a as HTMLElement).nextElementSibling;
+        if (
+          sub &&
+          sub.classList.contains(
+            "header-module-scss-module__N7vucW__submenu"
+          )
+        ) {
+          e.preventDefault();
+          sub.classList.toggle("open");
+          a.classList.toggle("open");
+        }
+      });
+    });
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div
+      id="app"
+      dangerouslySetInnerHTML={{ __html: `<div id="app">
+    <header class="header-module-scss-module__N7vucW__wrapper" style="">
+      <div class="header-module-scss-module__N7vucW__inner">
+        <div class="header-module-scss-module__N7vucW__logo"><a href="/"><img src="/logo.png" alt="Logo BEM FT" /><span class="logo-text">BEM FT</span></a></div>
+        <div class="header-module-scss-module__N7vucW__mobile">
+          <div class="header-module-scss-module__N7vucW__trigger"><button aria-label="Menu Trigger"><span class="header-module-scss-module__N7vucW__hamburger" aria-hidden="true"><span></span><span></span><span></span></span></button></div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div class="header-module-scss-module__N7vucW__nav">
+          <div class="header-module-scss-module__N7vucW__menu">
+            <ul>
+              <li><a href="#tentang">Tentang</a></li>
+              <li><a href="#alasan">Alasan</a></li>
+              <li><a href="#proker">Program Kerja</a></li>
+              <li><a href="#rekrutmen">Rekrutmen</a></li>
+            </ul>
+          </div>
+          <div class="header-module-scss-module__N7vucW__btn">
+            <div class="button-module-scss-module__REpPyW__wrapper primary"><a class="primary" href="#"><span><em>Kontak</em><em>Kontak</em></span></a></div>
+          </div>
         </div>
-      </main>
+      </div>
+    </header>
+    <main class="main"><!--$--><!--/$-->
+      <div class="page">
+        <script type="application/ld+json">
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [{
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Beranda",
+              "item": "#"
+            }]
+          }
+        </script>
+        <section data-page-hero="true" class="pagehero-module-scss-module__rMNsHa__wrapper in" data-bg-color="transparent" data-bg-image="false" data-expand="false" data-remove-bottom-padding="false">
+          <div class="container">
+            <div class="pagehero-module-scss-module__rMNsHa__inner">
+              <div class="pagehero-module-scss-module__rMNsHa__clouds"><span class="adora-block" data-lottie="true" style="width: 100%; max-width: 162px; aspect-ratio: 162 / 92;">
+                  <div style="width: 100%; height: 100%;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 162 92" width="162" height="92" preserveAspectRatio="xMidYMid meet" style="width: 100%; height: 100%; transform: translate3d(0px, 0px, 0px); content-visibility: visible;">
+                      <defs>
+                        <clipPath id="__lottie_element_546">
+                          <rect width="162" height="92" x="0" y="0" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_548">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_552">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_556">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_560">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <g id="__lottie_element_563">
+                          <g id="precomp_ryBV6hOY_hahbnTCJh7q26" clip-path="url(#__lottie_element_564)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;">
+                            <g id="mwhBp4FVmlhcM3n5YgQHu7" transform="matrix(1,0,0,1,50000,50000)" opacity="1" style="display: block;">
+                              <g opacity="1" transform="matrix(1,0,0,1,0,0)">
+                                <path fill="rgb(0,0,0)" fill-opacity="1" d=" M61,-28.5 C61,-28.5 -61,-28.5 -61,-28.5 C-61,-28.5 -61,28.5 -61,28.5 C-61,28.5 61,28.5 61,28.5 C61,28.5 61,-28.5 61,-28.5z" />
+                              </g>
+                            </g>
+                          </g>
+                        </g>
+                        <clipPath id="__lottie_element_564">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_571">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <mask id="__lottie_element_563_1" mask-type="alpha">
+                          <use xlink:href="#__lottie_element_563" />
+                        </mask>
+                        <clipPath id="__lottie_element_578">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_582">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_586">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                      </defs>
+                      <g clip-path="url(#__lottie_element_546)">
+                        <g id="precomp_so31hIqV9YmgeiUXqumSq0" clip-path="url(#__lottie_element_548)" transform="matrix(1,0,0,1,-49919,-49954)" opacity="1" style="display: block;">
+                          <g id="precomp_gIGJykqgEsZoQuhVrKvWA10" clip-path="url(#__lottie_element_586)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;" />
+                          <g id="precomp_4VgE9S2ZPcVA0IVqhtn--9" clip-path="url(#__lottie_element_582)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;" />
+                          <g id="precomp_K5rxhqL5I6pWLisEdneps1" clip-path="url(#__lottie_element_552)" transform="matrix(1.000427007675171,0,0,1.000427007675171,-21.3515625,-23.99609375)" opacity="1" style="display: block;">
+                            <g id="precomp_-8ULoVk3UN1Hua1Y2dUqs8" clip-path="url(#__lottie_element_578)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;" />
+                            <g id="precomp_4afhDl1DZ6oI7f4ELK7os3" clip-path="url(#__lottie_element_560)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;">
+                              <g mask="url(#__lottie_element_563_1)" style="display: block;">
+                                <g id="precomp_4afhDl1DZ6oI7f4ELK7os4" clip-path="url(#__lottie_element_571)" transform="matrix(1,0,0,1,0,0)" opacity="1">
+                                  <g id="r5FygzREqYH52tqrkIVN95" transform="matrix(1.2909730672836304,0,0,1.333299994468689,49939,49971.5)" opacity="1" style="display: block;">
+                                    <g opacity="1" transform="matrix(1,0,0,1,0,0)">
+                                      <g opacity="1" transform="matrix(1,0,0,1,0,0)">
+                                        <path fill-rule="evenodd" fill="rgb(71,178,255)" fill-opacity="1" d=" M47.20000076293945,10.34000015258789 C48.2599983215332,12.970000267028809 47.939998626708984,16.549999237060547 47.380001068115234,18.700000762939453 C47.380001068115234,18.700000762939453 46.5,22.030000686645508 46.5,22.030000686645508 C46.5,22.030000686645508 49.540000915527344,20.399999618530273 49.540000915527344,20.399999618530273 C50.060001373291016,20.110000610351562 52.59000015258789,19.079999923706055 55.790000915527344,18.18000030517578 C59,17.270000457763672 62.619998931884766,16.579999923706055 65.3499984741211,16.84000015258789 C66.7300033569336,16.969999313354492 67.41999816894531,17.229999542236328 67.70999908447266,17.43000030517578 C67.86000061035156,17.530000686645508 67.8499984741211,17.549999237060547 67.83999633789062,17.56999969482422 C67.83999633789062,17.56999969482422 67.83999633789062,17.59000015258789 67.83999633789062,17.59000015258789 C67.83000183105469,17.770000457763672 67.72000122070312,18.149999618530273 67.33999633789062,18.760000228881836 C66.9800033569336,19.34000015258789 66.47000122070312,19.979999542236328 65.88999938964844,20.670000076293945 C65.68000030517578,20.920000076293945 65.44000244140625,21.190000534057617 65.20999908447266,21.459999084472656 C64.8499984741211,21.889999389648438 64.47000122070312,22.309999465942383 64.1500015258789,22.700000762939453 C63.630001068115234,23.34000015258789 63.08000183105469,24.06999969482422 62.77000045776367,24.770000457763672 C62.61000061035156,25.1299991607666 62.459999084472656,25.59000015258789 62.47999954223633,26.110000610351562 C62.5099983215332,26.700000762939453 62.75,27.260000228881836 63.22999954223633,27.68000030517578 C63.65999984741211,28.059999465942383 64.19000244140625,28.229999542236328 64.66000366210938,28.329999923706055 C65.13999938964844,28.43000030517578 65.69000244140625,28.459999084472656 66.29000091552734,28.450000762939453 C70.4800033569336,28.350000381469727 79.80000305175781,29.219999313354492 85.88999938964844,30.610000610351562 C87.41000366210938,30.959999084472656 88.66999816894531,31.329999923706055 89.56999969482422,31.700000762939453 C89.77999877929688,31.790000915527344 89.95999908447266,31.8799991607666 90.11000061035156,31.950000762939453 C89.4000015258789,32.29999923706055 88.19999694824219,32.709999084472656 86.33000183105469,33.15999984741211 C83.01000213623047,33.95000076293945 77.54000091552734,34.439998626708984 70.75,34.70000076293945 C63.9900016784668,34.959999084472656 56.029998779296875,34.9900016784668 47.790000915527344,34.900001525878906 C36.529998779296875,34.779998779296875 24.799999237060547,34.43000030517578 14.920000076293945,34.13999938964844 C10.329999923706055,34 6.130000114440918,33.880001068115234 2.5799999237060547,33.790000915527344 C2.5799999237060547,33.790000915527344 2.509999990463257,36.790000915527344 2.509999990463257,36.790000915527344 C6.03000020980835,36.880001068115234 10.210000038146973,36.9900016784668 14.789999961853027,37.130001068115234 C24.68000030517578,37.41999816894531 36.459999084472656,37.779998779296875 47.75,37.900001525878906 C56.0099983215332,37.9900016784668 64.02999877929688,37.959999084472656 70.86000061035156,37.70000076293945 C77.66000366210938,37.439998626708984 83.4000015258789,36.95000076293945 87.02999877929688,36.08000183105469 C89.2300033569336,35.54999923706055 90.86000061035156,34.9900016784668 91.91000366210938,34.380001068115234 C92.43000030517578,34.08000183105469 92.95999908447266,33.66999816894531 93.29000091552734,33.11000061035156 C93.66999816894531,32.459999084472656 93.72000122070312,31.709999084472656 93.4000015258789,31.020000457763672 C93.12999725341797,30.43000030517578 92.6500015258789,30.010000228881836 92.2300033569336,29.719999313354492 C91.79000091552734,29.420000076293945 91.2699966430664,29.15999984741211 90.70999908447266,28.93000030517578 C89.58999633789062,28.469999313354492 88.13999938964844,28.049999237060547 86.55999755859375,27.690000534057617 C80.23999786376953,26.239999771118164 70.66999816894531,25.350000381469727 66.22000122070312,25.450000762939453 C66.06999969482422,25.450000762939453 65.94999694824219,25.450000762939453 65.83000183105469,25.450000762939453 C65.98999786376953,25.219999313354492 66.19999694824219,24.940000534057617 66.47000122070312,24.610000610351562 C66.7699966430664,24.239999771118164 67.08999633789062,23.8700008392334 67.43000030517578,23.479999542236328 C67.66999816894531,23.209999084472656 67.91000366210938,22.90999984741211 68.18000030517578,22.600000381469727 C68.7699966430664,21.889999389648438 69.4000015258789,21.1200008392334 69.87999725341797,20.350000381469727 C70.33999633789062,19.610000610351562 70.80000305175781,18.690000534057617 70.83999633789062,17.719999313354492 C70.88999938964844,16.600000381469727 70.38999938964844,15.600000381469727 69.36000061035156,14.920000076293945 C68.44999694824219,14.319999694824219 67.18000030517578,14 65.62999725341797,13.859999656677246 C62.31999969482422,13.550000190734863 58.2599983215332,14.359999656677246 54.97999954223633,15.289999961853027 C53.40999984741211,15.729999542236328 51.959999084472656,16.219999313354492 50.779998779296875,16.649999618530273 C51.029998779296875,14.359999656677246 50.939998626708984,11.59000015258789 49.97999954223633,9.210000038146973 C49.25,7.409999847412109 48,5.78000020980835 45.970001220703125,4.820000171661377 C43.970001220703125,3.880000114440918 41.400001525878906,3.700000047683716 38.22999954223633,4.389999866485596 C30.719999313354492,6.03000020980835 21.270000457763672,9.229999542236328 14.039999961853027,13.65999984741211 C10.430000305175781,15.869999885559082 7.269999980926514,18.450000762939453 5.21999979019165,21.3799991607666 C3.1500000953674316,24.34000015258789 2.1600000858306885,27.729999542236328 3.059999942779541,31.3799991607666 C3.059999942779541,31.3799991607666 5.96999979019165,30.670000076293945 5.96999979019165,30.670000076293945 C5.329999923706055,28.040000915527344 5.980000019073486,25.530000686645508 7.679999828338623,23.100000381469727 C9.40999984741211,20.639999389648438 12.180000305175781,18.31999969482422 15.609999656677246,16.209999084472656 C22.469999313354492,12.010000228881836 31.579999923706055,8.920000076293945 38.880001068115234,7.320000171661377 C41.63999938964844,6.71999979019165 43.470001220703125,6.96999979019165 44.689998626708984,7.539999961853027 C45.88999938964844,8.109999656677246 46.689998626708984,9.079999923706055 47.20000076293945,10.34000015258789 C47.20000076293945,10.34000015258789 47.20000076293945,10.34000015258789 47.20000076293945,10.34000015258789z" />
+                                      </g>
+                                    </g>
+                                  </g>
+                                </g>
+                              </g>
+                            </g>
+                            <g id="precomp_hY-2bCLb2rFMAXdk7avqm2" clip-path="url(#__lottie_element_556)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;" />
+                          </g>
+                        </g>
+                      </g>
+                    </svg></div>
+                </span><span class="adora-block" data-lottie="true" style="width: 100%; max-width: 162px; aspect-ratio: 162 / 92;">
+                  <div style="width: 100%; height: 100%;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 162 92" width="162" height="92" preserveAspectRatio="xMidYMid meet" style="width: 100%; height: 100%; transform: translate3d(0px, 0px, 0px); content-visibility: visible;">
+                      <defs>
+                        <clipPath id="__lottie_element_590">
+                          <rect width="162" height="92" x="0" y="0" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_592">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_596">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_600">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_604">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <g id="__lottie_element_607">
+                          <g id="precomp_ryBV6hOY_hahbnTCJh7q26" clip-path="url(#__lottie_element_608)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;">
+                            <g id="mwhBp4FVmlhcM3n5YgQHu7" transform="matrix(1,0,0,1,50000,50000)" opacity="1" style="display: block;">
+                              <g opacity="1" transform="matrix(1,0,0,1,0,0)">
+                                <path fill="rgb(0,0,0)" fill-opacity="1" d=" M61,-28.5 C61,-28.5 -61,-28.5 -61,-28.5 C-61,-28.5 -61,28.5 -61,28.5 C-61,28.5 61,28.5 61,28.5 C61,28.5 61,-28.5 61,-28.5z" />
+                              </g>
+                            </g>
+                          </g>
+                        </g>
+                        <clipPath id="__lottie_element_608">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_615">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <mask id="__lottie_element_607_1" mask-type="alpha">
+                          <use xlink:href="#__lottie_element_607" />
+                        </mask>
+                        <clipPath id="__lottie_element_622">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_626">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_630">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                      </defs>
+                      <g clip-path="url(#__lottie_element_590)">
+                        <g id="precomp_so31hIqV9YmgeiUXqumSq0" clip-path="url(#__lottie_element_592)" transform="matrix(1,0,0,1,-49919,-49954)" opacity="1" style="display: block;">
+                          <g id="precomp_gIGJykqgEsZoQuhVrKvWA10" clip-path="url(#__lottie_element_630)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;" />
+                          <g id="precomp_4VgE9S2ZPcVA0IVqhtn--9" clip-path="url(#__lottie_element_626)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;" />
+                          <g id="precomp_K5rxhqL5I6pWLisEdneps1" clip-path="url(#__lottie_element_596)" transform="matrix(1.000726580619812,0,0,1.000726580619812,-36.328125,-38.8359375)" opacity="1" style="display: block;">
+                            <g id="precomp_-8ULoVk3UN1Hua1Y2dUqs8" clip-path="url(#__lottie_element_622)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;" />
+                            <g id="precomp_4afhDl1DZ6oI7f4ELK7os3" clip-path="url(#__lottie_element_604)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;">
+                              <g mask="url(#__lottie_element_607_1)" style="display: block;">
+                                <g id="precomp_4afhDl1DZ6oI7f4ELK7os4" clip-path="url(#__lottie_element_615)" transform="matrix(1,0,0,1,0,0)" opacity="1">
+                                  <g id="r5FygzREqYH52tqrkIVN95" transform="matrix(1.2909730672836304,0,0,1.333299994468689,49939,49971.5)" opacity="1" style="display: block;">
+                                    <g opacity="1" transform="matrix(1,0,0,1,0,0)">
+                                      <g opacity="1" transform="matrix(1,0,0,1,0,0)">
+                                        <path fill-rule="evenodd" fill="rgb(71,178,255)" fill-opacity="1" d=" M47.20000076293945,10.34000015258789 C48.2599983215332,12.970000267028809 47.939998626708984,16.549999237060547 47.380001068115234,18.700000762939453 C47.380001068115234,18.700000762939453 46.5,22.030000686645508 46.5,22.030000686645508 C46.5,22.030000686645508 49.540000915527344,20.399999618530273 49.540000915527344,20.399999618530273 C50.060001373291016,20.110000610351562 52.59000015258789,19.079999923706055 55.790000915527344,18.18000030517578 C59,17.270000457763672 62.619998931884766,16.579999923706055 65.3499984741211,16.84000015258789 C66.7300033569336,16.969999313354492 67.41999816894531,17.229999542236328 67.70999908447266,17.43000030517578 C67.86000061035156,17.530000686645508 67.8499984741211,17.549999237060547 67.83999633789062,17.56999969482422 C67.83999633789062,17.56999969482422 67.83999633789062,17.59000015258789 67.83999633789062,17.59000015258789 C67.83000183105469,17.770000457763672 67.72000122070312,18.149999618530273 67.33999633789062,18.760000228881836 C66.9800033569336,19.34000015258789 66.47000122070312,19.979999542236328 65.88999938964844,20.670000076293945 C65.68000030517578,20.920000076293945 65.44000244140625,21.190000534057617 65.20999908447266,21.459999084472656 C64.8499984741211,21.889999389648438 64.47000122070312,22.309999465942383 64.1500015258789,22.700000762939453 C63.630001068115234,23.34000015258789 63.08000183105469,24.06999969482422 62.77000045776367,24.770000457763672 C62.61000061035156,25.1299991607666 62.459999084472656,25.59000015258789 62.47999954223633,26.110000610351562 C62.5099983215332,26.700000762939453 62.75,27.260000228881836 63.22999954223633,27.68000030517578 C63.65999984741211,28.059999465942383 64.19000244140625,28.229999542236328 64.66000366210938,28.329999923706055 C65.13999938964844,28.43000030517578 65.69000244140625,28.459999084472656 66.29000091552734,28.450000762939453 C70.4800033569336,28.350000381469727 79.80000305175781,29.219999313354492 85.88999938964844,30.610000610351562 C87.41000366210938,30.959999084472656 88.66999816894531,31.329999923706055 89.56999969482422,31.700000762939453 C89.77999877929688,31.790000915527344 89.95999908447266,31.8799991607666 90.11000061035156,31.950000762939453 C89.4000015258789,32.29999923706055 88.19999694824219,32.709999084472656 86.33000183105469,33.15999984741211 C83.01000213623047,33.95000076293945 77.54000091552734,34.439998626708984 70.75,34.70000076293945 C63.9900016784668,34.959999084472656 56.029998779296875,34.9900016784668 47.790000915527344,34.900001525878906 C36.529998779296875,34.779998779296875 24.799999237060547,34.43000030517578 14.920000076293945,34.13999938964844 C10.329999923706055,34 6.130000114440918,33.880001068115234 2.5799999237060547,33.790000915527344 C2.5799999237060547,33.790000915527344 2.509999990463257,36.790000915527344 2.509999990463257,36.790000915527344 C6.03000020980835,36.880001068115234 10.210000038146973,36.9900016784668 14.789999961853027,37.130001068115234 C24.68000030517578,37.41999816894531 36.459999084472656,37.779998779296875 47.75,37.900001525878906 C56.0099983215332,37.9900016784668 64.02999877929688,37.959999084472656 70.86000061035156,37.70000076293945 C77.66000366210938,37.439998626708984 83.4000015258789,36.95000076293945 87.02999877929688,36.08000183105469 C89.2300033569336,35.54999923706055 90.86000061035156,34.9900016784668 91.91000366210938,34.380001068115234 C92.43000030517578,34.08000183105469 92.95999908447266,33.66999816894531 93.29000091552734,33.11000061035156 C93.66999816894531,32.459999084472656 93.72000122070312,31.709999084472656 93.4000015258789,31.020000457763672 C93.12999725341797,30.43000030517578 92.6500015258789,30.010000228881836 92.2300033569336,29.719999313354492 C91.79000091552734,29.420000076293945 91.2699966430664,29.15999984741211 90.70999908447266,28.93000030517578 C89.58999633789062,28.469999313354492 88.13999938964844,28.049999237060547 86.55999755859375,27.690000534057617 C80.23999786376953,26.239999771118164 70.66999816894531,25.350000381469727 66.22000122070312,25.450000762939453 C66.06999969482422,25.450000762939453 65.94999694824219,25.450000762939453 65.83000183105469,25.450000762939453 C65.98999786376953,25.219999313354492 66.19999694824219,24.940000534057617 66.47000122070312,24.610000610351562 C66.7699966430664,24.239999771118164 67.08999633789062,23.8700008392334 67.43000030517578,23.479999542236328 C67.66999816894531,23.209999084472656 67.91000366210938,22.90999984741211 68.18000030517578,22.600000381469727 C68.7699966430664,21.889999389648438 69.4000015258789,21.1200008392334 69.87999725341797,20.350000381469727 C70.33999633789062,19.610000610351562 70.80000305175781,18.690000534057617 70.83999633789062,17.719999313354492 C70.88999938964844,16.600000381469727 70.38999938964844,15.600000381469727 69.36000061035156,14.920000076293945 C68.44999694824219,14.319999694824219 67.18000030517578,14 65.62999725341797,13.859999656677246 C62.31999969482422,13.550000190734863 58.2599983215332,14.359999656677246 54.97999954223633,15.289999961853027 C53.40999984741211,15.729999542236328 51.959999084472656,16.219999313354492 50.779998779296875,16.649999618530273 C51.029998779296875,14.359999656677246 50.939998626708984,11.59000015258789 49.97999954223633,9.210000038146973 C49.25,7.409999847412109 48,5.78000020980835 45.970001220703125,4.820000171661377 C43.970001220703125,3.880000114440918 41.400001525878906,3.700000047683716 38.22999954223633,4.389999866485596 C30.719999313354492,6.03000020980835 21.270000457763672,9.229999542236328 14.039999961853027,13.65999984741211 C10.430000305175781,15.869999885559082 7.269999980926514,18.450000762939453 5.21999979019165,21.3799991607666 C3.1500000953674316,24.34000015258789 2.1600000858306885,27.729999542236328 3.059999942779541,31.3799991607666 C3.059999942779541,31.3799991607666 5.96999979019165,30.670000076293945 5.96999979019165,30.670000076293945 C5.329999923706055,28.040000915527344 5.980000019073486,25.530000686645508 7.679999828338623,23.100000381469727 C9.40999984741211,20.639999389648438 12.180000305175781,18.31999969482422 15.609999656677246,16.209999084472656 C22.469999313354492,12.010000228881836 31.579999923706055,8.920000076293945 38.880001068115234,7.320000171661377 C41.63999938964844,6.71999979019165 43.470001220703125,6.96999979019165 44.689998626708984,7.539999961853027 C45.88999938964844,8.109999656677246 46.689998626708984,9.079999923706055 47.20000076293945,10.34000015258789 C47.20000076293945,10.34000015258789 47.20000076293945,10.34000015258789 47.20000076293945,10.34000015258789z" />
+                                      </g>
+                                    </g>
+                                  </g>
+                                </g>
+                              </g>
+                            </g>
+                            <g id="precomp_hY-2bCLb2rFMAXdk7avqm2" clip-path="url(#__lottie_element_600)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;" />
+                          </g>
+                        </g>
+                      </g>
+                    </svg></div>
+                </span><span class="adora-block" data-lottie="true" style="width: 100%; max-width: 53px; aspect-ratio: 53 / 53;">
+                  <div style="width: 100%; height: 100%;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 53 53" width="53" height="53" preserveAspectRatio="xMidYMid meet" style="width: 100%; height: 100%; transform: translate3d(0px, 0px, 0px); content-visibility: visible;">
+                      <defs>
+                        <clipPath id="__lottie_element_494">
+                          <rect width="53" height="53" x="0" y="0" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_496">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_500">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_504">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_508">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_512">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_516">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <g id="__lottie_element_519">
+                          <g id="precomp_w1oI1ZrGoCbmdlDWHwbjp8" clip-path="url(#__lottie_element_520)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;">
+                            <g id="nNL6xhIap1fIAtQTFY2Y09" transform="matrix(1,0,0,1,50000,50000)" opacity="1" style="display: block;">
+                              <g opacity="1" transform="matrix(1,0,0,1,0,0)">
+                                <path fill="rgb(0,0,0)" fill-opacity="1" d=" M17,-11 C17,-11 -17,-11 -17,-11 C-17,-11 -17,11 -17,11 C-17,11 17,11 17,11 C17,11 17,-11 17,-11z" />
+                              </g>
+                            </g>
+                          </g>
+                        </g>
+                        <clipPath id="__lottie_element_520">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_527">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <mask id="__lottie_element_519_1" mask-type="alpha">
+                          <use xlink:href="#__lottie_element_519" />
+                        </mask>
+                        <clipPath id="__lottie_element_534">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_538">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                        <clipPath id="__lottie_element_542">
+                          <path d="M0,0 L100000,0 L100000,100000 L0,100000z" />
+                        </clipPath>
+                      </defs>
+                      <g clip-path="url(#__lottie_element_494)">
+                        <g id="precomp_8C_rxjTcxq1MrFY-QLERm0" clip-path="url(#__lottie_element_496)" transform="matrix(1,0,0,1,-49973.5,-49973.5)" opacity="1" style="display: block;">
+                          <g id="precomp_hQiQCadyCHxG_plfdQ-dN12" clip-path="url(#__lottie_element_542)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;" />
+                          <g id="precomp_zAHdQSBkD24akxm7oJ4Mc11" clip-path="url(#__lottie_element_538)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;" />
+                          <g id="precomp_GomDTPbif7Kg-pqTZvpDH1" clip-path="url(#__lottie_element_500)" transform="matrix(1,0,0,1,0,-1.51171875)" opacity="1" style="display: block;">
+                            <g id="precomp_c6bQYtUd0w9T35zKjm9hf2" clip-path="url(#__lottie_element_504)" transform="matrix(0.9999975562095642,0.002214310923591256,-0.002214310923591256,0.9999975562095642,110.83984375,-110.59375)" opacity="1" style="display: block;">
+                              <g id="precomp_UaENqkCj_UFVj7qXfQIkY3" clip-path="url(#__lottie_element_508)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;">
+                                <g id="precomp_3iLHLW_iZSII7f3RvOYak10" clip-path="url(#__lottie_element_534)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;" />
+                                <g id="precomp_vjh9o2QloLu_UCBc9IgDo5" clip-path="url(#__lottie_element_516)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;">
+                                  <g mask="url(#__lottie_element_519_1)" style="display: block;">
+                                    <g id="precomp_vjh9o2QloLu_UCBc9IgDo6" clip-path="url(#__lottie_element_527)" transform="matrix(1,0,0,1,0,0)" opacity="1">
+                                      <g id="wtx04BBttDVX1JdYC8NnE7" transform="matrix(1.333299994468689,0,0,1.333299994468689,49983,49989)" opacity="1" style="display: block;">
+                                        <g opacity="1" transform="matrix(1,0,0,1,0,0)">
+                                          <g opacity="1" transform="matrix(1,0,0,1,0,0)">
+                                            <g opacity="1" transform="matrix(1,0,0,1,0,0)">
+                                              <path fill-rule="evenodd" fill="rgb(158,71,255)" fill-opacity="1" d=" M18.969999313354492,7.809999942779541 C17.790000915527344,10.350000381469727 17.510000228881836,13.34000015258789 17.6200008392334,15.289999961853027 C17.6200008392334,15.289999961853027 14.729999542236328,15.930000305175781 14.729999542236328,15.930000305175781 C13.770000457763672,13.529999732971191 11.470000267028809,12 8.630000114440918,11.09000015258789 C5.809999942779541,10.1899995803833 2.759999990463257,10.010000228881836 0.8399999737739563,10.119999885559082 C0.8399999737739563,10.119999885559082 0.6600000262260437,7.130000114440918 0.6600000262260437,7.130000114440918 C2.859999895095825,6.989999771118164 6.300000190734863,7.190000057220459 9.539999961853027,8.229999542236328 C11.420000076293945,8.829999923706055 13.329999923706055,9.75 14.880000114440918,11.119999885559082 C15.130000114440918,9.619999885559082 15.5600004196167,8.039999961853027 16.25,6.550000190734863 C17.709999084472656,3.390000104904175 20.399999618530273,0.5299999713897705 24.950000762939453,0.009999999776482582 C24.950000762939453,0.009999999776482582 25.299999237060547,2.990000009536743 25.299999237060547,2.990000009536743 C22.049999237060547,3.369999885559082 20.1200008392334,5.320000171661377 18.969999313354492,7.809999942779541 C18.969999313354492,7.809999942779541 18.969999313354492,7.809999942779541 18.969999313354492,7.809999942779541z" />
+                                            </g>
+                                          </g>
+                                        </g>
+                                      </g>
+                                    </g>
+                                  </g>
+                                </g>
+                                <g id="precomp_nzPr0uQIGMTbAMw9VV58J4" clip-path="url(#__lottie_element_512)" transform="matrix(1,0,0,1,0,0)" opacity="1" style="display: block;" />
+                              </g>
+                            </g>
+                          </g>
+                        </g>
+                      </g>
+                    </svg></div>
+                </span></div>
+              <div class="pagehero-module-scss-module__rMNsHa__head">
+                <div class="pagehero-module-scss-module__rMNsHa__tagline">
+                  <div data-color="blue"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 18 18">
+                      <path fill="#353241" d="M10 0H8v18h2z" />
+                      <path fill="#353241" d="M3.34 1.929 1.927 3.343l12.728 12.728 1.415-1.414z" />
+                      <path fill="#353241" d="M18 8H0v2h18z" />
+                      <path fill="#353241" d="M14.654 1.929 1.926 14.657l1.415 1.414L16.069 3.343z" />
+                    </svg>BEM FT</div>
+                </div>
+                <h1>BEM FT UNIMMA
+                </h1>
+                <div class="pagehero-module-scss-module__rMNsHa__copy">Wadah Aspirasi dan Aksi Nyata Mahasiswa Fakultas Teknik</div>
+              </div>
+            </div>
+            <div class="pagehero-module-scss-module__rMNsHa__media">
+              <div class="pagehero-module-scss-module__rMNsHa__image">
+                <div class="tapes-module-scss-module__Q32jNW__wrapper green"><svg xmlns="http://www.w3.org/2000/svg" width="136" height="139" viewBox="0 0 136 139">
+                    <g id="Page-1" fill="none" fill-opacity="0.6" fill-rule="evenodd" stroke="none" stroke-width="1">
+                      <g id="tape" fill="#DFFF9D" fill-rule="nonzero" stroke="#BAF24A" stroke-width="4" transform="translate(2.12 2.75)">
+                        <path id="Path" d="M9.001 87.662C29.514 70.568 75.481 25.255 97.171 3.7c9.836-9.774 6.845 2.641 9.5 5s5.815.17 9 3-2.185 6.17 1.001 9 3.638.437 7 2c2.69 1.25 1.094 5 1 8-.175 5.542 13.761-1.779 3.184 8.761-13.297 13.252-64.748 62.351-91.684 88.74-16.01 15.683-2-5-11.5-5s2.474-12.306-8.763-12.306-3.82-7.512-5.237-10.195-22.184 4.056-1.67-13.038Z" />
+                      </g>
+                    </g>
+                  </svg><svg xmlns="http://www.w3.org/2000/svg" width="136" height="139" viewBox="0 0 136 139">
+                    <g id="Page-1" fill="none" fill-opacity="0.6" fill-rule="evenodd" stroke="none" stroke-width="1">
+                      <g id="tape" fill="#DFFF9D" fill-rule="nonzero" stroke="#BAF24A" stroke-width="4" transform="translate(2.12 2.75)">
+                        <path id="Path" d="M9.001 87.662C29.514 70.568 75.481 25.255 97.171 3.7c9.836-9.774 6.845 2.641 9.5 5s5.815.17 9 3-2.185 6.17 1.001 9 3.638.437 7 2c2.69 1.25 1.094 5 1 8-.175 5.542 13.761-1.779 3.184 8.761-13.297 13.252-64.748 62.351-91.684 88.74-16.01 15.683-2-5-11.5-5s2.474-12.306-8.763-12.306-3.82-7.512-5.237-10.195-22.184 4.056-1.67-13.038Z" />
+                      </g>
+                    </g>
+                  </svg></div>                  <img alt="BEM FT UNIMMA Hero" fetchpriority="high" loading="eager" width="2000" height="1400" decoding="async" src="/images/hero.jpeg" style="color: transparent;" />
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="tentang" class="textblock-module-scss-module__3bLjwW__wrapper" data-variant="fixed" data-size="default">
+          <div class="container container--fixed">
+            <div class="textblock-module-scss-module__3bLjwW__inner">
+              <p style="text-align: left;">Badan Eksekutif Mahasiswa (BEM) Fakultas Teknik adalah organisasi eksekutif tertinggi di tingkat fakultas yang berfungsi sebagai wadah aspirasi, advokasi, dan pengembangan potensi mahasiswa Fakultas Teknik. Melalui berbagai program kerja di bidang akademik, sosial, dan kemahasiswaan, BEM FT berkomitmen menciptakan lingkungan kampus yang aktif, inklusif, dan berdaya guna.</p>
+            </div>
+          </div>
+        </section>
+        <section id="bergerak" class="imagetextblock-module-scss-module__1jYUnW__wrapper" data-direction="reverse" data-bg="false" data-border="false" data-zig-zag="true">
+          <div class="container">
+            <div class="imagetextblock-module-scss-module__1jYUnW__inner ">
+              <div class="imagetextblock-module-scss-module__1jYUnW__content">
+                <div>
+                  <div class="imagetextblock-module-scss-module__1jYUnW__head">
+                    <h3>Bergerak untuk Fakultas Teknik yang Lebih Baik</h3>
+                  </div>
+                  <div class="imagetextblock-module-scss-module__1jYUnW__copy">
+                    <div class="font-medium">
+                      <p>Kami percaya mahasiswa Teknik berhak atas ruang aspirasi yang nyata. Karena itu kami hadir membangun program kerja yang berdampak — mulai dari advokasi akademik sampai pengembangan potensi mahasiswa.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="imagetextblock-module-scss-module__1jYUnW__media"><img alt="Bergerak untuk Fakultas Teknik" fetchpriority="auto" loading="lazy" decoding="async" src="/images/2.jpg" style="color: transparent; width: 100%; height: auto;" /></div>
+            </div>
+          </div>
+        </section>
+        <section class="customerlogos-module-scss-module__muNAfq__wrapper" data-display="scrolling" style="display:none;">
+          <div class="container">
+            <div class="customerlogos-module-scss-module__muNAfq__inner">
+              <div class="customerlogos-module-scss-module__muNAfq__head">
+                <p>Loved by product-obsessed teams</p>
+              </div>
+              <div class="customerlogos-module-scss-module__muNAfq__image"><img alt="Mitra BEM FT" fetchpriority="auto" loading="lazy" width="2202" height="198" decoding="async" data-nimg="1" class="" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 1200px" srcset="/images/kgwq2lfr/production/21918e6b6970da93c1baf1c8f4114164431f71bc-2202x198.png?auto=format&amp;fit=max&amp;w=384&amp;q=75 384w, /images/kgwq2lfr/production/21918e6b6970da93c1baf1c8f4114164431f71bc-2202x198.png?auto=format&amp;fit=max&amp;w=640&amp;q=75 640w, /images/kgwq2lfr/production/21918e6b6970da93c1baf1c8f4114164431f71bc-2202x198.png?auto=format&amp;fit=max&amp;w=750&amp;q=75 750w, /images/kgwq2lfr/production/21918e6b6970da93c1baf1c8f4114164431f71bc-2202x198.png?auto=format&amp;fit=max&amp;w=828&amp;q=75 828w, /images/kgwq2lfr/production/21918e6b6970da93c1baf1c8f4114164431f71bc-2202x198.png?auto=format&amp;fit=max&amp;w=1080&amp;q=75 1080w, /images/kgwq2lfr/production/21918e6b6970da93c1baf1c8f4114164431f71bc-2202x198.png?auto=format&amp;fit=max&amp;w=1200&amp;q=75 1200w, /images/kgwq2lfr/production/21918e6b6970da93c1baf1c8f4114164431f71bc-2202x198.png?auto=format&amp;fit=max&amp;w=1920&amp;q=75 1920w, /images/kgwq2lfr/production/21918e6b6970da93c1baf1c8f4114164431f71bc-2202x198.png?auto=format&amp;fit=max&amp;w=2048&amp;q=75 2048w, /images/kgwq2lfr/production/21918e6b6970da93c1baf1c8f4114164431f71bc-2202x198.png?auto=format&amp;fit=max&amp;w=3840&amp;q=75 3840w" src="/images/kgwq2lfr/production/21918e6b6970da93c1baf1c8f4114164431f71bc-2202x198.png" style="color: transparent;" /><img alt="Mitra BEM FT" fetchpriority="auto" loading="lazy" width="1494" height="372" decoding="async" data-nimg="1" class="" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 1200px" srcset="/images/kgwq2lfr/production/beffcf1c399f86efefe6945f3a770e22bd2c4eb9-1494x372.png?auto=format&amp;fit=max&amp;w=384&amp;q=75 384w, /images/kgwq2lfr/production/beffcf1c399f86efefe6945f3a770e22bd2c4eb9-1494x372.png?auto=format&amp;fit=max&amp;w=640&amp;q=75 640w, /images/kgwq2lfr/production/beffcf1c399f86efefe6945f3a770e22bd2c4eb9-1494x372.png?auto=format&amp;fit=max&amp;w=750&amp;q=75 750w, /images/kgwq2lfr/production/beffcf1c399f86efefe6945f3a770e22bd2c4eb9-1494x372.png?auto=format&amp;fit=max&amp;w=828&amp;q=75 828w, /images/kgwq2lfr/production/beffcf1c399f86efefe6945f3a770e22bd2c4eb9-1494x372.png?auto=format&amp;fit=max&amp;w=1080&amp;q=75 1080w, /images/kgwq2lfr/production/beffcf1c399f86efefe6945f3a770e22bd2c4eb9-1494x372.png?auto=format&amp;fit=max&amp;w=1200&amp;q=75 1200w, /images/kgwq2lfr/production/beffcf1c399f86efefe6945f3a770e22bd2c4eb9-1494x372.png?auto=format&amp;fit=max&amp;w=1920&amp;q=75 1920w, /images/kgwq2lfr/production/beffcf1c399f86efefe6945f3a770e22bd2c4eb9-1494x372.png?auto=format&amp;fit=max&amp;w=2048&amp;q=75 2048w, /images/kgwq2lfr/production/beffcf1c399f86efefe6945f3a770e22bd2c4eb9-1494x372.png?auto=format&amp;fit=max&amp;w=3840&amp;q=75 3840w" src="/images/kgwq2lfr/production/beffcf1c399f86efefe6945f3a770e22bd2c4eb9-1494x372.png" style="color: transparent;" /></div>
+            </div>
+          </div>
+        </section>
+        <section class="heading-module-scss-module__ZBj6zq__wrapper" data-display="inline" id="alasan">
+          <div class="container">
+            <div class="tagline-module-scss-module__R8CpfG__wrapper color-pink-3">
+              <div class="tagline-module-scss-module__R8CpfG__inner"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 18 18">
+                  <path fill="#353241" d="M10 0H8v18h2z" />
+                  <path fill="#353241" d="M3.34 1.929 1.927 3.343l12.728 12.728 1.415-1.414z" />
+                  <path fill="#353241" d="M18 8H0v2h18z" />
+                  <path fill="#353241" d="M14.654 1.929 1.926 14.657l1.415 1.414L16.069 3.343z" />
+                </svg><span>ALASAN</span></div>
+            </div>
+            <div class="heading-module-scss-module__ZBj6zq__inner">
+              <div class="heading-module-scss-module__ZBj6zq__heading">
+                <h2 class="color-blue-1">Kenapa <strong>Gabung BEM FT<span class="underline"><svg class="underline-squiggle stroke-pink-3" xmlns="http://www.w3.org/2000/svg" width="158" height="18" fill="none" viewBox="0 0 158 18" preserveAspectRatio="none">
+                        <path stroke="#353241" strokewidth="25" d="M1 15c4.603-1.68 15.483-6.046 22.178-10.077C31.548-.115 34.895 15 41.172 15S53.307.389 63.35 3.412c9.743 2.933 8.632 17.127 26.208 6.547C107.133-.621 115.352 25.164 156 3.412" />
+                      </svg></span></strong>
+                </h2>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="featurecards-module-scss-module__x7M58W__wrapper">
+          <div class="container">
+            <div class="featurecards-module-scss-module__x7M58W__cards" data-remove-border="false">
+              <div class="featurecards-module-scss-module__x7M58W__card" data-size="half" data-linked="false">
+                <div>
+                  <div class="featurecards-module-scss-module__x7M58W__icon"><img alt="Pengalaman Organisasi icon" fetchpriority="auto" loading="lazy" width="104" height="104" decoding="async" data-nimg="1" class="" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 1200px" srcset="/images/kgwq2lfr/production/a44ba4fcfec6852f6ee739eb19d6a7de6a995999-104x104.png?auto=format&amp;fit=max&amp;w=384&amp;q=75 384w, /images/kgwq2lfr/production/a44ba4fcfec6852f6ee739eb19d6a7de6a995999-104x104.png?auto=format&amp;fit=max&amp;w=640&amp;q=75 640w, /images/kgwq2lfr/production/a44ba4fcfec6852f6ee739eb19d6a7de6a995999-104x104.png?auto=format&amp;fit=max&amp;w=750&amp;q=75 750w, /images/kgwq2lfr/production/a44ba4fcfec6852f6ee739eb19d6a7de6a995999-104x104.png?auto=format&amp;fit=max&amp;w=828&amp;q=75 828w, /images/kgwq2lfr/production/a44ba4fcfec6852f6ee739eb19d6a7de6a995999-104x104.png?auto=format&amp;fit=max&amp;w=1080&amp;q=75 1080w, /images/kgwq2lfr/production/a44ba4fcfec6852f6ee739eb19d6a7de6a995999-104x104.png?auto=format&amp;fit=max&amp;w=1200&amp;q=75 1200w, /images/kgwq2lfr/production/a44ba4fcfec6852f6ee739eb19d6a7de6a995999-104x104.png?auto=format&amp;fit=max&amp;w=1920&amp;q=75 1920w, /images/kgwq2lfr/production/a44ba4fcfec6852f6ee739eb19d6a7de6a995999-104x104.png?auto=format&amp;fit=max&amp;w=2048&amp;q=75 2048w, /images/kgwq2lfr/production/a44ba4fcfec6852f6ee739eb19d6a7de6a995999-104x104.png?auto=format&amp;fit=max&amp;w=3840&amp;q=75 3840w" src="/images/kgwq2lfr/production/a44ba4fcfec6852f6ee739eb19d6a7de6a995999-104x104.png" style="color: transparent;" /></div>
+                  <div class="featurecards-module-scss-module__x7M58W__content">
+                    <div class="featurecards-module-scss-module__x7M58W__head">
+                      <h4>Pengalaman Organisasi</h4>
+                    </div>
+                    <div class="featurecards-module-scss-module__x7M58W__copy">
+                      <div class="font-medium">
+                        <p>Membangun pengalaman kepemimpinan dan manajemen nyata sejak di bangku kuliah.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="featurecards-module-scss-module__x7M58W__card" data-size="half" data-linked="false">
+                <div>
+                  <div class="featurecards-module-scss-module__x7M58W__icon"><img alt="Relasi Lintas Jurusan icon" fetchpriority="auto" loading="lazy" width="104" height="104" decoding="async" data-nimg="1" class="" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 1200px" srcset="/images/kgwq2lfr/production/47da8eed13be4e2726b20468b0e6b85c2a3a8f07-104x104.png?auto=format&amp;fit=max&amp;w=384&amp;q=75 384w, /images/kgwq2lfr/production/47da8eed13be4e2726b20468b0e6b85c2a3a8f07-104x104.png?auto=format&amp;fit=max&amp;w=640&amp;q=75 640w, /images/kgwq2lfr/production/47da8eed13be4e2726b20468b0e6b85c2a3a8f07-104x104.png?auto=format&amp;fit=max&amp;w=750&amp;q=75 750w, /images/kgwq2lfr/production/47da8eed13be4e2726b20468b0e6b85c2a3a8f07-104x104.png?auto=format&amp;fit=max&amp;w=828&amp;q=75 828w, /images/kgwq2lfr/production/47da8eed13be4e2726b20468b0e6b85c2a3a8f07-104x104.png?auto=format&amp;fit=max&amp;w=1080&amp;q=75 1080w, /images/kgwq2lfr/production/47da8eed13be4e2726b20468b0e6b85c2a3a8f07-104x104.png?auto=format&amp;fit=max&amp;w=1200&amp;q=75 1200w, /images/kgwq2lfr/production/47da8eed13be4e2726b20468b0e6b85c2a3a8f07-104x104.png?auto=format&amp;fit=max&amp;w=1920&amp;q=75 1920w, /images/kgwq2lfr/production/47da8eed13be4e2726b20468b0e6b85c2a3a8f07-104x104.png?auto=format&amp;fit=max&amp;w=2048&amp;q=75 2048w, /images/kgwq2lfr/production/47da8eed13be4e2726b20468b0e6b85c2a3a8f07-104x104.png?auto=format&amp;fit=max&amp;w=3840&amp;q=75 3840w" src="/images/kgwq2lfr/production/47da8eed13be4e2726b20468b0e6b85c2a3a8f07-104x104.png" style="color: transparent;" /></div>
+                  <div class="featurecards-module-scss-module__x7M58W__content">
+                    <div class="featurecards-module-scss-module__x7M58W__head">
+                      <h4>Relasi Lintas Jurusan</h4>
+                    </div>
+                    <div class="featurecards-module-scss-module__x7M58W__copy">
+                      <div class="font-medium">
+                        <p>Membangun jejaring dengan mahasiswa dan dosen se-Fakultas Teknik.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="featurecards-module-scss-module__x7M58W__card" data-size="half" data-linked="false">
+                <div>
+                  <div class="featurecards-module-scss-module__x7M58W__icon"><img alt="Pengembangan Diri icon" fetchpriority="auto" loading="lazy" width="104" height="104" decoding="async" data-nimg="1" class="" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 1200px" srcset="/images/kgwq2lfr/production/fb845564a89dc762901c1c4458a4029b14698d68-104x104.png?auto=format&amp;fit=max&amp;w=384&amp;q=75 384w, /images/kgwq2lfr/production/fb845564a89dc762901c1c4458a4029b14698d68-104x104.png?auto=format&amp;fit=max&amp;w=640&amp;q=75 640w, /images/kgwq2lfr/production/fb845564a89dc762901c1c4458a4029b14698d68-104x104.png?auto=format&amp;fit=max&amp;w=750&amp;q=75 750w, /images/kgwq2lfr/production/fb845564a89dc762901c1c4458a4029b14698d68-104x104.png?auto=format&amp;fit=max&amp;w=828&amp;q=75 828w, /images/kgwq2lfr/production/fb845564a89dc762901c1c4458a4029b14698d68-104x104.png?auto=format&amp;fit=max&amp;w=1080&amp;q=75 1080w, /images/kgwq2lfr/production/fb845564a89dc762901c1c4458a4029b14698d68-104x104.png?auto=format&amp;fit=max&amp;w=1200&amp;q=75 1200w, /images/kgwq2lfr/production/fb845564a89dc762901c1c4458a4029b14698d68-104x104.png?auto=format&amp;fit=max&amp;w=1920&amp;q=75 1920w, /images/kgwq2lfr/production/fb845564a89dc762901c1c4458a4029b14698d68-104x104.png?auto=format&amp;fit=max&amp;w=2048&amp;q=75 2048w, /images/kgwq2lfr/production/fb845564a89dc762901c1c4458a4029b14698d68-104x104.png?auto=format&amp;fit=max&amp;w=3840&amp;q=75 3840w" src="/images/kgwq2lfr/production/fb845564a89dc762901c1c4458a4029b14698d68-104x104.png" style="color: transparent;" /></div>
+                  <div class="featurecards-module-scss-module__x7M58W__content">
+                    <div class="featurecards-module-scss-module__x7M58W__head">
+                      <h4>Pengembangan Diri</h4>
+                    </div>
+                    <div class="featurecards-module-scss-module__x7M58W__copy">
+                      <div class="font-medium">
+                        <p>Pelatihan soft skill, public speaking, dan project management.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="featurecards-module-scss-module__x7M58W__card" data-size="half" data-linked="false">
+                <div>
+                  <div class="featurecards-module-scss-module__x7M58W__icon"><img alt="Kegiatan Rutin icon" fetchpriority="auto" loading="lazy" width="104" height="104" decoding="async" data-nimg="1" class="" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 1200px" srcset="/images/kgwq2lfr/production/c63775af1341e7317054646b8ac159c2f6f25263-104x104.png?auto=format&amp;fit=max&amp;w=384&amp;q=75 384w, /images/kgwq2lfr/production/c63775af1341e7317054646b8ac159c2f6f25263-104x104.png?auto=format&amp;fit=max&amp;w=640&amp;q=75 640w, /images/kgwq2lfr/production/c63775af1341e7317054646b8ac159c2f6f25263-104x104.png?auto=format&amp;fit=max&amp;w=750&amp;q=75 750w, /images/kgwq2lfr/production/c63775af1341e7317054646b8ac159c2f6f25263-104x104.png?auto=format&amp;fit=max&amp;w=828&amp;q=75 828w, /images/kgwq2lfr/production/c63775af1341e7317054646b8ac159c2f6f25263-104x104.png?auto=format&amp;fit=max&amp;w=1080&amp;q=75 1080w, /images/kgwq2lfr/production/c63775af1341e7317054646b8ac159c2f6f25263-104x104.png?auto=format&amp;fit=max&amp;w=1200&amp;q=75 1200w, /images/kgwq2lfr/production/c63775af1341e7317054646b8ac159c2f6f25263-104x104.png?auto=format&amp;fit=max&amp;w=1920&amp;q=75 1920w, /images/kgwq2lfr/production/c63775af1341e7317054646b8ac159c2f6f25263-104x104.png?auto=format&amp;fit=max&amp;w=2048&amp;q=75 2048w, /images/kgwq2lfr/production/c63775af1341e7317054646b8ac159c2f6f25263-104x104.png?auto=format&amp;fit=max&amp;w=3840&amp;q=75 3840w" src="/images/kgwq2lfr/production/c63775af1341e7317054646b8ac159c2f6f25263-104x104.png" style="color: transparent;" /></div>
+                  <div class="featurecards-module-scss-module__x7M58W__content">
+                    <div class="featurecards-module-scss-module__x7M58W__head">
+                      <h4>Kegiatan Rutin</h4>
+                    </div>
+                    <div class="featurecards-module-scss-module__x7M58W__copy">
+                      <div class="font-medium">
+                        <p>Rapat kerja, kaderisasi, dan kegiatan sosial sepanjang periode kepengurusan.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="proker" class="heading-module-scss-module__ZBj6zq__wrapper" data-display="inline">
+          <div class="container">
+            <div class="tagline-module-scss-module__R8CpfG__wrapper color-blue-3">
+              <div class="tagline-module-scss-module__R8CpfG__inner"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 18 18">
+                  <path fill="#353241" d="M10 0H8v18h2z" />
+                  <path fill="#353241" d="M3.34 1.929 1.927 3.343l12.728 12.728 1.415-1.414z" />
+                  <path fill="#353241" d="M18 8H0v2h18z" />
+                  <path fill="#353241" d="M14.654 1.929 1.926 14.657l1.415 1.414L16.069 3.343z" />
+                </svg><span>PROKER</span></div>
+            </div>
+            <div class="heading-module-scss-module__ZBj6zq__inner">
+              <div class="heading-module-scss-module__ZBj6zq__heading">
+                <h2 class="color-blue-1">Proker Terbaru Kami
+                </h2>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="featurecards-module-scss-module__x7M58W__wrapper">
+          <div class="container">
+            <div class="featurecards-module-scss-module__x7M58W__cards" data-remove-border="false">
+              <div class="featurecards-module-scss-module__x7M58W__card" data-size="one-third" data-linked="false">
+                <div>
+                  <div class="featurecards-module-scss-module__x7M58W__media"><img alt="Feature illustration" fetchpriority="auto" loading="lazy"   decoding="async"   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 1200px" src="/images/kolaboratif.jpg" style="color: transparent;" /></div>
+                  <div class="featurecards-module-scss-module__x7M58W__content">
+                    <div class="featurecards-module-scss-module__x7M58W__copy">
+                      <div class="font-medium">
+                        <h4>Kolaboratif</h4>
+                        <p>Kami percaya perubahan besar lahir dari kerja sama lintas jurusan dan angkatan di Fakultas Teknik.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="featurecards-module-scss-module__x7M58W__card" data-size="one-third" data-linked="false">
+                <div>
+                  <div class="featurecards-module-scss-module__x7M58W__media"><img alt="Feature illustration" fetchpriority="auto" loading="lazy"   decoding="async"   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 1200px" src="/images/kolaboratif.jpg" style="color: transparent;" /></div>
+                  <div class="featurecards-module-scss-module__x7M58W__content">
+                    <div class="featurecards-module-scss-module__x7M58W__copy">
+                      <div class="font-medium">
+                        <h4>Transparan</h4>
+                        <p>Setiap program kerja dan keputusan kami terbuka untuk diketahui dan dikritisi mahasiswa.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="featurecards-module-scss-module__x7M58W__card" data-size="one-third" data-linked="false">
+                <div>
+                  <div class="featurecards-module-scss-module__x7M58W__media"><img alt="Feature illustration" fetchpriority="auto" loading="lazy"   decoding="async"   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 1200px" src="/images/kolaboratif.jpg" style="color: transparent;" /></div>
+                  <div class="featurecards-module-scss-module__x7M58W__content">
+                    <div class="featurecards-module-scss-module__x7M58W__copy">
+                      <div class="font-medium">
+                        <h4>Aktif Bergerak</h4>
+                        <p>Kami turun langsung menyelesaikan masalah, bukan sekadar wacana di rapat.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="heading-module-scss-module__ZBj6zq__wrapper" data-display="inline" id="rekrutmen">
+          <div class="container">
+            <div class="tagline-module-scss-module__R8CpfG__wrapper color-blue-3">
+              <div class="tagline-module-scss-module__R8CpfG__inner"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 18 18">
+                  <path fill="#353241" d="M10 0H8v18h2z" />
+                  <path fill="#353241" d="M3.34 1.929 1.927 3.343l12.728 12.728 1.415-1.414z" />
+                  <path fill="#353241" d="M18 8H0v2h18z" />
+                  <path fill="#353241" d="M14.654 1.929 1.926 14.657l1.415 1.414L16.069 3.343z" />
+                </svg><span>REKRUTMEN</span></div>
+            </div>
+            <div class="heading-module-scss-module__ZBj6zq__inner">
+              <div class="heading-module-scss-module__ZBj6zq__heading">
+                <h2 class="color-blue-1">Bergabung Bersama Kami
+                </h2>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="featurecards-module-scss-module__x7M58W__wrapper">
+          <div class="container">
+            <div class="featurecards-module-scss-module__x7M58W__cards" data-remove-border="false">
+              <div class="featurecards-module-scss-module__x7M58W__card" data-size="half" data-linked="false">
+                <div>
+                  <div class="featurecards-module-scss-module__x7M58W__icon"><img alt="Open Recruitment icon" fetchpriority="auto" loading="lazy" width="121" height="120" decoding="async" data-nimg="1" class="" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 1200px" srcset="/images/kgwq2lfr/production/85cb39a1cebc716b22d5eae2f5adb3d3fb44a9c7-121x120.png?auto=format&amp;fit=max&amp;w=384&amp;q=75 384w, /images/kgwq2lfr/production/85cb39a1cebc716b22d5eae2f5adb3d3fb44a9c7-121x120.png?auto=format&amp;fit=max&amp;w=640&amp;q=75 640w, /images/kgwq2lfr/production/85cb39a1cebc716b22d5eae2f5adb3d3fb44a9c7-121x120.png?auto=format&amp;fit=max&amp;w=750&amp;q=75 750w, /images/kgwq2lfr/production/85cb39a1cebc716b22d5eae2f5adb3d3fb44a9c7-121x120.png?auto=format&amp;fit=max&amp;w=828&amp;q=75 828w, /images/kgwq2lfr/production/85cb39a1cebc716b22d5eae2f5adb3d3fb44a9c7-121x120.png?auto=format&amp;fit=max&amp;w=1080&amp;q=75 1080w, /images/kgwq2lfr/production/85cb39a1cebc716b22d5eae2f5adb3d3fb44a9c7-121x120.png?auto=format&amp;fit=max&amp;w=1200&amp;q=75 1200w, /images/kgwq2lfr/production/85cb39a1cebc716b22d5eae2f5adb3d3fb44a9c7-121x120.png?auto=format&amp;fit=max&amp;w=1920&amp;q=75 1920w, /images/kgwq2lfr/production/85cb39a1cebc716b22d5eae2f5adb3d3fb44a9c7-121x120.png?auto=format&amp;fit=max&amp;w=2048&amp;q=75 2048w, /images/kgwq2lfr/production/85cb39a1cebc716b22d5eae2f5adb3d3fb44a9c7-121x120.png?auto=format&amp;fit=max&amp;w=3840&amp;q=75 3840w" src="/images/kgwq2lfr/production/85cb39a1cebc716b22d5eae2f5adb3d3fb44a9c7-121x120.png" style="color: transparent;" /></div>
+                  <div class="featurecards-module-scss-module__x7M58W__content">
+                    <div class="featurecards-module-scss-module__x7M58W__head">
+                      <h4>Open Recruitment</h4>
+                    </div>
+                    <div class="featurecards-module-scss-module__x7M58W__copy">
+                      <div class="font-medium">
+                        <p class="p1">Saat ini BEM FT belum membuka rekrutmen. Pantau terus media sosial kami untuk info open recruitment periode berikutnya!</p>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="featurecards-module-scss-module__x7M58W__card" data-size="half" data-linked="false">
+                <div>
+                  <div class="featurecards-module-scss-module__x7M58W__icon"><img alt="Media Sosial icon" fetchpriority="auto" loading="lazy" width="121" height="120" decoding="async" data-nimg="1" class="" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 1200px" srcset="/images/kgwq2lfr/production/b4263c24c64a9f2e9207b392c099fbc7b910cc61-121x120.png?auto=format&amp;fit=max&amp;w=384&amp;q=75 384w, /images/kgwq2lfr/production/b4263c24c64a9f2e9207b392c099fbc7b910cc61-121x120.png?auto=format&amp;fit=max&amp;w=640&amp;q=75 640w, /images/kgwq2lfr/production/b4263c24c64a9f2e9207b392c099fbc7b910cc61-121x120.png?auto=format&amp;fit=max&amp;w=750&amp;q=75 750w, /images/kgwq2lfr/production/b4263c24c64a9f2e9207b392c099fbc7b910cc61-121x120.png?auto=format&amp;fit=max&amp;w=828&amp;q=75 828w, /images/kgwq2lfr/production/b4263c24c64a9f2e9207b392c099fbc7b910cc61-121x120.png?auto=format&amp;fit=max&amp;w=1080&amp;q=75 1080w, /images/kgwq2lfr/production/b4263c24c64a9f2e9207b392c099fbc7b910cc61-121x120.png?auto=format&amp;fit=max&amp;w=1200&amp;q=75 1200w, /images/kgwq2lfr/production/b4263c24c64a9f2e9207b392c099fbc7b910cc61-121x120.png?auto=format&amp;fit=max&amp;w=1920&amp;q=75 1920w, /images/kgwq2lfr/production/b4263c24c64a9f2e9207b392c099fbc7b910cc61-121x120.png?auto=format&amp;fit=max&amp;w=2048&amp;q=75 2048w, /images/kgwq2lfr/production/b4263c24c64a9f2e9207b392c099fbc7b910cc61-121x120.png?auto=format&amp;fit=max&amp;w=3840&amp;q=75 3840w" src="/images/kgwq2lfr/production/b4263c24c64a9f2e9207b392c099fbc7b910cc61-121x120.png" style="color: transparent;" /></div>
+                  <div class="featurecards-module-scss-module__x7M58W__content">
+                    <div class="featurecards-module-scss-module__x7M58W__head">
+                      <h4>Ikuti Media Sosial Kami</h4>
+                    </div>
+                    <div class="featurecards-module-scss-module__x7M58W__copy">
+                      <div class="font-medium">
+                        <p>Jangan sampai ketinggalan! Follow media sosial kami untuk mendapatkan info terbaru seputar open recruitment, kegiatan, dan kesempatan berkontribusi di BEM FT UNIMMA.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <div id="bottom">
+      <footer id="kontak" class="footer-module-scss-module__Wscpia__wrapper">
+        <div class="container">
+          <div class="footer-module-scss-module__Wscpia__inner">
+            <div class="tapes-module-scss-module__Q32jNW__wrapper green"><svg xmlns="http://www.w3.org/2000/svg" width="136" height="139" viewBox="0 0 136 139">
+                <g id="Page-1" fill="none" fill-opacity="0.6" fill-rule="evenodd" stroke="none" stroke-width="1">
+                  <g id="tape" fill="#DFFF9D" fill-rule="nonzero" stroke="#BAF24A" stroke-width="4" transform="translate(2.12 2.75)">
+                    <path id="Path" d="M9.001 87.662C29.514 70.568 75.481 25.255 97.171 3.7c9.836-9.774 6.845 2.641 9.5 5s5.815.17 9 3-2.185 6.17 1.001 9 3.638.437 7 2c2.69 1.25 1.094 5 1 8-.175 5.542 13.761-1.779 3.184 8.761-13.297 13.252-64.748 62.351-91.684 88.74-16.01 15.683-2-5-11.5-5s2.474-12.306-8.763-12.306-3.82-7.512-5.237-10.195-22.184 4.056-1.67-13.038Z" />
+                  </g>
+                </g>
+              </svg><svg xmlns="http://www.w3.org/2000/svg" width="136" height="139" viewBox="0 0 136 139">
+                <g id="Page-1" fill="none" fill-opacity="0.6" fill-rule="evenodd" stroke="none" stroke-width="1">
+                  <g id="tape" fill="#DFFF9D" fill-rule="nonzero" stroke="#BAF24A" stroke-width="4" transform="translate(2.12 2.75)">
+                    <path id="Path" d="M9.001 87.662C29.514 70.568 75.481 25.255 97.171 3.7c9.836-9.774 6.845 2.641 9.5 5s5.815.17 9 3-2.185 6.17 1.001 9 3.638.437 7 2c2.69 1.25 1.094 5 1 8-.175 5.542 13.761-1.779 3.184 8.761-13.297 13.252-64.748 62.351-91.684 88.74-16.01 15.683-2-5-11.5-5s2.474-12.306-8.763-12.306-3.82-7.512-5.237-10.195-22.184 4.056-1.67-13.038Z" />
+                  </g>
+                </g>
+              </svg></div>
+            <div class="footer-module-scss-module__Wscpia__main">
+              <div class="footer-module-scss-module__Wscpia__logo"><img src="/logo.png" alt="Logo BEM FT" /><span class="logo-text">BEM FT</span></div>
+            </div>
+            <div class="footer-module-scss-module__Wscpia__nav">
+              <div><strong class="color-blue-3">Tentang</strong>
+                <ul>
+                  <li><a href="#">Visi Misi</a></li>
+                  <li><a href="#">Struktur Kepengurusan</a></li>
+                </ul>
+              </div>
+              <div><strong class="color-sea-3">Kegiatan</strong>
+                <ul>
+                  <li><a href="#">Program Kerja</a></li>
+                  <li><a href="#">Berita</a></li>
+                </ul>
+              </div>
+              <div><strong class="color-pink-3">Kontak</strong>
+                <ul>
+                  <li><a href="#">Instagram</a></li>
+                  <li><a href="#">Email</a></li>
+                  <li><a href="#">Linktree</a></li>
+            </ul>
+            <div class="header-module-scss-module__N7vucW__btn">
+              <div class="button-module-scss-module__REpPyW__wrapper primary"><a class="primary" href="#kontak"><span><em>Kontak</em><em>Kontak</em></span></a></div>
+            </div>
+          </div>
+        </div>
+          </div>
+          <div class="footer-module-scss-module__Wscpia__bottom">
+            <div class="footer-module-scss-module__Wscpia__copyrights">
+              <p>© 2026 BEM FT UNIMMA. All rights reserved.</p>
+            </div>
+            <div class="footer-module-scss-module__Wscpia__legals">
+              <ul>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms and Conditions</a></li>
+              </ul>
+            </div>
+            <div class="footer-module-scss-module__Wscpia__socials">
+              <ul>
+                <li><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                      <path fill="#5F5F69" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+                    </svg></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
+  </div>
+  <div id="preload"></div>` }}
+    />
   );
 }
