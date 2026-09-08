@@ -8,6 +8,7 @@ import {
   signOut,
   type User,
 } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { KoleksiPanel } from "./KoleksiPanel";
 import { AnggotaPanel } from "./AnggotaPanel";
@@ -21,10 +22,27 @@ export default function AdminPage() {
   const [user, setUser] = useState<User | null | undefined>(undefined);
   const [tab, setTab] = useState<MenuTab>("proker");
 
+  const [role, setRole] = useState<"admin" | "staff" | null>(null);
+
   useEffect(() => {
     if (!auth) return;
     return onAuthStateChanged(auth, setUser);
   }, []);
+
+  // hanya yang doc admins/<email>-nya ada yang boleh lihat panel admin
+  useEffect(() => {
+    if (!db || !user) {
+      setRole(null);
+      return;
+    }
+    let hidup = true;
+    getDoc(doc(db, "admins", user.email!.toLowerCase()))
+      .then((d) => hidup && setRole(d.exists() ? "admin" : "staff"))
+      .catch(() => hidup && setRole("staff"));
+    return () => {
+      hidup = false;
+    };
+  }, [user]);
 
   if (!auth || !db)
     return (
@@ -37,6 +55,8 @@ export default function AdminPage() {
     );
   if (user === undefined) return null;
   if (!user) return <Login />;
+  if (role === null) return null; // masih cek izin
+  if (role === "staff") return <BukanAdmin email={user.email ?? "?"} />;
 
   return (
     <div className="adm-wrap">
@@ -180,6 +200,29 @@ function Login() {
           Masuk
         </button>
       </form>
+    </div>
+  );
+}
+
+/* staff login tapi bukan admin -> arahkan ke /absen */
+function BukanAdmin({ email }: { email: string }) {
+  return (
+    <div className="adm-wrap adm--center">
+      <div className="adm-card adm-auth" style={{ textAlign: "center" }}>
+        <h1 className="adm-h1">Khusus Admin</h1>
+        <p className="adm-cardsubtitle">
+          Halo <b>{email}</b> — halaman ini cuma untuk pengurus admin. Untuk{" "}
+          <b>absen rapat/proker</b>, sila gunakan halaman khusus anggota ya.
+        </p>
+        <div className="adm-row" style={{ justifyContent: "center" }}>
+          <Link className="adm-btn" href="/absen">
+            Ke halaman Absen
+          </Link>
+          <button className="adm-btn ghost" onClick={() => auth && signOut(auth)}>
+            Keluar
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
