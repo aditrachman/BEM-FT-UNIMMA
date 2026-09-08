@@ -56,7 +56,7 @@ export default function AdminPage() {
   if (user === undefined) return null;
   if (!user) return <Login />;
   if (role === null) return null; // masih cek izin
-  if (role === "staff") return <BukanAdmin email={user.email ?? "?"} />;
+  if (role === "staff") return <TendangKeAbsen />;
 
   return (
     <div className="adm-wrap">
@@ -170,7 +170,11 @@ function Login() {
         <div>
           <h1 className="adm-h1">Admin Program Kerja</h1>
           <p className="adm-cardsubtitle">
-            Masuk untuk mengelola konten website BEM FT.
+            Masuk khusus email admin. Anggota? Absen di{" "}
+            <a href="/absen" style={{ color: "var(--color-blue-3)" }}>
+              /absen
+            </a>
+            .
           </p>
         </div>
         <label>
@@ -204,25 +208,20 @@ function Login() {
   );
 }
 
-/* staff login tapi bukan admin -> arahkan ke /absen */
-function BukanAdmin({ email }: { email: string }) {
-  return (
-    <div className="adm-wrap adm--center">
-      <div className="adm-card adm-auth" style={{ textAlign: "center" }}>
-        <h1 className="adm-h1">Khusus Admin</h1>
-        <p className="adm-cardsubtitle">
-          Halo <b>{email}</b> — halaman ini cuma untuk pengurus admin. Untuk{" "}
-          <b>absen rapat/proker</b>, sila gunakan halaman khusus anggota ya.
-        </p>
-        <div className="adm-row" style={{ justifyContent: "center" }}>
-          <Link className="adm-btn" href="/absen">
-            Ke halaman Absen
-          </Link>
-          <button className="adm-btn ghost" onClick={() => auth && signOut(auth)}>
-            Keluar
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+/* staff login tapi bukan admin -> logout paksa seketika, lempar ke /absen */
+function TendangKeAbsen() {
+  useEffect(() => {
+    let hidup = true;
+    auth
+      ?.signOut()
+      .then(() => hidup && window.location.replace("/absen"))
+      .catch(() => hidup && window.location.replace("/absen"));
+    // fallback kalau signOut menggantung
+    const t = setTimeout(() => hidup && window.location.replace("/absen"), 2500);
+    return () => {
+      hidup = false;
+      clearTimeout(t);
+    };
+  }, []);
+  return null;
 }
