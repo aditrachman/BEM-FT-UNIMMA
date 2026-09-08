@@ -98,6 +98,14 @@ export default function TentangKamiContent() {
   for (const p of pengurus ?? []) (grouped[p.departemen || "Umum"] ||= []).push(p);
   for (const k of Object.keys(grouped)) grouped[k].sort((a, b) => a.urutan - b.urutan);
 
+  // urutkan departemen: kelompok pimpinan/inti dulu, sisanya alfabetik
+  const isRoot = (d: string) => /pimpinan|bph|inti|ketua/i.test(d);
+  const deptEntries = Object.entries(grouped).sort((a, b) => {
+    const ar = isRoot(a[0]), br = isRoot(b[0]);
+    if (ar !== br) return ar ? -1 : 1;
+    return a[0].localeCompare(b[0]);
+  });
+
   return (
     <>
       <Header />
@@ -182,22 +190,28 @@ export default function TentangKamiContent() {
                     kami untuk pembaruan.
                   </p>
                 ) : (
-                  Object.entries(grouped).map(([dep, list]) => (
-                    <div key={dep} className="tt-dept">
-                      <h3 className="tt-dept-title">{dep}</h3>
-                      <div className="tt-grid">
-                        {list.map((p) => (
-                          <div key={p.id} className="tt-person">
-                            <div className="tt-foto">
-                              <PersonFoto nama={p.nama} url={p.foto_url} />
+                  <div className="tt-chart">
+                    {deptEntries.map(([dep, list], idx) => (
+                      <div
+                        key={dep}
+                        className={"tt-dept" + (idx === 0 ? " tt-dept--root" : "")}
+                      >
+                        {idx > 0 && <div className="tt-connector" aria-hidden="true" />}
+                        <h3 className="tt-dept-title">{dep}</h3>
+                        <div className="tt-grid">
+                          {list.map((p) => (
+                            <div key={p.id} className="tt-person">
+                              <div className="tt-foto">
+                                <PersonFoto nama={p.nama} url={p.foto_url} />
+                              </div>
+                              <strong className="tt-nama">{p.nama}</strong>
+                              <span className="tt-jabatan">{p.jabatan}</span>
                             </div>
-                            <strong className="tt-nama">{p.nama}</strong>
-                            <span className="tt-jabatan">{p.jabatan}</span>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  ))
+                    ))}
+                  </div>
                 )}
               </div>
             </section>
