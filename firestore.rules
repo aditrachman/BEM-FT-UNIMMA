@@ -1,10 +1,8 @@
 rules_version = '2';
 service cloud.firestore {
+
   match /databases/{database}/documents {
-    // ADMIN = user login yang punya dokumen di collection `admins` dengan
-    // ID = persis alamat email-nya (contoh: admins/aditrachman23@gmail.com).
-    // Tambah pengurus: collection admins -> Add document -> Choose ID manually
-    // -> paste email login mereka. Hapus pengurus: hapus dokumen itu.
+    // ADMIN = user login yang punya dokumen admins/<email> (dikelola via Console)
     function isAdmin() {
       return request.auth != null
         && exists(/databases/$(database)/documents/admins/$(request.auth.token.email));
@@ -15,30 +13,25 @@ service cloud.firestore {
       allow read: if request.auth != null && request.auth.token.email == email;
     }
 
+    // ---------- konten publik ----------
     match /proker/{doc} {
       allow read: if true;
       allow create, update, delete: if isAdmin();
     }
-
-    // INFO TERBARU: seperti proker — publik baca, admin tulis.
     match /info/{doc} {
       allow read: if true;
       allow create, update, delete: if isAdmin();
     }
-
-    // PENGURUS & VISI MISI (halaman /tentang-kami)
+    match /visi_misi/{doc} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
     match /pengurus/{doc} {
       allow read: if true;
       allow create, update, delete: if isAdmin();
     }
 
-    match /visi_misi/{doc} {
-      allow read: if true;
-      allow create, update, delete: if isAdmin();
-    }
-
-    // ASPIRASI: publik boleh HANYA menambah (create) dengan isi terpantau —
-    // gak bisa baca list orang, gak bisa ubah. Batas 5..1000 karakter.
+    // ASPIRASI: publik hanya boleh menambah dengan isi terpantau.
     match /aspirasi/{doc} {
       allow create: if request.resource.data.pesan is string
                      && request.resource.data.pesan.size() >= 5
@@ -49,6 +42,50 @@ service cloud.firestore {
                      && request.resource.data.prodi.size() <= 100
                      && request.resource.data.status == "baru";
       allow read, update, delete: if isAdmin();
+    }
+
+    // ---------- ABSHEN INTERNAL ----------
+    // Anggota: publik boleh cek 1 email (untuk form self-register),
+    // tapi tidak bisa ngelist daftar anggota => privasi 50 anggota aman.
+    match /anggota/{email} {
+      allow get: if true;
+      allow list: if isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Jadwal rutin & sesi absen: dibaca anggota (buat nampilin sesi buka),
+    // dibuat/diubah cuma admin.
+    match /jadwal/{doc} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+    match /sesi/{doc} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Absensi: doc id harus "<sesiId>_<email>" (auto 1x per sesi).
+    // Anggota cuma bisa bikin utk dirinya, hanya saat sesi "buka",
+    // hanya kalo dia anggota aktif; update cuma boleh ngisi jam keluar;
+    // record punya sendiri boleh di-get, tapi nggak bisa ngelist punya orang.
+    match /absensi/{doc} {
+      allow get: if request.auth != null && resource.data.email == request.auth.token.email;
+      allow list: if isAdmin();
+      allow create: if isAdmin() || (
+        request.auth != null
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.sesiId is string
+        && request.resource.data.status in ["hadir", "telat", "ijin", "alpha"]
+        && request.resource.data.masukJam is timestamp
+        && get(/databases/$(database)/documents/anggota/$(request.auth.token.email)).data.aktif == true
+        && get(/databases/$(database)/documents/sesi/$(request.resource.data.sesiId)).data.status == "buka"
+      );
+      allow update: if isAdmin() || (
+        request.auth != null
+        && resource.data.email == request.auth.token.email
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["keluarJam"])
+      );
+      allow delete: if isAdmin();
     }
   }
 }
