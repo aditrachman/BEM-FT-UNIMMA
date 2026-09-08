@@ -13,54 +13,25 @@ type Post = {
   categoryTitle: string;
 };
 
-// Data sample — dipakai s/d Firestore diisi proker asli
-const samplePosts: Post[] = [
-  {
-    id: "1",
-    title: "Boost your conversion rate",
-    description:
-      "Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-    date: "Mar 16, 2020",
-    categoryTitle: "Marketing",
-  },
-  {
-    id: "2",
-    title: "How to use search engine optimization to drive sales",
-    description:
-      "Optio cum necessitatibus dolor voluptatum provident commodi et. Qui aperiam fugiat nemo cumque.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1547586696-ea22b4d4235d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-    date: "Mar 10, 2020",
-    categoryTitle: "Sales",
-  },
-  {
-    id: "3",
-    title: "Improve your customer experience",
-    description:
-      "Cupiditate maiores ullam eveniet adipisci in doloribus nulla minus. Voluptas iusto libero adipisci rem et corporis. Nostrud sint anim sunt aliqua.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1492724441997-5dc865305da7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-    date: "Feb 12, 2020",
-    categoryTitle: "Business",
-  },
-];
 
 function formatTanggal(d: Date): string {
   return d.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
 }
 
 export default function ProkerCards() {
-  const [posts, setPosts] = useState<Post[]>(samplePosts);
+// null = masih memuat; [] = memang belum ada proker tayang
+const [posts, setPosts] = useState<Post[] | null>(null);
 
-  useEffect(() => {
-    if (!db) return;
-    // ponytail: collection kecil → ambil semua, sort + filter "draft" client-side.
-    // kalau belum ada / semua draft → tetap tampilkan sample biar gak kosong.
-    getDocs(collection(db, "proker"))
-      .then((snap) => {
-        const publik = snap.docs
+useEffect(() => {
+  if (!db) {
+    setPosts([]);
+    return;
+  }
+  // ponytail: collection kecil → ambil semua, sort + filter "draft" client-side.
+  getDocs(collection(db, "proker"))
+    .then((snap) => {
+      setPosts(
+        snap.docs
           .filter((d) => d.data().status !== "draft")
           .map((d) => {
             const x = d.data();
@@ -78,11 +49,27 @@ export default function ProkerCards() {
           })
           .sort((a, b) => b.ts - a.ts)
           .slice(0, 3)
-          .map((r) => r.post);
-        if (publik.length) setPosts(publik);
-      })
-      .catch((e) => console.warn("gagal ambil proker dari Firestore:", e));
-  }, []);
+          .map((r) => r.post),
+      );
+    })
+    .catch((e) => {
+      console.warn("gagal ambil proker dari Firestore:", e);
+      setPosts([]);
+    });
+}, []);
+
+  if (posts === null) return null; // masih memuat
+
+  if (posts.length === 0)
+    return (
+      <div className="pb-24 sm:pb-32">
+        <div className="mx-auto max-w-2xl px-6">
+          <p className="asp-intro" style={{ textAlign: "center", margin: 0 }}>
+            Belum ada program kerja yang dipublikasikan — nanti mampir lagi ya~
+          </p>
+        </div>
+      </div>
+    );
 
   return (
     <div className="pb-24 sm:pb-32">
