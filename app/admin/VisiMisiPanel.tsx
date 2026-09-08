@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { PERIODE_AKTIF } from "@/lib/konfig";
+import { PERIODE_AKTIF, docIdPeriode } from "@/lib/konfig";
 
 export function VisiMisiPanel() {
   const [periode, setPeriode] = useState(PERIODE_AKTIF);
@@ -13,11 +13,11 @@ export function VisiMisiPanel() {
   const [info, setInfo] = useState("");
   const [busy, setBusy] = useState(false);
 
-  // ambil dokumen visi_misi/<periode> yang sedang dibuka
+  // ambil dokumen visi_misi/<periode> yang sedang dibuka (ID tanpa "/")
   useEffect(() => {
     if (!db) return;
     const unsub = onSnapshot(
-      doc(db, "visi_misi", periode || "_kosong"),
+      doc(db, "visi_misi", docIdPeriode(periode.trim() || PERIODE_AKTIF)),
       (s) => {
         if (s.exists()) {
           const d = s.data();
@@ -44,7 +44,7 @@ export function VisiMisiPanel() {
     setBusy(true);
     try {
       const bersih = misi.map((m) => m.trim()).filter(Boolean);
-      await setDoc(doc(db, "visi_misi", periode.trim() || PERIODE_AKTIF), {
+      await setDoc(doc(db, "visi_misi", docIdPeriode(periode.trim() || PERIODE_AKTIF)), {
         visi: visi.trim(),
         misi: bersih,
         periode: periode.trim() || PERIODE_AKTIF,

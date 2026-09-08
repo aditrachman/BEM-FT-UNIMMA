@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { imageUrlTampil } from "@/lib/imageUrl";
-import { PERIODE_AKTIF } from "@/lib/konfig";
+import { PERIODE_AKTIF, PERIODE_DOC_ID } from "@/lib/konfig";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 
@@ -61,20 +61,20 @@ export default function TentangKamiContent() {
     let hidup = true;
     (async () => {
       try {
-        const [vDoc, pSnap] = await Promise.all([
-          getDoc(doc(db!, "visi_misi", PERIODE_AKTIF)),
-          getDocs(collection(db!, "pengurus")),
-        ]);
-        if (!hidup) return;
+        const vDoc = await getDoc(doc(db!, "visi_misi", PERIODE_DOC_ID));
         if (vDoc.exists()) {
           setVisi((vDoc.data().visi as string) ?? "");
           setMisi((vDoc.data().misi as string[]) ?? []);
           setAdaKonten(true);
         }
-        const periode = PERIODE_AKTIF;
+      } catch (e) {
+        console.warn("gagal ambil visi misi:", e);
+      }
+      try {
+        const pSnap = await getDocs(collection(db!, "pengurus"));
         setPengurus(
           pSnap.docs
-            .filter((x) => (x.data().periode as string) === periode)
+            .filter((x) => (x.data().periode as string) === PERIODE_AKTIF)
             .map((x) => ({
               id: x.id,
               nama: (x.data().nama as string) ?? "",
@@ -85,8 +85,8 @@ export default function TentangKamiContent() {
             })),
         );
       } catch (e) {
-        console.warn("gagal ambil konten tentang kami:", e);
-        if (hidup) setPengurus([]);
+        console.warn("gagal ambil pengurus:", e);
+        setPengurus([]);
       }
     })();
     return () => {
