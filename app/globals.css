@@ -10519,11 +10519,13 @@ textarea.adm-in {
   padding: 18px;
   text-align: center;
   box-shadow: 0 2px 8px -2px #21164c14;
-  transition: border-color .15s linear
+  transition: border-color .15s linear, transform .18s var(--ease-OutCubic), box-shadow .18s linear
 }
 
 .tt-person:hover {
-  border-color: var(--color-blue-5)
+  border-color: var(--color-blue-5);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -12px rgba(33, 22, 76, .18)
 }
 
 .tt-foto {
@@ -10564,4 +10566,15 @@ textarea.adm-in {
 .tt-jabatan {
   font-size: 13px;
   color: var(--color-grey-3)
+}
+
+/* ruang kosong sebelum footer biar washi-tape tidak menutupi kartu terakhir */
+.tt-last {
+  margin-bottom: 130px
+}
+
+@media (max-width:640px) {
+  .tt-last {
+    margin-bottom: 90px
+  }
 }

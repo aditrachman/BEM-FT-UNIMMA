@@ -157,7 +157,7 @@ export default function TentangKamiContent() {
             </section>
 
             {/* ---------- STRUKTUR KEPENGURUSAN ---------- */}
-            <section id="struktur" className="tt-section">
+            <section id="struktur" className="tt-section tt-last">
               <div className="container">
                 <div className="tagline-module-scss-module__R8CpfG__wrapper color-sea-2">
                   <div className="tagline-module-scss-module__R8CpfG__inner">
