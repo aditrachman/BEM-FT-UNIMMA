@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { imageUrlTampil } from "@/lib/imageUrl";
 
 type Post = {
   id: string;
@@ -83,7 +84,7 @@ useEffect(() => {
               <div className="relative w-full">
                 <img
                   alt=""
-                  src={post.imageUrl}
+                  src={imageUrlTampil(post.imageUrl)}
                   className="aspect-video w-full rounded-2xl bg-gray-100 object-cover sm:aspect-2/1 lg:aspect-3/2"
                 />
                 <div className="absolute inset-0 rounded-2xl inset-ring inset-ring-gray-900/10" />

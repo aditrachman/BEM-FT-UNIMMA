@@ -19,6 +19,7 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { auth, db, storage } from "@/lib/firebase";
+import { imageUrlTampil } from "@/lib/imageUrl";
 
 const toLocal = (d: Date) => {
   const p = (n: number) => String(n).padStart(2, "0");
@@ -47,7 +48,7 @@ export default function AdminPage() {
     );
   if (user === undefined) return null;
   return user ? (
-    <Panel email={user.email ?? "?"} koleksi={koleksi} ganti={setKoleksi} />
+    <Panel key={koleksi} email={user.email ?? "?"} koleksi={koleksi} ganti={setKoleksi} />
   ) : (
     <Login />
   );
@@ -354,7 +355,7 @@ function Panel({
         )}
         {!file && f.gambar && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img className="adm-prev" src={f.gambar} alt="preview gambar" />
+          <img className="adm-prev" src={imageUrlTampil(f.gambar)} alt="preview gambar" />
         )}
         {err && <p className="adm-err">{err}</p>}
         <div className="adm-row">
