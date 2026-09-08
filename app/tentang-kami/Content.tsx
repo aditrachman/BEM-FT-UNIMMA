@@ -76,7 +76,7 @@ export default function TentangKamiContent() {
       <Header />
       <div id="app">
         <main className="main">
-          <div className="page" style={{ paddingTop: 140 }}>
+          <div className="page" style={{ paddingTop: 40 }}>
             <section className="heading-module-scss-module__ZBj6zq__wrapper" data-display="inline">
               <div className="container">
                 <div className="tagline-module-scss-module__R8CpfG__wrapper color-blue-3">
