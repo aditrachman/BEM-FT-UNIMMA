@@ -23,13 +23,10 @@ function formatTanggal(d: Date) {
 }
 
 export default function InfoTerbaru() {
-  const [items, setItems] = useState<Info[] | null>(null);
+  const [items, setItems] = useState<Info[] | null>(() => (db ? null : []));
 
   useEffect(() => {
-    if (!db) {
-      setItems([]);
-      return;
-    }
+    if (!db) return;
     getDocs(collection(db, "info"))
       .then((snap) => {
         setItems(

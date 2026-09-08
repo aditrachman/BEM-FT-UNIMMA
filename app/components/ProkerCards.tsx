@@ -21,13 +21,10 @@ function formatTanggal(d: Date): string {
 
 export default function ProkerCards() {
 // null = masih memuat; [] = memang belum ada proker tayang
-const [posts, setPosts] = useState<Post[] | null>(null);
+const [posts, setPosts] = useState<Post[] | null>(() => (db ? null : []));
 
 useEffect(() => {
-  if (!db) {
-    setPosts([]);
-    return;
-  }
+  if (!db) return;
   // ponytail: collection kecil → ambil semua, sort + filter "draft" client-side.
   getDocs(collection(db, "proker"))
     .then((snap) => {
