@@ -143,7 +143,7 @@ export function PengurusPanel() {
 
   return (
     <>
-      <div className="adm-card">
+      <form className="adm-card" onSubmit={submit}>
         <div>
           <h2 className="adm-cardtitle">
             {f.id ? "Edit pengurus" : "Tambah pengurus baru"}
@@ -257,7 +257,7 @@ export function PengurusPanel() {
             </button>
           )}
         </div>
-      </div>
+      </form>
 
       <div className="adm-row adm-filter">
         <span className="adm-note">Tampilkan periode:</span>
