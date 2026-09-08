@@ -23,6 +23,33 @@ const squiggle = (
   </svg>
 );
 
+function Inisial({ nama }: { nama: string }) {
+  return (
+    <span className="tt-inisial">
+      {nama
+        .split(" ")
+        .slice(0, 2)
+        .map((w) => w[0])
+        .join("")
+        .toUpperCase()}
+    </span>
+  );
+}
+
+function PersonFoto({ nama, url }: { nama: string; url: string }) {
+  const [gagal, setGagal] = useState(false);
+  if (!url || gagal) return <Inisial nama={nama} />;
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={imageUrlTampil(url)}
+      alt={nama}
+      loading="lazy"
+      onError={() => setGagal(true)}
+    />
+  );
+}
+
 export default function TentangKamiContent() {
   const [visi, setVisi] = useState("");
   const [misi, setMisi] = useState<string[]>([]);
@@ -162,19 +189,7 @@ export default function TentangKamiContent() {
                         {list.map((p) => (
                           <div key={p.id} className="tt-person">
                             <div className="tt-foto">
-                              {p.foto_url ? (
-                                // eslint-disable-next-line @next/next/no-img-element
-                                <img src={imageUrlTampil(p.foto_url)} alt={p.nama} loading="lazy" />
-                              ) : (
-                                <span className="tt-inisial">
-                                  {p.nama
-                                    .split(" ")
-                                    .slice(0, 2)
-                                    .map((w) => w[0])
-                                    .join("")
-                                    .toUpperCase()}
-                                </span>
-                              )}
+                              <PersonFoto nama={p.nama} url={p.foto_url} />
                             </div>
                             <strong className="tt-nama">{p.nama}</strong>
                             <span className="tt-jabatan">{p.jabatan}</span>
