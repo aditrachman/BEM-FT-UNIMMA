@@ -12,7 +12,7 @@ export default function AlasanCards() {
                     </div>
                     <div className="featurecards-module-scss-module__x7M58W__copy">
                       <div className="font-medium">
-                        <p>Membangun pengalaman kepemimpinan dan manajemen nyata sejak di bangku kuliah.</p>
+                        <p>Mengasah kepemimpinan dan kemampuan manajemen secara langsung, sejak masih menjadi mahasiswa.</p>
                       </div>
                     </div>
                   </div>
@@ -27,7 +27,7 @@ export default function AlasanCards() {
                     </div>
                     <div className="featurecards-module-scss-module__x7M58W__copy">
                       <div className="font-medium">
-                        <p>Membangun jejaring dengan mahasiswa dan dosen se-Fakultas Teknik.</p>
+                        <p>Membuka relasi dengan mahasiswa dan dosen dari seluruh jurusan di Fakultas Teknik.</p>
                       </div>
                     </div>
                   </div>
@@ -42,7 +42,7 @@ export default function AlasanCards() {
                     </div>
                     <div className="featurecards-module-scss-module__x7M58W__copy">
                       <div className="font-medium">
-                        <p>Pelatihan soft skill, public speaking, dan project management.</p>
+                        <p>Pelatihan soft skill, public speaking, dan manajemen proyek yang relevan untuk dunia kerja.</p>
                       </div>
                     </div>
                   </div>
@@ -57,7 +57,7 @@ export default function AlasanCards() {
                     </div>
                     <div className="featurecards-module-scss-module__x7M58W__copy">
                       <div className="font-medium">
-                        <p>Rapat kerja, kaderisasi, dan kegiatan sosial sepanjang periode kepengurusan.</p>
+                        <p>Rangkaian rapat kerja, kaderisasi, dan kegiatan sosial yang berjalan sepanjang periode kepengurusan.</p>
                       </div>
                     </div>
                   </div>

@@ -10,7 +10,7 @@ export default function CustomerLogos() {
         <h2 className="keluarga__label">Kami Keluarga Fakultas Teknik UNIMMA</h2>
         <p className="keluarga__sub">
           Dari lintas jurusan dan angkatan, kita tumbuh, berkarya, dan bergerak
-          bersama — satu langkah untuk Fakultas Teknik yang lebih baik.
+          bersama sebagai satu keluarga besar — menuju Fakultas Teknik yang lebih baik.
         </p>
         <div className="keluarga__logos">
           {logos.map((l) => (

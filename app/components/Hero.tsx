@@ -237,7 +237,7 @@ export default function Hero() {
                 </div>
                 <h1>BEM FT UNIMMA
                 </h1>
-                <div className="pagehero-module-scss-module__rMNsHa__copy">Wadah Aspirasi dan Aksi Nyata Mahasiswa Fakultas Teknik</div>
+                <div className="pagehero-module-scss-module__rMNsHa__copy">Satu Suara, Satu Gerak, Fakultas Teknik</div>
               </div>
             </div>
             <div className="pagehero-module-scss-module__rMNsHa__media">

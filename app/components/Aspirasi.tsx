@@ -87,8 +87,8 @@ export default function Aspirasi() {
           ) : (
             <form onSubmit={submit}>
               <p className="asp-intro">
-                Masukan, kritik, atau ide buat kampus — boleh anonim, nama
-                gak wajib.
+                Sampaikan masukan, kritik, atau ide untuk kampus — dapat disampaikan
+                secara anonim, nama tidak wajib diisi.
               </p>
               <div className="asp-grid">
                 <label>

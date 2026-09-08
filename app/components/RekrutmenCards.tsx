@@ -12,7 +12,7 @@ export default function RekrutmenCards() {
                     </div>
                     <div className="featurecards-module-scss-module__x7M58W__copy">
                       <div className="font-medium">
-                        <p className="p1">Saat ini BEM FT belum membuka rekrutmen. Pantau terus media sosial kami untuk info open recruitment periode berikutnya!</p>
+                        <p className="p1">Saat ini BEM FT belum membuka rekrutmen. Pantau terus media sosial kami agar tidak ketinggalan informasi open recruitment periode berikutnya.</p>
 
                       </div>
                     </div>
@@ -28,7 +28,7 @@ export default function RekrutmenCards() {
                     </div>
                     <div className="featurecards-module-scss-module__x7M58W__copy">
                       <div className="font-medium">
-                        <p>Jangan sampai ketinggalan! Follow media sosial kami untuk mendapatkan info terbaru seputar open recruitment, kegiatan, dan kesempatan berkontribusi di BEM FT UNIMMA.</p>
+                        <p>Ikuti media sosial kami untuk mendapatkan informasi terbaru seputar open recruitment, kegiatan, dan kesempatan berkontribusi bersama BEM FT UNIMMA.</p>
                       </div>
                     </div>
                   </div>

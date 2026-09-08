@@ -66,7 +66,7 @@ useEffect(() => {
       <div className="pb-24 sm:pb-32">
         <div className="mx-auto max-w-2xl px-6">
           <p className="asp-intro" style={{ textAlign: "center", margin: 0 }}>
-            Belum ada program kerja yang dipublikasikan — nanti mampir lagi ya~
+            Program kerja periode ini sedang disusun. Pantau terus halaman ini dan media sosial kami untuk pembaruan.
           </p>
         </div>
       </div>
