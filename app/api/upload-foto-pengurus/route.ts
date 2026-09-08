@@ -21,7 +21,10 @@ async function verifikasiToken(idToken: string): Promise<string | null> {
     if (r.status !== 200) return null;
     const j = await r.json();
     const u = j.users?.[0];
-    if (!u || !u.emailVerified) return null;
+    if (!u) return null;
+    // Catatan: tidak wajib emailVerified — akun admin dibuat via Console,
+    // status verified-nya bisa false. Izin sebenarnya dicek di cekAdmin()
+    // (dokumen admins/<email>), bukan lewat flag verifikasi email.
     return u.email as string;
   } catch {
     return null;
