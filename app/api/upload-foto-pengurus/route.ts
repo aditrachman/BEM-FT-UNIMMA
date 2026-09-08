@@ -82,12 +82,21 @@ export async function POST(req: Request) {
     );
 
   const namaAman = file.name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 60);
-  const blob = await put(`pengurus/${Date.now()}-${namaAman}`, file, {
-    access: "public",
-    addRandomSuffix: true,
-    contentType: file.type,
-    token: process.env.BLOB_READ_WRITE_TOKEN,
-  });
-
-  return NextResponse.json({ url: blob.url });
+  try {
+    const blob = await put(`pengurus/${Date.now()}-${namaAman}`, file, {
+      access: "public",
+      addRandomSuffix: true,
+      contentType: file.type,
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    });
+    return NextResponse.json({ url: blob.url });
+  } catch (err) {
+    console.error("blob put gagal:", err);
+    return NextResponse.json(
+      {
+        error: `Vercel Blob menolak upload: ${err instanceof Error ? err.message : "unknown"}`,
+      },
+      { status: 500 },
+    );
+  }
 }
