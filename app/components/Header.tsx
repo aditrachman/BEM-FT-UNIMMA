@@ -1,17 +1,42 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { WA_LINK } from "@/lib/konfig";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const isOpenRef = useRef(false);
 
   const toggleMenu = () => {
     const next = !isOpen;
     setIsOpen(next);
     document.body.classList.toggle("menu-open", next);
   };
+
+  // Jangan sembunyikan navbar selama menu mobile terbuka
+  useEffect(() => {
+    isOpenRef.current = isOpen;
+    if (isOpen) document.body.classList.remove("nav-hide");
+  }, [isOpen]);
+
+  // Sembunyikan saat scroll turun, munculkan saat scroll naik sedikit
+  useEffect(() => {
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const delta = y - lastY;
+      lastY = y;
+      if (isOpenRef.current) return;
+      if (y > 140 && delta > 6) {
+        document.body.classList.add("nav-hide");
+      } else if (delta < -6 || y < 140) {
+        document.body.classList.remove("nav-hide");
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
 <header className="header-module-scss-module__N7vucW__wrapper" >

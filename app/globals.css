@@ -10611,3 +10611,10 @@ textarea.adm-in {
     margin-bottom: 90px
   }
 }
+
+/* auto-hide navbar on scroll down (show on up) */
+body.nav-hide .header-module-scss-module__N7vucW__wrapper {
+  opacity: .01 !important;
+  transform: translateY(-120%) !important;
+  pointer-events: none
+}
