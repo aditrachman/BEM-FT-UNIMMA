@@ -10618,3 +10618,14 @@ body.nav-hide .header-module-scss-module__N7vucW__wrapper {
   transform: translateY(-120%) !important;
   pointer-events: none
 }
+
+/* pastikan anchor scroll tidak ketutup navbar (fixed 96px header) */
+#tentang, #alasan, #proker, #rekrutmen, #aspirasi, #info, #visi-misi, #struktur {
+  scroll-margin-top: 120px
+}
+
+@media (max-width:640px) {
+  #tentang, #alasan, #proker, #rekrutmen, #aspirasi, #info, #visi-misi, #struktur {
+    scroll-margin-top: 80px
+  }
+}

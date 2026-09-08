@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Tentang from "./components/Tentang";
@@ -16,6 +17,19 @@ import Aspirasi from "./components/Aspirasi";
 import Footer from "./components/Footer";
 
 export default function Home() {
+  useEffect(() => {
+    // scroll to hash when landing page loads or when hash changes (same-page clicks)
+    const scrollToHash = () => {
+      const id = window.location.hash.slice(1);
+      if (!id) return;
+      const el = document.getElementById(id);
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 60);
+    };
+    scrollToHash();
+    window.addEventListener("hashchange", scrollToHash, false);
+    return () => window.removeEventListener("hashchange", scrollToHash);
+  }, []);
+
   return (
     <div id="app">
       <Header />

@@ -49,11 +49,11 @@ export default function Header() {
           <div className="header-module-scss-module__N7vucW__dropdown">
             <div className="header-module-scss-module__N7vucW__menu">
               <ul>
-                <li><a href="#tentang" onClick={toggleMenu}>Tentang</a></li>
-                <li><a href="#alasan" onClick={toggleMenu}>Alasan</a></li>
-                <li><a href="#proker" onClick={toggleMenu}>Program Kerja</a></li>
-                <li><a href="#rekrutmen" onClick={toggleMenu}>Rekrutmen</a></li>
-                <li><a href="#aspirasi" onClick={toggleMenu}>Aspirasi</a></li>
+                <li><Link href="/#tentang" onClick={toggleMenu}>Tentang</Link></li>
+                <li><Link href="/#alasan" onClick={toggleMenu}>Alasan</Link></li>
+                <li><Link href="/#proker" onClick={toggleMenu}>Program Kerja</Link></li>
+                <li><Link href="/#rekrutmen" onClick={toggleMenu}>Rekrutmen</Link></li>
+                <li><Link href="/#aspirasi" onClick={toggleMenu}>Aspirasi</Link></li>
               </ul>
             </div>
             <div className="header-module-scss-module__N7vucW__btn">
