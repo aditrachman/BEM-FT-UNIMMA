@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { WA_LINK } from "@/lib/konfig";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,10 +28,11 @@ export default function Header() {
                 <li><a href="#alasan" onClick={toggleMenu}>Alasan</a></li>
                 <li><a href="#proker" onClick={toggleMenu}>Program Kerja</a></li>
                 <li><a href="#rekrutmen" onClick={toggleMenu}>Rekrutmen</a></li>
+                <li><a href="#aspirasi" onClick={toggleMenu}>Aspirasi</a></li>
               </ul>
             </div>
             <div className="header-module-scss-module__N7vucW__btn">
-              <div className="button-module-scss-module__REpPyW__wrapper primary"><a className="primary" href="#aspirasi" onClick={toggleMenu}><span><em>Kontak</em><em>Kontak</em></span></a></div>
+              <div className="button-module-scss-module__REpPyW__wrapper primary"><a className="primary" href={WA_LINK} target="_blank" rel="noopener noreferrer" onClick={toggleMenu}><span><em>Kontak</em><em>Kontak</em></span></a></div>
             </div>
           </div>
         </div>
