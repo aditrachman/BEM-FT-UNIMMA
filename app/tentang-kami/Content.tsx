@@ -58,7 +58,6 @@ export default function TentangKamiContent() {
 
   useEffect(() => {
     if (!db) return;
-    let hidup = true;
     (async () => {
       try {
         const vDoc = await getDoc(doc(db!, "visi_misi", PERIODE_DOC_ID));
@@ -89,9 +88,6 @@ export default function TentangKamiContent() {
         setPengurus([]);
       }
     })();
-    return () => {
-      hidup = false;
-    };
   }, []);
 
   const grouped: Record<string, Pengurus[]> = {};

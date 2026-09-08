@@ -10,10 +10,12 @@ import {
 } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
 import { KoleksiPanel } from "./KoleksiPanel";
+import { AnggotaPanel } from "./AnggotaPanel";
+import { AbsensiPanel } from "./AbsensiPanel";
 import { PengurusPanel } from "./PengurusPanel";
 import { VisiMisiPanel } from "./VisiMisiPanel";
 
-type MenuTab = "proker" | "info" | "pengurus" | "visimisi";
+type MenuTab = "proker" | "info" | "pengurus" | "visimisi" | "anggota" | "absensi";
 
 export default function AdminPage() {
   const [user, setUser] = useState<User | null | undefined>(undefined);
@@ -87,12 +89,30 @@ export default function AdminPage() {
         >
           Visi &amp; Misi
         </button>
+        <button
+          type="button"
+          className={"adm-tab" + (tab === "anggota" ? " on" : "")}
+          onClick={() => setTab("anggota")}
+        >
+          Anggota
+        </button>
+        <button
+          type="button"
+          className={"adm-tab" + (tab === "absensi" ? " on" : "")}
+          onClick={() => setTab("absensi")}
+        >
+          Absensi
+        </button>
       </div>
 
       {tab === "proker" || tab === "info" ? (
         <KoleksiPanel key={tab} koleksi={tab} />
       ) : tab === "pengurus" ? (
         <PengurusPanel />
+      ) : tab === "anggota" ? (
+        <AnggotaPanel />
+      ) : tab === "absensi" ? (
+        <AbsensiPanel />
       ) : (
         <VisiMisiPanel />
       )}

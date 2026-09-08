@@ -14,3 +14,6 @@ export const WA_HUMAS = "6285325106798";
 export const WA_LINK = `https://wa.me/${WA_HUMAS}?text=${encodeURIComponent(
   "Halo Kak Dika (Humas BEM FT UNIMMA), saya ingin bertanya / berdiskusi mengenai kerja sama dengan BEM FT UNIMMA.",
 )}`;
+
+// Absensi internal: toleransi telat (menit setelah jam mulai)
+export const ABS_GRACE_MIN = 5;

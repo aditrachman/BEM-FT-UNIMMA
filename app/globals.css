@@ -10629,3 +10629,190 @@ body.nav-hide .header-module-scss-module__N7vucW__wrapper {
     scroll-margin-top: 80px
   }
 }
+
+/* ============= HALAMAN /absen (internal) ============= */
+.abs-page {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: calc(var(--page-top) + 16px) 20px 96px;
+  color: var(--color-blue-1);
+  display: flex;
+  flex-direction: column;
+  gap: 18px
+}
+
+.abs-top {
+  display: flex;
+  align-items: center;
+  gap: 12px
+}
+
+.abs-kartu {
+  background: var(--color-white);
+  border: 1px solid var(--color-light);
+  border-radius: 26px;
+  padding: 26px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 2px 8px -2px #21164c14
+}
+
+.abs-sesi-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap
+}
+
+.abs-sesi-head h2 {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  margin: 0;
+  color: var(--color-blue-1)
+}
+
+.abs-badge {
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 99px;
+  padding: 4px 12px;
+  background: var(--color-light);
+  color: var(--color-grey-3)
+}
+
+.abs-badge[data-st=hadir] {
+  background: var(--color-green-5);
+  color: var(--color-green-1)
+}
+
+.abs-badge[data-st=telat] {
+  background: var(--color-pink-5);
+  color: var(--color-pink-1)
+}
+
+.abs-jam {
+  display: flex;
+  gap: 18px;
+  font-size: 13px;
+  color: var(--color-grey-3);
+  flex-wrap: wrap
+}
+
+.abs-link {
+  color: var(--color-blue-3);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  padding: 0
+}
+
+.abs-link:hover {
+  text-decoration: underline
+}
+
+@media (max-width:640px) {
+  .abs-kartu {
+    padding: 20px 18px;
+    border-radius: 20px
+  }
+}
+
+/* ---------- admin: grids & rekap absensi ---------- */
+.adm-grid3 {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 16px
+}
+
+@media (max-width:640px) {
+  .adm-grid3 {
+    grid-template-columns: 1fr
+  }
+}
+
+.adm-cek {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 8px !important;
+  font-weight: 500 !important
+}
+
+.adm-import {
+  margin-top: -6px
+}
+
+.adm-between {
+  justify-content: space-between
+}
+
+.adm-in-sm {
+  width: auto !important;
+  padding: 6px 10px !important;
+  font-size: 13px !important
+}
+
+.adm-rekap {
+  overflow-x: auto;
+  margin-top: 6px
+}
+
+.adm-rekap table {
+  border-collapse: collapse;
+  font-size: 14px
+}
+
+.adm-rekap td, .adm-rekap th {
+  border: 1px solid var(--color-light);
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap
+}
+
+.adm-rekap th {
+  background: var(--color-bg);
+  color: var(--color-grey-3);
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase
+}
+
+.adm-rekap td button.ghost {
+  background: transparent;
+  border: 1px solid var(--color-light);
+  border-radius: 8px;
+  padding: 4px 8px
+}
+
+.adm-rekap tr.belum td {
+  color: var(--color-grey-3)
+}
+
+.adm-badge.telat {
+  background: var(--color-pink-5);
+  color: var(--color-pink-1)
+}
+
+.adm-prog {
+  display: inline-block;
+  vertical-align: middle;
+  width: 70px;
+  height: 6px;
+  background: var(--color-grey-5);
+  border-radius: 3px;
+  margin-right: 8px;
+  overflow: hidden
+}
+
+.adm-prog span {
+  display: block;
+  height: 100%;
+  background: var(--color-blue-4);
+  border-radius: 3px
+}
