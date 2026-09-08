@@ -88,12 +88,15 @@
 
 ---
 
-## 5. Sistem Absensi (via Firebase)
-- [ ] **Firestore Collections:**
-  - [ ] `sessions`, `absensi`
-- [ ] **Fitur:** check-in/out, deteksi telat, rekap per sesi
-- [ ] **Dashboard admin + export**
-- [ ] **Auth mahasiswa** (Firebase Auth)
+## 5. Sistem Absensi Internal — FASE 1 LIVE ✅ (khusus ~50 anggota)
+- [x] Halaman tersembunyi `/absen` (tanpa link di web, robots disallow, login Firebase Auth)
+- [x] Self-register: cek dulu email ada di list `anggota` → bikin akun
+- [x] Check-in / check-out + deteksi telat otomatis (grace 5 mnt)
+- [x] Jadwal rutin 1-klik "Buka sesi hari ini" + sesi manual + buka/tutup/arsip
+- [x] Tab admin **Anggota** (CRUD + impor massal CSV-style) & **Absensi** (rekap per sesi, rekap per anggota, 2x Export CSV)
+- [x] Rules: 1 record/sesi (doc id `<sesiId>_<email>`), cuma utk dirinya, cuma saat sesi buka & anggota aktif
+- [ ] Sisa manual: Publish rules baru + isi list anggota (impor) — lihat chat panduan
+- [ ] Fase 2 (opsional, nanti): ijin online, notifikasi WA, GPS/lokasi, dashboard bulanan
 
 ---
 
