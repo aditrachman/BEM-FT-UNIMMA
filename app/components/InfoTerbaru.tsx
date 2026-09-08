@@ -3,11 +3,13 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { imageUrlTampil } from "@/lib/imageUrl";
 
 type Info = {
   id: string;
   judul: string;
   deskripsi: string;
+  gambar: string;
   tanggal: string;
   kategori: string;
 };
@@ -41,6 +43,7 @@ export default function InfoTerbaru() {
                   id: d.id,
                   judul: x.judul ?? "",
                   deskripsi: x.deskripsi ?? "",
+                  gambar: x.gambar ?? "",
                   kategori: x.kategori ?? "",
                   tanggal: x.tanggal?.toDate
                     ? formatTanggal(x.tanggal.toDate())
@@ -88,6 +91,15 @@ export default function InfoTerbaru() {
         <div className="info-card">
           {items.map((i) => (
             <div key={i.id} className="info-row">
+              {i.gambar && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  className="info-thumb"
+                  src={imageUrlTampil(i.gambar)}
+                  alt={i.judul}
+                  loading="lazy"
+                />
+              )}
               <time className="info-date">{i.tanggal}</time>
               <div className="info-body">
                 <h3>{i.judul}</h3>

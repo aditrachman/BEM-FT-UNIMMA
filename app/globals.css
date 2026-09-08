@@ -10187,8 +10187,18 @@ textarea.adm-in {
 .info-row {
   display: flex;
   gap: 24px;
-  align-items: flex-start;
+  align-items: center;
   padding: 24px 32px
+}
+
+.info-thumb {
+  order: 3;
+  flex: none;
+  width: 220px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 14px;
+  background: var(--color-light)
 }
 
 .info-row + .info-row {
@@ -10241,6 +10251,15 @@ textarea.adm-in {
     padding: 18px 20px;
     flex-direction: column;
     gap: 6px
+  }
+
+  .info-thumb {
+    order: -1;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3/2;
+    border-radius: 12px;
+    margin-bottom: 8px
   }
 
   .info-date {
