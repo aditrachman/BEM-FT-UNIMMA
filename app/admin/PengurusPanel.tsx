@@ -52,8 +52,15 @@ export function PengurusPanel() {
   const [periodeFilter, setPeriodeFilter] = useState(PERIODE_AKTIF);
   const [f, setF] = useState<Pengurus>(emptyForm);
   const [file, setFile] = useState<File | null>(null);
+  const [filePrev, setFilePrev] = useState("");
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
+
+  function pilihFile(fl: File | null) {
+    if (filePrev) URL.revokeObjectURL(filePrev);
+    setFile(fl);
+    setFilePrev(fl ? URL.createObjectURL(fl) : "");
+  }
 
   useEffect(
     () =>
@@ -112,7 +119,7 @@ export function PengurusPanel() {
       if (f.id) await updateDoc(doc(db!, "pengurus", f.id), payload);
       else await addDoc(collection(db!, "pengurus"), payload);
       setF(emptyForm);
-      setFile(null);
+      pilihFile(null);
     } catch (e2) {
       setErr(
         e2 instanceof Error
@@ -210,24 +217,27 @@ export function PengurusPanel() {
             <input
               type="file"
               accept="image/*"
-              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+              onChange={(e) => pilihFile(e.target.files?.[0] ?? null)}
             />
           </label>
           <label>
             atau URL foto
             <input
               className="adm-in"
-              placeholder="https://…"
-              value={file ? "" : f.foto_url}
-              disabled={!!file}
+              placeholder="https://… (bisa link Google Drive)"
+              value={f.foto_url}
               onChange={(e) => set("foto_url", e.target.value)}
             />
           </label>
         </div>
         {file && <p className="adm-note">Akan upload: {file.name}</p>}
-        {!file && f.foto_url && (
+        {(file || f.foto_url) && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img className="adm-prev adm-prev-sm" src={imageUrlTampil(f.foto_url)} alt="preview foto" />
+          <img
+            className="adm-prev adm-prev-sm"
+            src={file ? filePrev : imageUrlTampil(f.foto_url)}
+            alt="preview foto"
+          />
         )}
         {err && <p className="adm-err">{err}</p>}
         <div className="adm-row">
@@ -240,7 +250,7 @@ export function PengurusPanel() {
               className="adm-btn ghost"
               onClick={() => {
                 setF(emptyForm);
-                setFile(null);
+                pilihFile(null);
               }}
             >
               Batal edit
