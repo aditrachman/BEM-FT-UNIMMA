@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ADMIN = user login yang punya dokumen di collection `admins` dengan
+    // ID = persis alamat email-nya (contoh: admins/aditrachman23@gmail.com).
+    // Tambah pengurus: collection admins -> Add document -> Choose ID manually
+    // -> paste email login mereka. Hapus pengurus: hapus dokumen itu.
+    //
+    // Kenapa bukan "boleh tulis kalau login" saja: API key web Firebase publik,
+    // orang luar bisa self-register akun via REST, jadi login != dipercaya.
+    // Kenapa ID dokumen = email: satu-satunya input manual yang gak bisa
+    // salah tipe (bandingkan dengan array/field yang rawan salah bikin).
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.token.email));
+    }
+
+    match /proker/{doc} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ASPIRASI: publik boleh HANYA menambah (create) dengan isi terpantau —
+    // gak bisa baca/bayang list orang (no read), gak bisa ubah (no update).
+    // Batas 5..1000 karakter = rem spam pertama; read & bersih2 khusus admin.
+    // Catatan jujur: tanpa rate-limit, spam masih mungkin dalam kuota free
+    // (20K tulis/hari) — upgrade path: reCAPTCHA via Firebase App Check.
+    match /aspirasi/{doc} {
+      allow create: if request.resource.data.pesan is string
+                     && request.resource.data.pesan.size() >= 5
+                     && request.resource.data.pesan.size() <= 1000
+                     && request.resource.data.nama is string
+                     && request.resource.data.nama.size() <= 100
+                     && request.resource.data.prodi is string
+                     && request.resource.data.prodi.size() <= 100
+                     && request.resource.data.status == "baru";
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Collection admins tidak punya match => default deny dari aplikasi.
+    // Hanya bisa dikelola lewat Firebase Console.
+  }
+}

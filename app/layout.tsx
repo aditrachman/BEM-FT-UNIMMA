@@ -10,6 +10,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://bem-ft-unimma.vercel.app"), // domain final tinggal diganti pas deploy
   title: "BEM FT UNIMMA",
   description:
     "Website resmi BEM Fakultas Teknik UNIMMA — informasi kegiatan, program kerja, dan aspirasi mahasiswa Fakultas Teknik.",

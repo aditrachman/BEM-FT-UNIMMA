@@ -1,67 +1,50 @@
 # BEM FT UNIMMA - Next.js Project TODO
 
-## Status: Planning Phase
+## Status: Rewrite hampir kelar → lanjut Setup Firebase
 
 ---
 
-## 0. Full Rewrite — Clean Code (PRIORITAS UTAMA)
-- [ ] **Setup project structure bersih**
-  - [ ] Buat folder `app/components/`
-  - [ ] List semua section yang perlu di-rewrite
+## 0. Full Rewrite — Clean Code
+- [x] **Setup project structure bersih**
+  - [x] Buat folder `app/components/`
+  - [x] List semua section yang perlu di-rewrite
 
-- [ ] **Rewrite JSX → Components bersih**
-  - [ ] `Header.tsx` — navbar (logo, menu, hamburger, button)
-  - [ ] `Hero.tsx` — clouds SVG + tagline + h1 + hero image
-  - [ ] `Tentang.tsx` — text block sederhana
-  - [ ] `Bergerak.tsx` — image-text reverse
-  - [ ] `Alasan.tsx` — tagline + heading "Kenapa Gabung BEM FT"
-  - [ ] `FeatureCards.tsx` — reusable card grid (4 cards)
-  - [ ] `Proker.tsx` — heading + 3 cards
-  - [ ] `Rekrutmen.tsx` — heading + 2 cards
-  - [ ] `Footer.tsx` — footer (logo, nav columns, copyright, social)
-  - [ ] `Tagline.tsx` — reusable tagline component (icon SVG + text)
+- [x] **Rewrite JSX → Components** (nama aktual)
+  - [x] `Header.tsx` — navbar + hamburger mobile berfungsi (client component, toggle `menu-open`), tombol Kontak full-width dalam dropdown putih
+  - [x] `Hero.tsx` — clouds SVG + tagline + h1 + hero image (padding-top desktop 160px)
+  - [x] `Tentang.tsx`
+  - [x] `Bergerak.tsx`
+  - [x] `AlasanHeading.tsx` + `AlasanCards.tsx`
+  - [x] `ProkerHeading.tsx` + `ProkerCards.tsx` — **REDESIGN**: kartu ala blog (Tailwind), 3 post, tanpa blok author
+  - [x] `RekrutmenHeading.tsx` + `RekrutmenCards.tsx`
+  - [x] `CustomerLogos.tsx`
+  - [x] `Footer.tsx`
 
-- [ ] **Rewrite CSS — Clean Class Names**
-  - [ ] Ganti semua `.header-module-scss-module__N7vucW__*` → `.header-*`
-  - [ ] Ganti semua `.pagehero-module-scss-module__rMNsHa__*` → `.hero-*`
-  - [ ] Ganti semua `.textblock-module-scss-module__3bLjwW__*` → `.textblock-*`
-  - [ ] Ganti semua `.imagetextblock-module-scss-module__1jYUnW__*` → `.imagetext-*`
-  - [ ] Ganti semua `.heading-module-scss-module__ZBj6zq__*` → `.heading-*`
-  - [ ] Ganti semua `.tagline-module-scss-module__R8CpfG__*` → `.tagline-*`
-  - [ ] Ganti semua `.featurecards-module-scss-module__x7M58W__*` → `.featurecards-*`
-  - [ ] Ganti semua `.customerlogos-module-scss-module__muNAfq__*` → `.customerlogos-*`
-  - [ ] Ganti semua `.footer-module-scss-module__Wscpia__*` → `.footer-*`
-  - [ ] Ganti semua `.button-module-scss-module__REpPyW__*` → `.button-*`
-  - [ ] Ganti semua `.tapes-module-scss-module__Q32jNW__*` → `.tapes-*`
+- [x] **Tailwind diaktifkan** — `postcss.config.mjs` + `@import theme/utilities` (tanpa preflight, CSS lama aman)
 
-- [ ] **Convert SVG attributes ke JSX**
-  - [ ] `fill-opacity` → `fillOpacity`
-  - [ ] `stroke-width` → `strokeWidth`
-  - [ ] `fill-rule` → `fillRule`
-  - [ ] `clip-path` → `clipPath`
-  - [ ] `xlink:href` → `xlinkHref`
+- [ ] **Rewrite CSS — Clean Class Names** (BELUM — masih `.header-module-scss-module__N7vucW__*` dst)
+  - [ ] Ganti semua prefix `*-module-scss-module__*` → nama bersih
+  - [ ] `.header-*`, `.hero-*`, `.textblock-*`, `.imagetext-*`, `.heading-*`, `.tagline-*`, `.featurecards-*`, `.customerlogos-*`, `.footer-*`, `.button-*`, `.tapes-*`
+
+- [x] **Convert SVG attributes ke JSX** — fillOpacity, strokeWidth, fillRule, clipPath, xlinkHref ✓
 
 - [ ] **Fix `<script type="application/ld+json">`**
-  - [ ] Pindah ke `layout.tsx` atau pakai `next/script`
+  - [ ] Sisa breadcrumb list masih `dangerouslySetInnerHTML` di `page.tsx` → pindah ke `layout.tsx` / metadata API
 
-- [ ] **Handle Customer Logos section**
-  - [ ] `display:none` — pertahankan atau hapus? (belum diputuskan)
+- [x] **Handle Customer Logos section**
+  - [x] Direstor jadi section "Kami Keluarga Fakultas Teknik UNIMMA" + 3 logo (LogoUNIMMA, Logofakultas, logo.png) dalam kartu putih — CSS lama `customerlogos-*` jadi dead code, aman dihapus nanti
+- [x] Favicon situs = logo.png (via `app/icon.png`)
 
-- [ ] **Remove `dangerouslySetInnerHTML`**
-  - [ ] `page.tsx` harus clean, import semua komponen
-
-- [ ] **Verify visual identik**
-  - [ ] Build success
-  - [ ] Jalankan dev server
-  - [ ] Cek semua section satu-satu
-  - [ ] Cek responsive (mobile, tablet, desktop)
+- [ ] **Verify visual identik + final QA**
+  - [ ] Cek semua section satu-satu (desktop, tablet, mobile)
+  - [ ] Ganti data placeholder proker dengan konten BEM FT asli (judul/deskripsi/gambar Indonesia)
 
 ---
 
 ## 1. Hero Spacing Fix
 - [x] Fix navbar (body class `page-loaded cta-open`)
 - [x] Fix icon/image paths (`assets/images/` → `/images/`)
-- [x] Adjust hero padding-top (currently 60px, still tuning)
+- [x] Adjust hero padding-top (final: 160px desktop, mobile via `--page-top`)
 
 ---
 
@@ -74,17 +57,23 @@
 
 ---
 
-## 3. CMS untuk Proker Terbaru Kami (via Firebase)
-- [ ] **Firestore Collection: `proker`**
-  - [ ] Fields: `judul`, `deskripsi`, `gambar`, `tanggal`, `status`
-  - [ ] Storage: Firebase Storage buat gambar
-- [ ] **Fetch data proker dari Firestore**
-  - [ ] Frontend fetch real-time atau static generation
-  - [ ] Replace hardcoded proker cards dengan dynamic data
-- [ ] **Admin Dashboard (opsional)**
-  - [ ] Option A: Pakai Firebase Console langsung (gratis, simpel)
-  - [ ] Option B: Build custom admin page (Next.js)
-- [ ] Deploy & test
+## 3. CMS untuk Proker Terbaru Kami (via Firebase) ✅ LIVE
+- [x] Firebase project `bemft-f4191` + Firestore + config di `.env.local`
+- [x] **Firestore Collection: `proker`**
+  - [x] Fields: `judul`, `deskripsi`, `gambar` (URL), `tanggal` (timestamp), `kategori` (opsional), `status` (bebas: aktif/rampung/dst — display semua)
+  - [ ] Storage: Firebase Storage buat gambar (sementara masih URL eksternal)
+- [x] ProkerCards fetch + sort client-side 3 terbaru, fallback ke sample kalau kosong
+- [x] **Admin `/admin`** — login Firebase Auth (email/password), CRUD proker, hapus + confirm
+- [x] **Strategi gambar = GRATIS, tanpa Firebase Storage** (GCS bisa berbayar, region SG gak masuk free tier):
+      - Gambar di-commit ke `public/images/proker/` → ke-host Vercel gratis → isi URL `/images/proker/x.jpg` di admin
+      - Atau tempel URL eksternal (media sosial / website fakultas)
+      - Tombol upload Storage cuma bonus kalau kapan pun nekat enable (arsip rules: `storage.rules`)
+- [ ] Setup console tersisa (semua produk free-tier keras):
+      - [ ] Authentication → aktifkan Email/Password → Add user (akun admin)
+      - [ ] Firestore → Data → collection `admins` → doc **ID = email login persis** (mis. `aditrachman23@gmail.com`), isinya 1 field dummy `x: true` → tambah pengurus tinggal bikin doc baru
+      - [ ] Firestore → Rules → paste `firestore.rules` → **Publish** (wajib, ini yg nolak write)
+      - [x] Status `draft` disembunyiin dari landing; `rampung` tetap tampil
+- [ ] Nanti kalau pengurus minta self-upload beneran: Cloudinary free tier (unsigned upload, 25GB/bln) — bukan Firebase Storage
 
 ---
 
@@ -95,22 +84,15 @@
   - [ ] 3-4 field sederhana
   - [ ] Submit → simpan ke Firestore
   - [ ] Success/error notification
-- [ ] **Admin view (opsional)**
-  - [ ] Lihat aspirasi masuk di Firebase Console atau custom page
+- [ ] **Admin view (opsional)** — Firebase Console dulu
 
 ---
 
 ## 5. Sistem Absensi (via Firebase)
 - [ ] **Firestore Collections:**
-  - [ ] `sessions` — sesi absensi (judul, waktu, status)
-  - [ ] `absensi` — record absensi (userId, sessionId, timestamp, status)
-- [ ] **Fitur:**
-  - [ ] Check-in/check-out
-  - [ ] Deteksi telat
-  - [ ] Rekap per sesi
-- [ ] **Dashboard admin**
-  - [ ] Lihat rekap absensi
-  - [ ] Export data
+  - [ ] `sessions`, `absensi`
+- [ ] **Fitur:** check-in/out, deteksi telat, rekap per sesi
+- [ ] **Dashboard admin + export**
 - [ ] **Auth mahasiswa** (Firebase Auth)
 
 ---
@@ -125,19 +107,16 @@
 
 ## Arsitektur Final
 ```
-Frontend (Next.js)  → Vercel (gratis)
-CMS Data            → Firestore (gratis)
-Auth                → Firebase Auth (gratis)
-Storage (gambar)    → Firebase Storage (gratis)
+Frontend (Next.js + Tailwind)  → Vercel (gratis)
+CMS Data                       → Firestore (gratis)
+Auth                           → Firebase Auth (gratis)
+Storage (gambar)               → Firebase Storage (gratis)
 ```
-
-Satu platform Firebase buat semua~ ✨
 
 ---
 
 ## Catatan
 - Landing page tetap fokus branding & profil BEM
-- Jangan bebani landing page dengan fitur berat
-- **Full Rewrite (Task 0) harus selesai dulu sebelum tambah fitur baru**
-- Prioritas: Full Rewrite → Setup Firebase → CMS Proker → Form Aspirasi → Absensi
-- Firebase free tier: 1GB Firestore, 5GB Storage, 50K reads/day — lebih dari cukup buat BEM FT
+- **Prioritas: beresin sisa Task 0 (ganti nama class CSS + ld+json + QA) → Firebase → CMS Proker → Form Aspirasi → Absensi**
+- Task 0 tidak wajib 100% sebelum Firebase — CMS proker bisa langsung numpang ke komponen blog-card yang baru
+- Firebase free tier: 1GB Firestore, 5GB Storage, 50K reads/day — cukup
