@@ -21,6 +21,12 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    // INFO TERBARU: seperti proker — publik baca, admin tulis.
+    match /info/{doc} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
     // ASPIRASI: publik boleh HANYA menambah (create) dengan isi terpantau —
     // gak bisa baca/bayang list orang (no read), gak bisa ubah (no update).
     // Batas 5..1000 karakter = rem spam pertama; read & bersih2 khusus admin.

@@ -29,6 +29,7 @@ const toLocal = (d: Date) => {
 
 export default function AdminPage() {
   const [user, setUser] = useState<User | null | undefined>(undefined);
+  const [koleksi, setKoleksi] = useState<Koleksi>("proker");
 
   useEffect(() => {
     if (!auth) return;
@@ -45,7 +46,11 @@ export default function AdminPage() {
       </div>
     );
   if (user === undefined) return null;
-  return user ? <Panel email={user.email ?? "?"} /> : <Login />;
+  return user ? (
+    <Panel email={user.email ?? "?"} koleksi={koleksi} ganti={setKoleksi} />
+  ) : (
+    <Login />
+  );
 }
 
 /* ---------------- login ---------------- */
@@ -114,6 +119,7 @@ function Login() {
 
 /* ---------------- panel CRUD ---------------- */
 
+type Koleksi = "proker" | "info";
 type Row = { id: string; d: Record<string, unknown> };
 const emptyForm = {
   id: "",
@@ -125,7 +131,16 @@ const emptyForm = {
   deskripsi: "",
 };
 
-function Panel({ email }: { email: string }) {
+function Panel({
+  email,
+  koleksi,
+  ganti,
+}: {
+  email: string;
+  koleksi: Koleksi;
+  ganti: (k: Koleksi) => void;
+}) {
+  const label = koleksi === "proker" ? "proker" : "info";
   const [rows, setRows] = useState<Row[]>([]);
   const [f, setF] = useState(emptyForm);
   const [file, setFile] = useState<File | null>(null);
@@ -134,7 +149,7 @@ function Panel({ email }: { email: string }) {
 
   useEffect(
     () =>
-      onSnapshot(collection(db!, "proker"), (s) =>
+      onSnapshot(collection(db!, koleksi), (s) =>
         setRows(
           s.docs
             .map((x) => ({ id: x.id, d: x.data() as Record<string, unknown> }))
@@ -187,8 +202,8 @@ function Panel({ email }: { email: string }) {
         gambar,
         tanggal: f.tanggal ? Timestamp.fromDate(new Date(f.tanggal)) : null,
       };
-      if (f.id) await updateDoc(doc(db!, "proker", f.id), payload);
-      else await addDoc(collection(db!, "proker"), payload);
+      if (f.id) await updateDoc(doc(db!, koleksi, f.id), payload);
+      else await addDoc(collection(db!, koleksi), payload);
       setF(emptyForm);
       setFile(null);
     } catch (e2) {
@@ -207,9 +222,9 @@ function Panel({ email }: { email: string }) {
   }
 
   async function hapus(r: Row) {
-    if (!confirm(`Hapus proker "${(r.d.judul as string) ?? r.id}"?`)) return;
+    if (!confirm(`Hapus ${label} "${(r.d.judul as string) ?? r.id}"?`)) return;
     try {
-      await deleteDoc(doc(db!, "proker", r.id));
+      await deleteDoc(doc(db!, koleksi, r.id));
     } catch {
       setErr("Gagal hapus — kemungkinan rules Firestore belum di-Publish ulang.");
     }
@@ -236,10 +251,27 @@ function Panel({ email }: { email: string }) {
         </div>
       </div>
 
+      <div className="adm-tabs">
+        <button
+          type="button"
+          className={"adm-tab" + (koleksi === "proker" ? " on" : "")}
+          onClick={() => ganti("proker")}
+        >
+          Program Kerja
+        </button>
+        <button
+          type="button"
+          className={"adm-tab" + (koleksi === "info" ? " on" : "")}
+          onClick={() => ganti("info")}
+        >
+          Info Terbaru
+        </button>
+      </div>
+
       <form onSubmit={submit} className="adm-card">
         <div>
           <h2 className="adm-cardtitle">
-            {f.id ? "Edit proker" : "Tambah proker baru"}
+            {f.id ? `Edit ${label}` : `Tambah ${label} baru`}
           </h2>
           <p className="adm-cardsubtitle">
             {f.id
@@ -275,7 +307,7 @@ function Panel({ email }: { email: string }) {
             >
               <option>draft</option>
               <option>aktif</option>
-              <option>rampung</option>
+              <option>{koleksi === "proker" ? "rampung" : "arsip"}</option>
             </select>
           </label>
           <label>
@@ -327,7 +359,7 @@ function Panel({ email }: { email: string }) {
         {err && <p className="adm-err">{err}</p>}
         <div className="adm-row">
           <button className="adm-btn" disabled={busy}>
-            {busy ? "Menyimpan…" : f.id ? "Update" : "Simpan proker baru"}
+            {busy ? "Menyimpan…" : f.id ? "Update" : `Simpan ${label} baru`}
           </button>
           {f.id && (
             <button

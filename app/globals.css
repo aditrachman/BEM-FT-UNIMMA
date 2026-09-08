@@ -10173,3 +10173,117 @@ textarea.adm-in {
     grid-template-columns: 1fr
   }
 }
+
+/* ==================== INFO TERBARU ==================== */
+.info-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-light);
+  border-radius: 26px;
+  margin-top: 24px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px -2px #21164c14
+}
+
+.info-row {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  padding: 24px 32px
+}
+
+.info-row + .info-row {
+  border-top: 1px solid var(--color-light)
+}
+
+.info-date {
+  flex: none;
+  width: 120px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-blue-3);
+  padding-top: 4px
+}
+
+.info-body {
+  flex: 1;
+  min-width: 0
+}
+
+.info-body h3 {
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: -.02em;
+  margin: 0 0 6px;
+  color: var(--color-blue-1)
+}
+
+.info-body p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--color-grey-3)
+}
+
+.info-kat {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 99px;
+  padding: 3px 10px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-light);
+  color: var(--color-grey-3)
+}
+
+@media (max-width:640px) {
+  .info-row {
+    padding: 18px 20px;
+    flex-direction: column;
+    gap: 6px
+  }
+
+  .info-date {
+    width: auto;
+    padding-top: 0
+  }
+
+  .info-body h3 {
+    font-size: 17px;
+    line-height: 24px
+  }
+}
+
+/* tab pengumpul di panel admin */
+.adm-tabs {
+  display: flex;
+  gap: 10px;
+  margin: -10px 0 24px
+}
+
+.adm-tab {
+  background: transparent;
+  border: 1px solid var(--color-light);
+  border-radius: 99px;
+  color: var(--color-grey-3);
+  cursor: pointer;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background .15s linear, color .15s linear, border-color .15s linear
+}
+
+.adm-tab:hover {
+  border-color: var(--color-blue-5)
+}
+
+.adm-tab.on {
+  background: var(--color-blue-1);
+  border-color: var(--color-blue-1);
+  color: var(--color-white)
+}
+
+.adm-badge.arsip {
+  background: var(--color-sea-5);
+  color: var(--color-sea-1)
+}

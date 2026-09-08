@@ -7,6 +7,7 @@ import Bergerak from "./components/Bergerak";
 import CustomerLogos from "./components/CustomerLogos";
 import AlasanHeading from "./components/AlasanHeading";
 import AlasanCards from "./components/AlasanCards";
+import InfoTerbaru from "./components/InfoTerbaru";
 import ProkerHeading from "./components/ProkerHeading";
 import ProkerCards from "./components/ProkerCards";
 import RekrutmenHeading from "./components/RekrutmenHeading";
@@ -43,6 +44,7 @@ export default function Home() {
           <CustomerLogos />
           <AlasanHeading />
           <AlasanCards />
+          <InfoTerbaru />
           <ProkerHeading />
           <ProkerCards />
           <RekrutmenHeading />
