@@ -10307,3 +10307,261 @@ textarea.adm-in {
   background: var(--color-sea-5);
   color: var(--color-sea-1)
 }
+
+/* ============ komponen panel admin: pengurus & visi misi ============ */
+.adm-grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px
+}
+
+@media (max-width:640px) {
+  .adm-grid2 {
+    grid-template-columns: 1fr
+  }
+}
+
+.adm-prev-sm {
+  width: auto;
+  max-width: 260px;
+  max-height: 180px
+}
+
+.adm-filter {
+  margin: -6px 0 18px
+}
+
+.adm-dept {
+  margin-bottom: 26px
+}
+
+.adm-dept-title {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: var(--color-blue-1);
+  margin: 0 0 10px
+}
+
+.adm-item-person {
+  gap: 14px
+}
+
+.adm-item-person > div:nth-child(2) {
+  flex: 1;
+  min-width: 0
+}
+
+.adm-item-person small {
+  display: block;
+  margin-top: 2px;
+  color: var(--color-grey-3);
+  font-size: 13px
+}
+
+.adm-avatar {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  object-fit: cover;
+  background: var(--color-bg);
+  border: 1px solid var(--color-light)
+}
+
+/* ============ halaman /tentang-kami ============ */
+.tt-h1 {
+  font-size: 52px;
+  line-height: 1.15;
+  letter-spacing: -.03em;
+  margin: 0 0 8px
+}
+
+@media (max-width:1025px) {
+  .tt-h1 {
+    font-size: 38px
+  }
+}
+
+@media (max-width:640px) {
+  .tt-h1 {
+    font-size: 30px
+  }
+}
+
+.tt-section {
+  margin-bottom: 40px
+}
+
+.tt-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-light);
+  border-radius: 26px;
+  padding: 36px;
+  box-shadow: 0 2px 8px -2px #21164c14
+}
+
+@media (max-width:640px) {
+  .tt-card {
+    padding: 24px 20px;
+    border-radius: 20px
+  }
+}
+
+.tt-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  color: var(--color-blue-1);
+  margin: 0 0 12px
+}
+
+.tt-title:not(:first-child) {
+  margin-top: 28px
+}
+
+.tt-visi-text {
+  font-size: 20px;
+  line-height: 32px;
+  font-weight: 500;
+  color: var(--color-blue-1);
+  max-width: 760px;
+  margin: 0
+}
+
+@media (max-width:640px) {
+  .tt-visi-text {
+    font-size: 17px;
+    line-height: 27px
+  }
+}
+
+.tt-list {
+  counter-reset: tt;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px
+}
+
+.tt-list li {
+  counter-increment: tt;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  font-size: 16px;
+  line-height: 25px;
+  color: var(--color-text)
+}
+
+.tt-list li::before {
+  content: counter(tt, decimal-leading-zero);
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-blue-5);
+  color: var(--color-blue-2);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+
+.tt-empty {
+  color: var(--color-grey-3);
+  font-size: 15px;
+  line-height: 24px;
+  margin: 0
+}
+
+.tt-periode {
+  display: inline-block;
+  margin-top: 24px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-sea-2);
+  border: 1px solid var(--color-light);
+  border-radius: 99px;
+  padding: 5px 14px
+}
+
+.tt-periode-label {
+  color: var(--color-grey-3);
+  font-size: 14px;
+  margin: 8px 0 24px
+}
+
+.tt-dept {
+  margin-bottom: 34px
+}
+
+.tt-dept-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  color: var(--color-blue-1);
+  margin: 0 0 18px
+}
+
+.tt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 18px
+}
+
+.tt-person {
+  background: var(--color-white);
+  border: 1px solid var(--color-light);
+  border-radius: 22px;
+  padding: 18px;
+  text-align: center;
+  box-shadow: 0 2px 8px -2px #21164c14;
+  transition: border-color .15s linear
+}
+
+.tt-person:hover {
+  border-color: var(--color-blue-5)
+}
+
+.tt-foto {
+  width: 104px;
+  height: 104px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--color-bg)
+}
+
+.tt-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block
+}
+
+.tt-inisial {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--color-blue-3)
+}
+
+.tt-nama {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-blue-1);
+  margin-bottom: 4px
+}
+
+.tt-jabatan {
+  font-size: 13px;
+  color: var(--color-grey-3)
+}

@@ -1,19 +1,18 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
     // ADMIN = user login yang punya dokumen di collection `admins` dengan
     // ID = persis alamat email-nya (contoh: admins/aditrachman23@gmail.com).
     // Tambah pengurus: collection admins -> Add document -> Choose ID manually
     // -> paste email login mereka. Hapus pengurus: hapus dokumen itu.
-    //
-    // Kenapa bukan "boleh tulis kalau login" saja: API key web Firebase publik,
-    // orang luar bisa self-register akun via REST, jadi login != dipercaya.
-    // Kenapa ID dokumen = email: satu-satunya input manual yang gak bisa
-    // salah tipe (bandingkan dengan array/field yang rawan salah bikin).
     function isAdmin() {
       return request.auth != null
         && exists(/databases/$(database)/documents/admins/$(request.auth.token.email));
+    }
+
+    // Admin boleh memastikan dirinya admin (dipakai route upload foto server-side).
+    match /admins/{email} {
+      allow read: if request.auth != null && request.auth.token.email == email;
     }
 
     match /proker/{doc} {
@@ -27,11 +26,19 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    // PENGURUS & VISI MISI (halaman /tentang-kami)
+    match /pengurus/{doc} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /visi_misi/{doc} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
     // ASPIRASI: publik boleh HANYA menambah (create) dengan isi terpantau —
-    // gak bisa baca/bayang list orang (no read), gak bisa ubah (no update).
-    // Batas 5..1000 karakter = rem spam pertama; read & bersih2 khusus admin.
-    // Catatan jujur: tanpa rate-limit, spam masih mungkin dalam kuota free
-    // (20K tulis/hari) — upgrade path: reCAPTCHA via Firebase App Check.
+    // gak bisa baca list orang, gak bisa ubah. Batas 5..1000 karakter.
     match /aspirasi/{doc} {
       allow create: if request.resource.data.pesan is string
                      && request.resource.data.pesan.size() >= 5
@@ -43,8 +50,5 @@ service cloud.firestore {
                      && request.resource.data.status == "baru";
       allow read, update, delete: if isAdmin();
     }
-
-    // Collection admins tidak punya match => default deny dari aplikasi.
-    // Hanya bisa dikelola lewat Firebase Console.
   }
 }

@@ -23,8 +23,8 @@ export default function Footer() {
             <div className="footer-module-scss-module__Wscpia__nav">
               <div><strong className="color-blue-3">Tentang</strong>
                 <ul>
-                  <li><a href="#">Visi Misi</a></li>
-                  <li><a href="#">Struktur Kepengurusan</a></li>
+                  <li><a href="/tentang-kami#visi-misi">Visi Misi</a></li>
+                  <li><a href="/tentang-kami#struktur">Struktur Kepengurusan</a></li>
                 </ul>
               </div>
               <div><strong className="color-sea-3">Kegiatan</strong>
