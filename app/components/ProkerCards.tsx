@@ -22,6 +22,7 @@ function formatTanggal(d: Date): string {
 export default function ProkerCards() {
 // null = masih memuat; [] = memang belum ada proker tayang
 const [posts, setPosts] = useState<Post[] | null>(() => (db ? null : []));
+const [expanded, setExpanded] = useState<string | null>(null);
 
 useEffect(() => {
   if (!db) return;
@@ -101,9 +102,20 @@ useEffect(() => {
                   <h3 className="mt-3 text-lg/6 font-semibold text-gray-900">
                     {post.title}
                   </h3>
-                  <p className="mt-5 line-clamp-3 text-sm/6 text-gray-600">
-                    {post.description}
-                  </p>
+                  <div className="mt-5">
+                    <p className={`text-sm/6 text-gray-600 ${expanded === post.id ? "" : "line-clamp-3"}`}>
+                      {post.description}
+                    </p>
+                    {post.description.length > 150 && (
+                      <button
+                        type="button"
+                        onClick={() => setExpanded(expanded === post.id ? null : post.id)}
+                        className="mt-2 text-sm text-blue-600 hover:underline"
+                      >
+                        {expanded === post.id ? "Tutup" : "Baca selengkapnya"}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </article>
