@@ -9980,7 +9980,8 @@ textarea.adm-in {
   color: var(--color-green-1)
 }
 
-.adm-badge.rampung {
+.adm-badge.rampung,
+.adm-badge.selesai {
   background: var(--color-sea-5);
   color: var(--color-sea-1)
 }

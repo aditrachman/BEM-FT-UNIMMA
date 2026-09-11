@@ -22,6 +22,14 @@ const toLocal = (d: Date) => {
 type Koleksi = "proker" | "info";
 type Row = { id: string; d: Record<string, unknown> };
 
+const LABEL_STATUS: Record<string, string> = {
+  rampung: "Selesai",
+  selesai: "Selesai",
+  aktif: "Aktif",
+  draft: "Draft",
+  arsip: "Arsip",
+};
+
 const emptyForm = {
   id: "",
   judul: "",
@@ -166,7 +174,7 @@ export function KoleksiPanel({ koleksi }: { koleksi: Koleksi }) {
             >
               <option>draft</option>
               <option>aktif</option>
-              <option>{koleksi === "proker" ? "rampung" : "arsip"}</option>
+              <option>{koleksi === "proker" ? "selesai" : "arsip"}</option>
             </select>
           </label>
           <label>
@@ -244,7 +252,9 @@ export function KoleksiPanel({ koleksi }: { koleksi: Koleksi }) {
                 <span
                   className={`adm-badge ${String(r.d.status ?? "draft").toLowerCase()}`}
                 >
-                  {(r.d.status as string) ?? "-"}
+                  {LABEL_STATUS[String(r.d.status ?? "").toLowerCase()] ??
+                    (r.d.status as string) ??
+                    "-"}
                 </span>
                 <small>
                   {((r.d.kategori as string) || "") +
