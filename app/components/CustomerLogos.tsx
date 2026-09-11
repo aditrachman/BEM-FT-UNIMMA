@@ -1,8 +1,5 @@
 export default function CustomerLogos() {
   const logos = [
-    { src: "/LogoUNIMMA.png", alt: "Logo UNIMMA" },
-    { src: "/Logofakultas.png", alt: "Logo Fakultas Teknik UNIMMA", plain: true },
-    { src: "/logo.png", alt: "Logo BEM FT UNIMMA" },
     { src: "/images/logos/dpm.png", alt: "Logo DPM" },
     { src: "/images/logos/himanifo.png", alt: "Logo Himanifo" },
     { src: "/images/logos/hmti.png", alt: "Logo HMTI" },
