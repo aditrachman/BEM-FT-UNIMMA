@@ -110,7 +110,7 @@ useEffect(() => {
                       <button
                         type="button"
                         onClick={() => setExpanded(expanded === post.id ? null : post.id)}
-                        className="mt-2 text-sm text-blue-600 hover:underline"
+                        className="mt-2 text-sm font-medium text-blue-600 underline hover:text-blue-700"
                       >
                         {expanded === post.id ? "Tutup" : "Baca selengkapnya"}
                       </button>
