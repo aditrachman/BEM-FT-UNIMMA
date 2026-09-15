@@ -15,6 +15,11 @@ export const metadata: Metadata = {
   description:
     "Website resmi BEM Fakultas Teknik UNIMMA — informasi kegiatan, program kerja, dan aspirasi mahasiswa Fakultas Teknik.",
   alternates: { canonical: "https://bem-ft-unimma.vercel.app" },
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
   openGraph: {
     title: "BEM FT UNIMMA",
     description:
