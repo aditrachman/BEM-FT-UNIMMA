@@ -9753,6 +9753,28 @@ article time + span {
     row-gap: 12px
   }
 
+  .adm-top > div:first-child {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+  }
+
+  .adm-top .adm-row {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-start
+  }
+
+  .adm-top .adm-link,
+  .adm-top .adm-mail,
+  .adm-top .adm-btn {
+    flex: 1 1 auto;
+    text-align: center;
+    justify-content: center
+  }
+
   .adm-btn {
     min-height: 48px
   }
@@ -10312,10 +10334,14 @@ textarea.adm-in {
 .adm-tabs {
   display: flex;
   gap: 10px;
-  margin: -10px 0 24px
+  margin: -10px 0 24px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch
 }
 
 .adm-tab {
+  flex: 0 0 auto;
   background: transparent;
   border: 1px solid var(--color-light);
   border-radius: 99px;
@@ -10324,6 +10350,7 @@ textarea.adm-in {
   padding: 8px 18px;
   font-size: 14px;
   font-weight: 600;
+  white-space: nowrap;
   transition: background .15s linear, color .15s linear, border-color .15s linear
 }
 
@@ -10335,6 +10362,18 @@ textarea.adm-in {
   background: var(--color-blue-1);
   border-color: var(--color-blue-1);
   color: var(--color-white)
+}
+
+@media (max-width:640px) {
+  .adm-tabs {
+    gap: 8px;
+    margin: -8px 0 20px;
+    padding: 0 4px 12px
+  }
+  .adm-tab {
+    padding: 6px 14px;
+    font-size: 13px
+  }
 }
 
 .adm-badge.arsip {
