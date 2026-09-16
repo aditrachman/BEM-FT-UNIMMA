@@ -16,7 +16,6 @@ import {
   onSnapshot,
   serverTimestamp,
   setDoc,
-  updateDoc,
 } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { ABS_GRACE_MIN } from "@/lib/konfig";
@@ -134,7 +133,6 @@ export default function AbsenPage() {
         nama: namaSaya,
         status: st,
         masukJam: serverTimestamp(),
-        keluarJam: null,
       });
       setRekaman((p) => ({
         ...p,
@@ -153,21 +151,6 @@ export default function AbsenPage() {
     }
   }
 
-  async function checkOut(s: Sesi) {
-    if (!db || !user) return;
-    try {
-      await updateDoc(doc(db, "absensi", `${s.id}_${user.email!.toLowerCase()}`), {
-        keluarJam: serverTimestamp(),
-      });
-      setRekaman((p) => ({
-        ...p,
-        [s.id]: p[s.id] ? { ...p[s.id]!, keluarJam: null } : null,
-      }));
-    } catch {
-      setErr("Check-out gagal — coba refresh.");
-    }
-  }
-
   if (!auth || !db)
     return (
       <div className="abs-page">
@@ -179,11 +162,16 @@ export default function AbsenPage() {
   if (!user) {
     return (
       <div className="abs-page">
-        <div className="abs-kartu">
-          <h1 className="adm-h1">Absensi Internal</h1>
-          <p className="adm-note" style={{ margin: "4px 0 16px" }}>
-            Khusus anggota BEM FT UNIMMA.
-          </p>
+        <div className="abs-hero">
+          <Link href="/" className="abs-hero-logo">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="BEM FT" />
+            <span>BEM FT UNIMMA</span>
+          </Link>
+          <h1>Absensi Anggota</h1>
+          <p>Khusus anggota BEM FT — masuk untuk absen sesi yang sedang buka. Belum punya akun? Daftar sekali, terverifikasi anggota.</p>
+        </div>
+        <div className="abs-kartu abs-kartu--login">
           <form onSubmit={authSubmit} className="adm-col">
             <label>
               Email
@@ -245,60 +233,65 @@ export default function AbsenPage() {
 
   return (
     <div className="abs-page">
-      <div className="abs-top">
-        <div>
-          <Link className="abs-link" href="/">&larr; Web utama</Link>
-          <h1 className="adm-h1">Absensi Internal</h1>
-          <p className="adm-note" style={{ margin: "2px 0 0" }}>
-            {namaSaya || user.email} ·{" "}
-            <button className="abs-link" type="button" onClick={() => signOut(auth!)}>
-              keluar
-            </button>
-          </p>
+      <div className="abs-hero abs-hero--compact">
+        <div className="abs-hero-row">
+          <Link className="abs-link" href="/">← Web utama</Link>
+          <button className="abs-link" type="button" onClick={() => signOut(auth!)}>
+            Keluar
+          </button>
+        </div>
+        <div className="abs-brand">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="" />
+          <div>
+            <h1>Absensi</h1>
+            <p>{namaSaya ? `${namaSaya} · ${user.email}` : user.email}</p>
+          </div>
         </div>
       </div>
 
       {err && <p className="adm-err">{err}</p>}
 
       {sesi.length === 0 ? (
-        <div className="abs-kartu" style={{ textAlign: "center" }}>
-          <p className="adm-note" style={{ margin: 0 }}>
-            Tidak ada sesi absen yang sedang buka. Nantikan pengumuman rapat /
-            proker berikutnya 🙌
-          </p>
+        <div className="abs-kartu abs-kartu--empty">
+          <div className="abs-empty-icon">🗓️</div>
+          <h3>Tidak ada sesi buka</h3>
+          <p>Nantikan pengumuman rapat / proker berikutnya — sesi yang dibuka admin akan muncul di sini.</p>
         </div>
       ) : (
         sesi.map((s) => {
           const r = rekaman[s.id];
           const sudahMasuk = !!r;
+          const isTelat = r?.status === "telat";
           return (
-            <div key={s.id} className="abs-kartu">
+            <div key={s.id} className={`abs-kartu abs-sesi-card ${sudahMasuk ? (isTelat ? "is-telat" : "is-hadir") : ""}`}>
               <div className="abs-sesi-head">
-                <h2>{s.judul}</h2>
+                <div className="abs-sesi-title">
+                  <span className="abs-sesi-icon" aria-hidden>{sudahMasuk ? (isTelat ? "⏰" : "✓") : "📋"}</span>
+                  <h2>{s.judul}</h2>
+                </div>
                 <span className="abs-badge" data-st={r?.status ?? ""}>
-                  {r ? (r.status === "telat" ? "Telat" : "Hadir") : "Belum absen"}
+                  {r ? (isTelat ? "Telat" : "Hadir") : "Belum absen"}
                 </span>
               </div>
-              <p className="adm-note" style={{ margin: 0 }}>
-                Mulai {fmtJam(s.mulai)} · toleransi telat ±{ABS_GRACE_MIN} menit
-                {r?.masukJam ? "" : r ? " (baru tersimpan)" : ""}
+              <p className="abs-meta">
+                Mulai {fmtJam(s.mulai)} · toleransi ±{ABS_GRACE_MIN} menit
+                {r?.masukJam ? "" : r ? " · baru tersimpan" : ""}
               </p>
               <div className="abs-jam">
                 <span>Masuk: <strong>{fmtJam(r?.masukJam ?? undefined)}</strong></span>
-                <span>Keluar: <strong>{fmtJam(r?.keluarJam ?? undefined)}</strong></span>
               </div>
               {!sudahMasuk ? (
-                <button className="adm-btn full" onClick={() => checkIn(s)}>
-                  Check-in sekarang
+                <button className="adm-btn full abs-cta" onClick={() => checkIn(s)}>
+                  <span>Check-in sekarang</span>
+                  <span aria-hidden>→</span>
                 </button>
-              ) : !r?.keluarJam ? (
-                <button
-                  className="adm-btn full ghost"
-                  onClick={() => checkOut(s)}
-                >
-                  Check-out
-                </button>
-              ) : null}
+              ) : (
+                <div className="abs-done">
+                  <span className="abs-done-icon">{isTelat ? "⏰" : "✓"}</span>
+                  <span>{isTelat ? "Sudah absen — tercatat telat" : "Sudah absen — kehadiran tercatat"}</span>
+                </div>
+              )}
             </div>
           );
         })

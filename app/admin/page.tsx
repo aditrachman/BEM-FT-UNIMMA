@@ -20,9 +20,29 @@ type MenuTab = "proker" | "info" | "pengurus" | "visimisi" | "anggota" | "absens
 
 export default function AdminPage() {
   const [user, setUser] = useState<User | null | undefined>(undefined);
-  const [tab, setTab] = useState<MenuTab>("proker");
+  const [tab, setTab] = useState<MenuTab>(() => {
+    if (typeof window === "undefined") return "proker";
+    const valid: MenuTab[] = ["proker", "info", "pengurus", "visimisi", "anggota", "absensi"];
+    try {
+      const q = new URLSearchParams(window.location.search).get("tab") as MenuTab | null;
+      if (q && valid.includes(q)) return q;
+      const ls = localStorage.getItem("admin-tab") as MenuTab | null;
+      if (ls && valid.includes(ls)) return ls;
+    } catch {}
+    return "proker";
+  });
 
   const [role, setRole] = useState<"admin" | "staff" | null>(null);
+
+  // tulis balik tab ke URL + localStorage setiap ganti
+  useEffect(() => {
+    try {
+      localStorage.setItem("admin-tab", tab);
+      const url = new URL(window.location.href);
+      url.searchParams.set("tab", tab);
+      window.history.replaceState(null, "", url.toString());
+    } catch {}
+  }, [tab]);
 
   useEffect(() => {
     if (!auth) return;
@@ -160,23 +180,17 @@ function Login() {
   }
 
   return (
-    <div className="adm-wrap adm--center">
-      <form onSubmit={submit} className="adm-card adm-auth">
-        <div className="adm-brand">
+    <div className="abs-page">
+      <div className="abs-hero">
+        <Link href="/" className="abs-hero-logo">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="adm-logo" src="/logo.png" alt="" />
-          <span className="adm-note">BEM FT UNIMMA</span>
-        </div>
-        <div>
-          <h1 className="adm-h1">Admin Program Kerja</h1>
-          <p className="adm-cardsubtitle">
-            Masuk khusus email admin. Anggota? Absen di{" "}
-            <a href="/absen" style={{ color: "var(--color-blue-3)" }}>
-              /absen
-            </a>
-            .
-          </p>
-        </div>
+          <img src="/logo.png" alt="BEM FT" />
+          <span>BEM FT UNIMMA</span>
+        </Link>
+        <h1>Admin BEM FT</h1>
+        <p>Masuk khusus email admin — kelola proker, info, pengurus & rekap absensi. Anggota? Absen di <a href="/absen" style={{ color: "var(--color-blue-3)", fontWeight: 600 }}> /absen</a>.</p>
+      </div>
+      <form onSubmit={submit} className="abs-kartu abs-kartu--login" style={{ gap: 16 }}>
         <label>
           Email
           <input
@@ -199,9 +213,10 @@ function Login() {
             onChange={(e) => setPw(e.target.value)}
           />
         </label>
-        {err && <p className="adm-err">{err}</p>}
-        <button className="adm-btn full" type="submit">
-          Masuk
+        {err && <p className="adm-err" style={{ margin: 0 }}>{err}</p>}
+        <button className="adm-btn full abs-cta" type="submit" style={{ justifyContent: "center" }}>
+          <span>Masuk</span>
+          <span aria-hidden>→</span>
         </button>
       </form>
     </div>

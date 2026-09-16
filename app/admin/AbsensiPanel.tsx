@@ -15,7 +15,6 @@ import { db } from "@/lib/firebase";
 import { ABS_GRACE_MIN } from "@/lib/konfig";
 import { fmtJam, csvUnduh, type Sesi, type AbsenRecord } from "@/lib/absen";
 
-type Jadwal = { id: string; judul: string; jam: string; durasi: number };
 type Anggota = { email: string; nama: string };
 
 const STATUS_LABEL: Record<string, string> = {
@@ -25,42 +24,15 @@ const STATUS_LABEL: Record<string, string> = {
   alpha: "Alpha",
 };
 
-function jamKeTimestamp(jam: string, base = new Date()): Timestamp | null {
-  const [h, m] = jam.split(":").map(Number);
-  if (Number.isNaN(h) || Number.isNaN(m)) return null;
-  const d = new Date(base);
-  d.setHours(h, m, 0, 0);
-  return Timestamp.fromDate(d);
-}
-
 export function AbsensiPanel() {
-  const [jadwal, setJadwal] = useState<Jadwal[]>([]);
   const [sesi, setSesi] = useState<Sesi[]>([]);
   const [anggota, setAnggota] = useState<Anggota[]>([]);
   const [absAll, setAbsAll] = useState<AbsenRecord[]>([]);
   const [pilih, setPilih] = useState("");
   const [errs, setErrs] = useState("");
 
-  const [jJudul, setJJudul] = useState("");
-  const [jJam, setJJam] = useState("19:00");
-  const [jDurasi, setJDurasi] = useState(120);
   const [sJudul, setSJudul] = useState("");
   const [sWaktu, setSWaktu] = useState("");
-
-  useEffect(
-    () =>
-      onSnapshot(collection(db!, "jadwal"), (s) =>
-        setJadwal(
-          s.docs.map((x) => ({
-            id: x.id,
-            judul: (x.data().judul as string) ?? "",
-            jam: (x.data().jam as string) ?? "19:00",
-            durasi: Number(x.data().durasi ?? 120),
-          })),
-        ),
-      ),
-    [],
-  );
   useEffect(
     () =>
       onSnapshot(collection(db!, "sesi"), (s) =>
@@ -111,65 +83,54 @@ export function AbsensiPanel() {
     () => Object.fromEntries(sesi.map((s) => [s.id, s])),
     [sesi],
   );
-  const totalSesi = sesi.length;
+
+  function spDariAlpha(n: number): string {
+    if (n >= 5) return "SP 3";
+    if (n === 4) return "SP 2";
+    if (n === 3) return "SP 1";
+    return "—";
+  }
 
   const perAnggota = useMemo(() => {
     const map = new Map<
       string,
-      { nama: string; hadir: number; telat: number; ijin: number; alpha: number }
+      { nama: string; hadir: number; telat: number; ijin: number; alpha: number; sp: string }
     >();
     for (const a of anggota)
-      map.set(a.email, { nama: a.nama, hadir: 0, telat: 0, ijin: 0, alpha: 0 });
+      map.set(a.email, { nama: a.nama, hadir: 0, telat: 0, ijin: 0, alpha: 0, sp: "—" });
+
+    // hitung dari record eksplisit
+    const hadirPerEmail = new Map<string, Set<string>>();
     for (const r of absAll) {
       const baris =
         map.get(r.email) ??
-        { nama: r.nama || r.email, hadir: 0, telat: 0, ijin: 0, alpha: 0 };
+        { nama: r.nama || r.email, hadir: 0, telat: 0, ijin: 0, alpha: 0, sp: "—" };
       if (r.status === "hadir") baris.hadir++;
       else if (r.status === "telat") baris.telat++;
       else if (r.status === "ijin") baris.ijin++;
       else if (r.status === "alpha") baris.alpha++;
       map.set(r.email, baris);
+      if (!hadirPerEmail.has(r.email)) hadirPerEmail.set(r.email, new Set());
+      hadirPerEmail.get(r.email)!.add(r.sesiId);
     }
+
+    // auto-alpha: sesi tutup tanpa record = alpha
+    const tutupIds = sesi.filter((s) => s.status === "tutup").map((s) => s.id);
+    for (const [email, baris] of map) {
+      const punya = hadirPerEmail.get(email) ?? new Set<string>();
+      let auto = 0;
+      for (const id of tutupIds) if (!punya.has(id)) auto++;
+      baris.alpha += auto;
+      baris.sp = spDariAlpha(baris.alpha);
+    }
+
     return [...map.entries()].sort(
       (a, b) =>
-        b[1].hadir +
-        b[1].telat -
-        (a[1].hadir + a[1].telat) ||
+        b[1].alpha - a[1].alpha || // SP paling tinggi di atas biar kepantau
+        b[1].hadir + b[1].telat - (a[1].hadir + a[1].telat) ||
         a[1].nama.localeCompare(b[1].nama),
     );
-  }, [anggota, absAll]);
-
-  async function tambahJadwal(e: FormEvent) {
-    e.preventDefault();
-    if (!jJudul.trim()) return;
-    try {
-      await addDoc(collection(db!, "jadwal"), {
-        judul: jJudul.trim(),
-        jam: jJam,
-        durasi: Number(jDurasi) || 120,
-      });
-      setJJudul("");
-    } catch {
-      setErrs("Gagal tambah jadwal — cek rules.");
-    }
-  }
-
-  async function bukaSesiJadwal(j: Jadwal) {
-    setErrs("");
-    const mulai = jamKeTimestamp(j.jam);
-    if (!mulai) return setErrs("Format jam jadwal tidak valid.");
-    try {
-      await addDoc(collection(db!, "sesi"), {
-        judul: j.judul,
-        jadwalId: j.id,
-        durasiMenit: Number(j.durasi) || 120,
-        mulai,
-        status: "buka",
-      });
-    } catch {
-      setErrs("Gagal membuka sesi.");
-    }
-  }
+  }, [anggota, absAll, sesi]);
 
   async function tambahSesiManual(e: FormEvent) {
     e.preventDefault();
@@ -234,9 +195,7 @@ export function AbsensiPanel() {
   function exportSesi() {
     if (!pilih) return setErrs("Pilih dulu sesinya.");
     const s = sesiById[pilih];
-    const rows: (string | number)[][] = [
-      ["nama", "email", "status", "masuk", "keluar"],
-    ];
+    const rows: (string | number)[][] = [["nama", "email", "status", "masuk"]];
     for (const a of anggota) {
       const r = absSesi.find((x) => x.email === a.email);
       rows.push([
@@ -244,21 +203,15 @@ export function AbsensiPanel() {
         a.email,
         r ? STATUS_LABEL[r.status] ?? r.status : "BELUM ABSEN",
         r?.masukJam ? fmtJam(r.masukJam) : "—",
-        r?.keluarJam ? fmtJam(r.keluarJam) : "—",
       ]);
     }
     csvUnduh(`absen-${(s?.judul ?? "sesi").replace(/\s+/g, "-")}.csv`, rows);
   }
 
   function exportRekap() {
-    const rows: (string | number)[][] = [
-      ["nama", "email", "hadir", "telat", "ijin", "alpha", "persentase"],
-    ];
+    const rows: (string | number)[][] = [["nama", "email", "hadir", "telat", "ijin", "alpha", "sp"]];
     for (const [email, x] of perAnggota) {
-      const pct = totalSesi
-        ? Math.round(((x.hadir + x.telat) / totalSesi) * 100)
-        : 0;
-      rows.push([x.nama, email, x.hadir, x.telat, x.ijin, x.alpha, `${pct}%`]);
+      rows.push([x.nama, email, x.hadir, x.telat, x.ijin, x.alpha, x.sp]);
     }
     csvUnduh("rekap-kehadiran.csv", rows);
   }
@@ -268,79 +221,12 @@ export function AbsensiPanel() {
     [absSesi],
   );
 
+  const sesiBuka = useMemo(() => sesi.filter((s) => s.status === "buka"), [sesi]);
+  const sesiTutup = useMemo(() => sesi.filter((s) => s.status === "tutup"), [sesi]);
+
   return (
     <>
-      {/* ---------- JADWAL RUTIN ---------- */}
-      <form onSubmit={tambahJadwal} className="adm-card">
-        <h2 className="adm-cardtitle">Jadwal Rutin</h2>
-        <p className="adm-cardsubtitle">
-          Sekali isi, tinggal klik “Buka sesi hari ini” tiap minggu — tanpa
-          diketik ulang.
-        </p>
-        <div className="adm-grid3">
-          <label>
-            Judul
-            <input
-              className="adm-in"
-              required
-              placeholder="Rapat Pleno"
-              value={jJudul}
-              onChange={(e) => setJJudul(e.target.value)}
-            />
-          </label>
-          <label>
-            Jam mulai
-            <input
-              className="adm-in"
-              type="time"
-              value={jJam}
-              onChange={(e) => setJJam(e.target.value)}
-            />
-          </label>
-          <label>
-            Durasi (menit)
-            <input
-              className="adm-in"
-              type="number"
-              min={15}
-              value={jDurasi}
-              onChange={(e) => setJDurasi(Number(e.target.value))}
-            />
-          </label>
-        </div>
-        <div className="adm-row">
-          <button className="adm-btn" type="submit">
-            + Jadwal
-          </button>
-        </div>
-      </form>
-
-      <div className="adm-list">
-        {jadwal.map((j) => (
-          <div key={j.id} className="adm-item">
-            <div>
-              <strong>{j.judul}</strong>
-              <small>
-                {j.jam} WIB · {j.durasi} menit
-              </small>
-            </div>
-            <div className="adm-row">
-              <button className="adm-btn small" onClick={() => bukaSesiJadwal(j)}>
-                Buka sesi hari ini
-              </button>
-              <button
-                className="adm-btn small danger"
-                onClick={() => deleteDoc(doc(db!, "jadwal", j.id))}
-              >
-                ✕
-              </button>
-            </div>
-          </div>
-        ))}
-        {!jadwal.length && <p className="adm-note">Belum ada jadwal rutin.</p>}
-      </div>
-
-      {/* ---------- DAFTAR SESI ---------- */}
+      {/* ---------- DAFTAR SESI AKTIF ---------- */}
       <form onSubmit={tambahSesiManual} className="adm-card">
         <h2 className="adm-cardtitle">Sesi Absen</h2>
         <p className="adm-cardsubtitle">
@@ -375,42 +261,54 @@ export function AbsensiPanel() {
         </div>
       </form>
 
-      <div className="adm-list">
-        {sesi.slice(0, 30).map((s) => (
-          <div key={s.id} className="adm-item">
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <strong>{s.judul}</strong>{" "}
-              {pilih === s.id && <span className="adm-badge aktif">dibuka</span>}
-              <small>{fmtJam(s.mulai)}</small>
+      <div className="adm-list" style={{ marginBottom: 28 }}>
+        {sesiBuka.slice(0, 30).map((s) => {
+          const aktif = pilih === s.id;
+          return (
+            <div key={s.id} className={`adm-item${aktif ? " on" : ""}`}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                  <strong>{s.judul}</strong>
+                  <span className="adm-badge aktif">buka</span>
+                  {aktif && <span className="adm-badge" style={{ background: "var(--color-blue-3)", color: "#fff" }}>rekap</span>}
+                </div>
+                <small>{fmtJam(s.mulai)}</small>
+              </div>
+              <div className="adm-row adm-item-actions">
+                <button className="adm-btn small ghost" onClick={() => toggleSesi(s)}>
+                  Tutup
+                </button>
+                <button
+                  className={`adm-btn small ${aktif ? "" : "ghost"}`}
+                  onClick={() => setPilih(aktif ? "" : s.id)}
+                >
+                  {aktif ? "Tutup" : "Rekap"}
+                </button>
+                <button
+                  className="adm-btn small danger"
+                  onClick={() => hapusSesi(s)}
+                  aria-label="Hapus sesi"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
-            <div className="adm-row">
-              <span
-                className={`adm-badge ${s.status === "buka" ? "aktif" : "draft"}`}
-              >
-                {s.status === "buka" ? "buka" : "tutup"}
-              </span>
-              <button
-                className="adm-btn small ghost"
-                onClick={() => toggleSesi(s)}
-              >
-                {s.status === "buka" ? "Tutup" : "Buka"}
-              </button>
-              <button
-                className="adm-btn small ghost"
-                onClick={() => setPilih(pilih === s.id ? "" : s.id)}
-              >
-                {pilih === s.id ? "Tutup rekap" : "Rekap"}
-              </button>
-              <button
-                className="adm-btn small danger"
-                onClick={() => hapusSesi(s)}
-              >
-                Hapus ✕
-              </button>
-            </div>
+          );
+        })}
+        {!sesiBuka.length && (
+          <div
+            style={{
+              background: "var(--color-grey-5)",
+              border: "1px dashed var(--color-light)",
+              borderRadius: 16,
+              padding: "20px 16px",
+              textAlign: "center",
+            }}
+          >
+            <div style={{ fontWeight: 700, color: "var(--color-blue-1)", fontSize: 14 }}>Belum ada sesi aktif</div>
+            <div style={{ fontSize: 12, color: "var(--color-grey-3)", marginTop: 4 }}>Buat sesi baru di atas — riwayat sesi tutup ada di bawah.</div>
           </div>
-        ))}
-        {!sesi.length && <p className="adm-note">Belum ada sesi.</p>}
+        )}
       </div>
 
       {/* ---------- REKAP SATU SESI ---------- */}
@@ -431,7 +329,6 @@ export function AbsensiPanel() {
                   <th>Nama</th>
                   <th>Status</th>
                   <th>Masuk</th>
-                  <th>Keluar</th>
                   <th>Ubah</th>
                 </tr>
               </thead>
@@ -462,10 +359,9 @@ export function AbsensiPanel() {
                         </span>
                       </td>
                       <td>{r?.masukJam ? fmtJam(r.masukJam) : "—"}</td>
-                      <td>{r?.keluarJam ? fmtJam(r.keluarJam) : "—"}</td>
                       <td>
                         <select
-                          className="adm-in adm-in-sm"
+                          className={`adm-in adm-in-sm adm-select--${r?.status ?? "empty"}`}
                           value={r?.status ?? ""}
                           onChange={(e) => {
                             const v = e.target.value as AbsenRecord["status"];
@@ -473,7 +369,7 @@ export function AbsensiPanel() {
                           }}
                         >
                           <option value="" disabled>
-                            —
+                            Ubah…
                           </option>
                           {Object.entries(STATUS_LABEL).map(([k, label]) => (
                             <option key={k} value={k}>
@@ -503,7 +399,7 @@ export function AbsensiPanel() {
           </button>
         </div>
         <p className="adm-cardsubtitle">
-          Persentase = (hadir + telat) / total sesi ({totalSesi} sesi)
+          Alpha dihitung otomatis untuk sesi <b>tutup</b> tanpa absen · SP 1 di 3× alpha, SP 2 di 4×, SP 3 di ≥5×
         </p>
         <div className="adm-rekap">
           <table>
@@ -514,30 +410,50 @@ export function AbsensiPanel() {
                 <th>Telat</th>
                 <th>Ijin</th>
                 <th>Alpha</th>
-                <th>Persentase</th>
+                <th>SP</th>
               </tr>
             </thead>
             <tbody>
-              {perAnggota.map(([email, x]) => {
-                const pct = totalSesi
-                  ? Math.round(((x.hadir + x.telat) / totalSesi) * 100)
-                  : 0;
-                return (
-                  <tr key={email}>
-                    <td>{x.nama}</td>
-                    <td>{x.hadir}</td>
-                    <td>{x.telat}</td>
-                    <td>{x.ijin}</td>
-                    <td>{x.alpha}</td>
-                    <td>
-                      <span className="adm-prog">
-                        <span style={{ width: `${pct}%` }} />
-                      </span>{" "}
-                      {pct}%
-                    </td>
-                  </tr>
-                );
-              })}
+              {perAnggota.map(([email, x]) => (
+                <tr key={email} className={x.sp !== "—" ? "row-sp" : ""}>
+                  <td>
+                    <div>{x.nama}</div>
+                    <small
+                      style={{
+                        color: "var(--color-grey-3)",
+                        fontWeight: 400,
+                        fontSize: 11,
+                      }}
+                    >
+                      {email}
+                    </small>
+                  </td>
+                  <td>{x.hadir}</td>
+                  <td>{x.telat}</td>
+                  <td>{x.ijin}</td>
+                  <td>
+                    <span className={`adm-badge ${x.alpha >= 3 ? "draft" : ""}`} style={x.alpha >= 3 ? { background: "#fee2e2", color: "#991b1b", border: "1px solid #fecaca" } : undefined}>
+                      {x.alpha}
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      className={`adm-badge ${x.sp === "—" ? "draft" : x.sp === "SP 1" ? "aktif" : x.sp === "SP 2" ? "telat" : "draft"}`}
+                      style={
+                        x.sp === "SP 3"
+                          ? { background: "#991b1b", color: "#fff" }
+                          : x.sp === "SP 2"
+                            ? { background: "#fee2e2", color: "#991b1b", border: "1px solid #fecaca" }
+                            : x.sp === "SP 1"
+                              ? { background: "#fef3c7", color: "#92400e", border: "1px solid #fde68a" }
+                              : undefined
+                      }
+                    >
+                      {x.sp}
+                    </span>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
           {!perAnggota.length && (
@@ -545,6 +461,48 @@ export function AbsensiPanel() {
           )}
         </div>
         {errs && <p className="adm-err">{errs}</p>}
+      </div>
+
+      {/* ---------- RIWAYAT RAPAT — SESI DITUTUP ---------- */}
+      <div className="adm-card">
+        <h2 className="adm-cardtitle">Riwayat Rapat — Sesi Ditutup</h2>
+        <p className="adm-cardsubtitle">Arsip sesi yang sudah ditutup. Tetap bisa lihat rekap atau buka lagi jika perlu.</p>
+        <div className="adm-list" style={{ marginTop: 16 }}>
+          {sesiTutup.slice(0, 50).map((s) => {
+            const aktif = pilih === s.id;
+            return (
+              <div key={s.id} className={`adm-item${aktif ? " on" : ""}`} style={{ opacity: aktif ? 1 : 0.92 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                    <strong>{s.judul}</strong>
+                    <span className="adm-badge draft">tutup</span>
+                    {aktif && <span className="adm-badge" style={{ background: "var(--color-blue-3)", color: "#fff" }}>rekap</span>}
+                  </div>
+                  <small>{fmtJam(s.mulai)}</small>
+                </div>
+                <div className="adm-row adm-item-actions">
+                  <button className="adm-btn small ghost" onClick={() => toggleSesi(s)}>
+                    Buka lagi
+                  </button>
+                  <button
+                    className={`adm-btn small ${aktif ? "" : "ghost"}`}
+                    onClick={() => setPilih(aktif ? "" : s.id)}
+                  >
+                    {aktif ? "Tutup" : "Rekap"}
+                  </button>
+                  <button
+                    className="adm-btn small danger"
+                    onClick={() => hapusSesi(s)}
+                    aria-label="Hapus sesi"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+          {!sesiTutup.length && <p className="adm-note">Belum ada riwayat — sesi yang ditutup akan muncul di sini.</p>}
+        </div>
       </div>
     </>
   );

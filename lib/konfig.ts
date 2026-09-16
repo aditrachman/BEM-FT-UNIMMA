@@ -16,4 +16,4 @@ export const WA_LINK = `https://wa.me/${WA_HUMAS}?text=${encodeURIComponent(
 )}`;
 
 // Absensi internal: toleransi telat (menit setelah jam mulai)
-export const ABS_GRACE_MIN = 5;
+export const ABS_GRACE_MIN = 30;
