@@ -250,7 +250,7 @@ export default function TentangKamiContent() {
                     kami untuk pembaruan.
                   </p>
                 ) : ketua ? (
-                  <div className="tt-org-wrapper" style={{ overflowX: "auto" }}>
+                  <div className="tt-org-wrapper">
                     {/* ---- Blok BPH: Ketua -> Wakil -> cabang (Sekretaris/Bendahara) ---- */}
                     <ul className="tt-tree">
                       <li>

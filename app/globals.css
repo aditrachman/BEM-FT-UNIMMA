@@ -10585,22 +10585,33 @@ textarea.adm-in {
 }
 
 .tt-dept-title {
-  font-size: 18px;
+  display: inline-block;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: -.01em;
-  color: var(--color-blue-1);
-  margin: 0 0 18px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--color-blue-2);
+  background: var(--color-blue-7);
+  border: 1px solid var(--color-blue-5);
+  border-radius: 99px;
+  padding: 8px 20px;
+  margin: 0 0 20px;
   text-align: center
 }
 
 .tt-dept--root .tt-dept-title {
-  font-size: 22px
+  font-size: 14px;
+  color: var(--color-white);
+  background: var(--color-blue-2);
+  border-color: var(--color-blue-2);
+  box-shadow: 0 8px 18px -10px rgba(56, 32, 153, .6)
 }
 
 .tt-connector {
   width: 2px;
   height: 50px;
   background: var(--color-blue-5);
+  border-radius: 2px;
   opacity: .55
 }
 
@@ -10620,18 +10631,21 @@ textarea.adm-in {
 
 .tt-person {
   background: var(--color-white);
-  border: 1px solid var(--color-light);
   border-radius: 22px;
   padding: 18px;
   text-align: center;
   box-shadow: 0 2px 8px -2px #21164c14;
-  transition: border-color .15s linear, transform .18s var(--ease-OutCubic), box-shadow .18s linear
+  transition: transform .18s var(--ease-OutCubic), box-shadow .18s linear
 }
 
 .tt-person:hover {
-  border-color: var(--color-blue-5);
   transform: translateY(-4px);
   box-shadow: 0 12px 24px -12px rgba(33, 22, 76, .18)
+}
+
+/* pimpinan tampil featured */
+.tt-dept--root .tt-person {
+  box-shadow: 0 10px 24px -12px rgba(56, 32, 153, .35)
 }
 
 .tt-foto {
@@ -10670,8 +10684,33 @@ textarea.adm-in {
 }
 
 .tt-jabatan {
-  font-size: 13px;
-  color: var(--color-grey-3)
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-blue-2);
+  background: var(--color-blue-7);
+  border-radius: 99px;
+  padding: 3px 12px;
+  margin-top: 6px
+}
+
+/* mobile: grid 2 kolom biar rapi */
+@media (max-width: 640px) {
+  .tt-grid {
+    gap: 14px
+  }
+  .tt-grid .tt-person {
+    width: calc(50% - 7px);
+    max-width: 205px;
+    padding: 14px 10px
+  }
+  .tt-grid .tt-foto {
+    width: 76px;
+    height: 76px
+  }
+  .tt-grid .tt-nama {
+    font-size: 14px
+  }
 }
 
 /* ruang kosong sebelum footer biar washi-tape tidak menutupi kartu terakhir */
@@ -11331,7 +11370,8 @@ body.nav-hide .header-module-scss-module__N7vucW__wrapper {
 .tt-org-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch; /* anak butuh lebar terbatas biar overflow-x:auto kepicu */
+  width: 100%;
 }
 
 .tt-org-connector {
@@ -11344,13 +11384,21 @@ body.nav-hide .header-module-scss-module__N7vucW__wrapper {
 .tt-dept-row {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
+  justify-content: safe center; /* ujung kiri tetap terjangkau saat konten meluber */
+  align-items: flex-start; /* kolom beda tinggi tetap rata dari atas */
+  flex-wrap: nowrap;       /* jangan wrap - garis penghubung cuma valid 1 baris */
   gap: 8px 32px;
+  overflow-x: auto;        /* kalau kepanjangan, scroll ke samping */
+  min-width: 0; /* JANGAN max-content: bikin row selebar konten, scroll internal mati */
+  max-width: 100%;
+  padding-bottom: 8px;
 }
 
 .tt-dept-block {
   position: relative;
   padding-top: 24px;
+  min-width: 130px;
+  flex: 0 0 auto;
 }
 .tt-dept-block::before,
 .tt-dept-block::after {
@@ -11385,4 +11433,78 @@ body.nav-hide .header-module-scss-module__N7vucW__wrapper {
 }
 .tt-dept-block:first-child::after {
   border-radius: 6px 0 0 0;
+}
+
+/* ===== Mobile: susun vertikal + wrap, tanpa scroll samping ===== */
+@media (max-width: 640px) {
+  /* departemen ditumpuk ke bawah, bukan di-scroll ke samping */
+  .tt-dept-row {
+    flex-direction: column;
+    align-items: stretch;
+    overflow: visible;
+    min-width: 0;
+    max-width: none;
+    padding: 0;
+    gap: 20px;
+  }
+  .tt-dept-block {
+    min-width: 0;
+    padding-top: 0;
+  }
+  .tt-org-connector {
+    align-self: center;
+  }
+
+  /* garis pohon dimatikan di mobile: garis horizontal cuma valid
+     untuk satu baris lurus — hierarki diganti jarak + judul */
+  .tt-dept-block::before,
+  .tt-dept-block::after,
+  .tt-tree li::before,
+  .tt-tree li::after,
+  .tt-tree ul::before {
+    display: none;
+  }
+
+  /* baris sejawat (sekretaris/bendahara/staff) wrap jadi grid rapi */
+  .tt-tree ul {
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow: visible;
+    max-width: none;
+    gap: 12px;
+    padding: 12px 0 0;
+  }
+  .tt-tree li {
+    padding: 0;
+  }
+
+  /* spacer scroll tidak dipakai lagi */
+  .tt-dept-row::after,
+  .tt-tree ul::after {
+    display: none;
+  }
+
+  /* card 150px: cabang 2x2, staff 2-3 sebaris, ketua/wakil/kadiv center */
+  .tt-tree .tt-person {
+    width: 150px;
+    flex: none;
+    background: var(--color-white);
+    border-radius: 22px;
+    padding: 18px;
+    text-align: center;
+  }
+  .tt-tree .tt-foto {
+    width: 64px;
+    height: 64px;
+    flex: none;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--color-bg)
+  }
+  .tt-tree .tt-nama {
+    font-size: 0.75rem;
+  }
+  .tt-tree .tt-jabatan {
+    font-size: 0.65rem;
+  }
 }
