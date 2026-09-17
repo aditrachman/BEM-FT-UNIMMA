@@ -11224,3 +11224,165 @@ body.nav-hide .header-module-scss-module__N7vucW__wrapper {
     font-size: 13px
   }
 }
+
+/* ===== Org chart tree (pure CSS, tanpa library) ===== */
+.tt-tree,
+.tt-tree ul,
+.tt-tree li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.tt-tree {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0 24px;
+}
+
+.tt-tree ul {
+  display: flex;
+  padding-top: 24px;
+}
+
+.tt-tree li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 14px 0;
+  position: relative;
+}
+
+/* garis horizontal (dipecah kiri/kanan per anak) */
+.tt-tree li::before,
+.tt-tree li::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 50%;
+  width: 50%;
+  height: 24px;
+  border-top: 1.5px solid currentColor;
+  opacity: 0.4;
+}
+.tt-tree li::after {
+  right: auto;
+  left: 50%;
+  border-left: 1.5px solid currentColor;
+}
+
+/* anak tunggal: cukup garis vertikal lurus, tanpa cabang horizontal */
+.tt-tree li:only-child {
+  padding-top: 0;
+}
+.tt-tree li:only-child::before,
+.tt-tree li:only-child::after {
+  display: none;
+}
+
+/* rapikan ujung kiri & kanan garis horizontal */
+.tt-tree li:first-child::before {
+  border: none;
+}
+.tt-tree li:last-child::after {
+  border: none;
+}
+.tt-tree li:last-child::before {
+  border-right: 1.5px solid currentColor;
+  border-radius: 0 6px 0 0;
+}
+.tt-tree li:first-child::after {
+  border-radius: 6px 0 0 0;
+}
+
+/* node paling atas (root) tidak butuh cabang ke atas */
+.tt-tree > li {
+  padding-top: 0;
+}
+.tt-tree > li::before,
+.tt-tree > li::after {
+  display: none;
+}
+
+/* garis vertikal turun dari parent ke bus horizontal anak-anaknya */
+.tt-tree ul::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 24px;
+  border-left: 1.5px solid currentColor;
+  opacity: 0.4;
+}
+
+.tt-dept-col-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+/* ===== Blok BPH di atas, blok departemen di bawah (dua tingkat terpisah) ===== */
+.tt-org-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tt-org-connector {
+  width: 0;
+  height: 24px;
+  border-left: 1.5px solid currentColor;
+  opacity: 0.4;
+}
+
+.tt-dept-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 32px;
+}
+
+.tt-dept-block {
+  position: relative;
+  padding-top: 24px;
+}
+.tt-dept-block::before,
+.tt-dept-block::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 24px;
+  border-top: 1.5px solid currentColor;
+  opacity: 0.4;
+}
+.tt-dept-block::before {
+  right: 50%;
+}
+.tt-dept-block::after {
+  left: 50%;
+  border-left: 1.5px solid currentColor;
+}
+.tt-dept-block:only-child::before,
+.tt-dept-block:only-child::after {
+  display: none;
+}
+.tt-dept-block:first-child::before {
+  border: none;
+}
+.tt-dept-block:last-child::after {
+  border: none;
+}
+.tt-dept-block:last-child::before {
+  border-right: 1.5px solid currentColor;
+  border-radius: 0 6px 0 0;
+}
+.tt-dept-block:first-child::after {
+  border-radius: 6px 0 0 0;
+}

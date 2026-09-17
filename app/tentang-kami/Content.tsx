@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { imageUrlTampil } from "@/lib/imageUrl";
@@ -48,6 +48,63 @@ function PersonFoto({ nama, url }: { nama: string; url: string }) {
       onError={() => setGagal(true)}
     />
   );
+}
+
+function PersonCard({ p }: { p: Pengurus }) {
+  return (
+    <div className="tt-person">
+      <div className="tt-foto">
+        <PersonFoto nama={p.nama} url={p.foto_url} />
+      </div>
+      <strong className="tt-nama">{p.nama}</strong>
+      <span className="tt-jabatan">{p.jabatan}</span>
+    </div>
+  );
+}
+
+// tier 0 = ketua/kadiv, 1 = wakil/wakadiv, 2 = staff/anggota
+// sesuaikan kata kunci di sini kalau penamaan jabatan kalian beda
+function tierOf(jabatan: string): 0 | 1 | 2 {
+  if (/ketua|kadiv|koordinator/i.test(jabatan)) return 0;
+  if (/wakil|wakadiv/i.test(jabatan)) return 1;
+  return 2;
+}
+
+function DeptTree({ list }: { list: Pengurus[] }) {
+  const tiers: Pengurus[][] = [[], [], []];
+  for (const p of list) tiers[tierOf(p.jabatan)].push(p);
+  tiers.forEach((t) => t.sort((a, b) => a.urutan - b.urutan));
+
+  const renderTier = (i: number): ReactNode => {
+    const tier = tiers[i];
+    if (!tier.length) return i < 2 ? renderTier(i + 1) : null;
+
+    if (tier.length === 1) {
+      const rest = i < 2 ? renderTier(i + 1) : null;
+      return (
+        <>
+          <PersonCard p={tier[0]} />
+          {rest && (
+            <ul>
+              <li>{rest}</li>
+            </ul>
+          )}
+        </>
+      );
+    }
+    // lebih dari satu orang di tier ini -> jadi anak sejajar, tidak ada lanjutan di bawahnya
+    return (
+      <ul>
+        {tier.map((p) => (
+          <li key={p.id}>
+            <PersonCard p={p} />
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
+  return <>{renderTier(0)}</>;
 }
 
 export default function TentangKamiContent() {
@@ -101,6 +158,13 @@ export default function TentangKamiContent() {
     if (ar !== br) return ar ? -1 : 1;
     return a[0].localeCompare(b[0]);
   });
+
+  const rootEntry = deptEntries.find(([d]) => isRoot(d));
+  const rootList = rootEntry ? rootEntry[1] : [];
+  const ketua = rootList[0];
+  const wakil = rootList[1];
+  const branchNodes = rootList.slice(2);
+  const deptColumns = deptEntries.filter(([d]) => d !== rootEntry?.[0]);
 
   return (
     <>
@@ -185,30 +249,51 @@ export default function TentangKamiContent() {
                     Data kepengurusan sedang disusun. Pantau terus media sosial
                     kami untuk pembaruan.
                   </p>
-                ) : (
-                  <div className="tt-chart">
-                    {deptEntries.map(([dep, list], idx) => (
-                      <div
-                        key={dep}
-                        className={"tt-dept" + (idx === 0 ? " tt-dept--root" : "")}
-                      >
-                        {idx > 0 && <div className="tt-connector" aria-hidden="true" />}
-                        <h3 className="tt-dept-title">{dep}</h3>
-                        <div className="tt-grid">
-                          {list.map((p) => (
-                            <div key={p.id} className="tt-person">
-                              <div className="tt-foto">
-                                <PersonFoto nama={p.nama} url={p.foto_url} />
-                              </div>
-                              <strong className="tt-nama">{p.nama}</strong>
-                              <span className="tt-jabatan">{p.jabatan}</span>
+                ) : ketua ? (
+                  <div className="tt-org-wrapper" style={{ overflowX: "auto" }}>
+                    {/* ---- Blok BPH: Ketua -> Wakil -> cabang (Sekretaris/Bendahara) ---- */}
+                    <ul className="tt-tree">
+                      <li>
+                        <PersonCard p={ketua} />
+                        {wakil && (
+                          <ul>
+                            <li>
+                              <PersonCard p={wakil} />
+                              {branchNodes.length > 0 && (
+                                <ul>
+                                  {branchNodes.map((p) => (
+                                    <li key={p.id}>
+                                      <PersonCard p={p} />
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </li>
+                          </ul>
+                        )}
+                      </li>
+                    </ul>
+
+                    {/* ---- Blok departemen: baris terpisah di bawah BPH ---- */}
+                    {deptColumns.length > 0 && (
+                      <>
+                        <div className="tt-org-connector" aria-hidden="true" />
+                        <div className="tt-dept-row">
+                          {deptColumns.map(([dep, list]) => (
+                            <div key={dep} className="tt-dept-block">
+                              <div className="tt-dept-col-title">{dep}</div>
+                              <ul className="tt-tree tt-tree--dept" style={{ paddingTop: 0 }}>
+                                <li style={{ paddingTop: 0 }}>
+                                  <DeptTree list={list} />
+                                </li>
+                              </ul>
                             </div>
                           ))}
                         </div>
-                      </div>
-                    ))}
+                      </>
+                    )}
                   </div>
-                )}
+                ) : null}
               </div>
             </section>
           </div>
