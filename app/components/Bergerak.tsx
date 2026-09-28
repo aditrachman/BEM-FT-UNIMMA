@@ -8,7 +8,7 @@ export default function Bergerak() {
               <div className="imagetextblock-module-scss-module__1jYUnW__content">
                 <div>
                   <div className="imagetextblock-module-scss-module__1jYUnW__head">
-                    <h3>Bergerak untuk Fakultas Teknik yang Lebih Baik</h3>
+                    <h2>Bergerak untuk Fakultas Teknik yang Lebih Baik</h2>
                   </div>
                   <div className="imagetextblock-module-scss-module__1jYUnW__copy">
                     <div className="font-medium">

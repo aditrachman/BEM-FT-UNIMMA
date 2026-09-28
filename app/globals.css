@@ -656,6 +656,40 @@ h4 {
   }
 }
 
+/* Semantic heading fixes (a11y order) keep the old visual sizes here:
+   Bergerak title was h3, feature/rekrutmen card titles were h4. */
+.imagetextblock-module-scss-module__1jYUnW__head h2 {
+  font-size: 38px
+}
+
+@media (max-width:1025px) {
+  .imagetextblock-module-scss-module__1jYUnW__head h2 {
+    font-size: 32px
+  }
+}
+
+@media (max-width:640px) {
+  .imagetextblock-module-scss-module__1jYUnW__head h2 {
+    font-size: 28px
+  }
+}
+
+.featurecards-module-scss-module__x7M58W__head h3 {
+  font-size: 28px
+}
+
+@media (max-width:1025px) {
+  .featurecards-module-scss-module__x7M58W__head h3 {
+    font-size: 24px
+  }
+}
+
+@media (max-width:640px) {
+  .featurecards-module-scss-module__x7M58W__head h3 {
+    font-size: 20px
+  }
+}
+
 h5 {
   font-size: 24px
 }
@@ -937,11 +971,13 @@ button {
 }
 
 .color-pink-3 {
-  color: var(--color-pink-3)
+  /* darkened variant of --color-pink-3 for text: passes WCAG 4.5:1
+     on the light background (original #f843c2 is only 3.03) */
+  color: #d50898
 }
 
 .color-pink-3 svg * {
-  fill: var(--color-pink-3)
+  fill: #d50898
 }
 
 .color-pink-4 {
@@ -10161,7 +10197,8 @@ textarea.adm-in {
   bottom: -18px;
   font-size: 11px;
   font-weight: 400;
-  color: var(--color-grey-4)
+  /* WCAG 4.5:1 on white — grey-4 was nearly invisible (1.32) */
+  color: #6f6f6f
 }
 
 .asp-submit {
