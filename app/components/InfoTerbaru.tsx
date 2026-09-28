@@ -95,6 +95,7 @@ export default function InfoTerbaru() {
                   src={imageUrlTampil(i.gambar)}
                   alt={i.judul}
                   loading="lazy"
+                  referrerPolicy="no-referrer"
                 />
               )}
               <time className="info-date">{i.tanggal}</time>

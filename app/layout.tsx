@@ -54,7 +54,6 @@ export default function RootLayout({
   return (
     <html lang="id" style={{ "--app-height": "738px" } as React.CSSProperties}>
       <head>
-        <link rel="preload" href="/icons/nav-arrow.svg" as="image" />
         {/* hero + logo preload ditangani next/image (priority / loading eager) */}
         <script
           type="application/ld+json"

@@ -90,7 +90,12 @@ useEffect(() => {
                     src={imageUrlTampil(post.imageUrl)}
                     width={1200}
                     height={675}
-                    className="aspect-video w-full rounded-2xl bg-gray-100 object-cover sm:aspect-2/1 lg:aspect-3/2"
+                    // ponytail: h-auto biar aspect-ratio CSS menang (height attr
+                    // jadi presentational hint = fixed 675px tanpa ini);
+                    // no-referrer biar lh3 Google gak balas 429 utk referer
+                    // localhost (429 HTML → diblokir Chromium ORB).
+                    referrerPolicy="no-referrer"
+                    className="aspect-video w-full rounded-2xl bg-gray-100 object-cover sm:aspect-2/1 lg:aspect-3/2 h-auto"
                   />
                 ) : (
                   <div className="aspect-video w-full rounded-2xl bg-gray-100 sm:aspect-2/1 lg:aspect-3/2" />
