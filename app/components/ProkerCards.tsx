@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import Image from "next/image";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
@@ -20,10 +20,23 @@ function formatTanggal(d: Date): string {
   return d.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
 }
 
+// Drop the fixed placeholder height only once Firestore has answered
+// (list, empty or error). Called from a layout effect so the attribute lands
+// in the SAME paint as the content — no intermediate collapse to 0.
+function markReady() {
+  document
+    .querySelector(".sec-ph-proker")
+    ?.setAttribute("data-ready", "true");
+}
+
 export default function ProkerCards() {
 // null = masih memuat; [] = memang belum ada proker tayang
 const [posts, setPosts] = useState<Post[] | null>(() => (db ? null : []));
 const [expanded, setExpanded] = useState<string | null>(null);
+
+useLayoutEffect(() => {
+  if (posts !== null) markReady();
+}, [posts]);
 
 useEffect(() => {
   if (!db) return;
@@ -58,7 +71,7 @@ useEffect(() => {
     });
 }, []);
 
-  if (posts === null) return null; // masih memuat
+  if (posts === null) return <div className="sec-ph-inner" aria-hidden />; // masih memuat
 
   if (posts.length === 0)
     return (
