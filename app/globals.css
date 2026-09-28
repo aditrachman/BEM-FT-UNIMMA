@@ -11545,3 +11545,58 @@ body.nav-hide .header-module-scss-module__N7vucW__wrapper {
     font-size: 0.65rem;
   }
 }
+
+/* ==================== CLS PLACEHOLDERS (sec-ph) ====================
+   Reserve the full measured height of each section (Playwright at 1280px
+   desktop / 412px mobile, same 640px breakpoint the sections use), rounded
+   up to the next 10px, so the ssr:false sections paint their real box
+   before Firestore answers.
+   [data-ready] drops the reservation as soon as the first Firestore answer
+   (list, empty or error) has rendered — no empty gap left behind.
+   Ceiling: content is dynamic — anything taller than the reserved height
+   still grows the section by the difference. */
+.sec-ph {
+  display: flow-root; /* keep the child's margins inside the placeholder box */
+}
+
+.sec-ph-info {
+  min-height: 210px;
+}
+
+.sec-ph-proker {
+  min-height: 620px;
+}
+
+.sec-ph-asp {
+  min-height: 570px;
+}
+
+.sec-ph-info[data-ready],
+.sec-ph-proker[data-ready],
+.sec-ph-asp[data-ready] {
+  min-height: 0;
+}
+
+.sec-ph-inner {
+  min-height: inherit;
+}
+
+@media (max-width: 640px) {
+  .sec-ph-info {
+    min-height: 480px;
+  }
+
+  .sec-ph-proker {
+    min-height: 1510px;
+  }
+
+  .sec-ph-asp {
+    min-height: 680px;
+  }
+
+  .sec-ph-info[data-ready],
+  .sec-ph-proker[data-ready],
+  .sec-ph-asp[data-ready] {
+    min-height: 0;
+  }
+}
