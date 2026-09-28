@@ -3,16 +3,16 @@ export const PERIODE_AKTIF = "2026/2027";
 
 // Firestore TIDAK mengizinkan karakter "/" pada ID dokumen.
 // ID visi_misi dipakai versi tanpa garis miring; tampilan tetap pakai PERIODE_AKTIF.
-export const PERIODE_DOC_ID = PERIODE_AKTIF.replaceAll("/", "-"); // "2026-2027"
+export const PERIODE_DOC_ID = PERIODE_AKTIF.replace("/", "-"); // "2026-2027"
 
 export function docIdPeriode(periode: string): string {
   return periode.replaceAll("/", "-");
 }
 
-// WhatsApp Humas BEM (kontak resmi untuk kerja sama/pertanyaan)
-export const WA_HUMAS = "6285325106798";
+// WhatsApp HUMAS / Sekretariat BEM FT
+export const WA_HUMAS = "6287843150898";
 export const WA_LINK = `https://wa.me/${WA_HUMAS}?text=${encodeURIComponent(
-  "Halo Kak Dika (Humas BEM FT UNIMMA), saya ingin bertanya / berdiskusi mengenai kerja sama dengan BEM FT UNIMMA.",
+  "Halo BEM FT UNIMMA, saya [Nama] dari [Instansi/Organisasi]. Saya ingin berdiskusi mengenai kerja sama terkait [Bentuk Kerja Sama]."
 )}`;
 
 // Absensi internal: toleransi telat (menit setelah jam mulai)

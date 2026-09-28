@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { Fragment, useEffect, useMemo, useState, type FormEvent } from "react";
 import {
   addDoc,
   collection,
@@ -78,6 +78,17 @@ export function AbsensiPanel() {
     () => absAll.filter((r) => r.sesiId === pilih),
     [absAll, pilih],
   );
+
+  // begitu rekap dibuka, langsung scroll ke panelnya
+  useEffect(() => {
+    if (!pilih) return;
+    const t = setTimeout(() => {
+      document
+        .getElementById(`rekap-${pilih}`)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 60);
+    return () => clearTimeout(t);
+  }, [pilih]);
 
   const sesiById = useMemo(
     () => Object.fromEntries(sesi.map((s) => [s.id, s])),
@@ -166,6 +177,7 @@ export function AbsensiPanel() {
     )
       return;
     await deleteDoc(doc(db!, "sesi", s.id));
+    if (pilih === s.id) setPilih("");
   }
 
   async function setAbsen(
@@ -224,6 +236,116 @@ export function AbsensiPanel() {
   const sesiBuka = useMemo(() => sesi.filter((s) => s.status === "buka"), [sesi]);
   const sesiTutup = useMemo(() => sesi.filter((s) => s.status === "tutup"), [sesi]);
 
+  // panel rekap satu sesi: tampil tepat di bawah sesi yang diklik
+  function renderRekap(s: Sesi) {
+    const jml = { hadir: 0, telat: 0, ijin: 0, alpha: 0 };
+    for (const a of anggota) {
+      const r = absSesiMap[a.email];
+      if (r && r.status in jml) jml[r.status as keyof typeof jml]++;
+    }
+    const belum = anggota.filter((a) => !absSesiMap[a.email]).length;
+
+    return (
+      <div
+        id={`rekap-${s.id}`}
+        style={{
+          border: "1px solid var(--color-light)",
+          borderLeft: "4px solid var(--color-blue-3)",
+          borderRadius: 16,
+          padding: 16,
+          margin: "4px 0 12px",
+          background: "#fff",
+          scrollMarginTop: 80,
+        }}
+      >
+        <div className="adm-row adm-between">
+          <div style={{ minWidth: 0 }}>
+            <h3 className="adm-cardtitle" style={{ margin: 0 }}>
+              Rekap — {s.judul}
+            </h3>
+            <small style={{ color: "var(--color-grey-3)" }}>
+              Hadir {jml.hadir} · Telat {jml.telat} · Ijin {jml.ijin} · Alpha{" "}
+              {jml.alpha} · Belum {belum}
+            </small>
+          </div>
+          <div className="adm-row">
+            <button className="adm-btn small" onClick={exportSesi}>
+              Export CSV
+            </button>
+            <button className="adm-btn small ghost" onClick={() => setPilih("")}>
+              Sembunyikan
+            </button>
+          </div>
+        </div>
+        <div className="adm-rekap" style={{ overflowX: "auto", marginTop: 12 }}>
+          <table>
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>Status</th>
+                <th>Masuk</th>
+                <th>Ubah</th>
+              </tr>
+            </thead>
+            <tbody>
+              {anggota.map((a) => {
+                const r = absSesiMap[a.email];
+                return (
+                  <tr key={a.email} className={r ? "" : "belum"}>
+                    <td>
+                      {a.nama}
+                      {r && !r.masukJam ? (
+                        <em className="adm-note"> (manual)</em>
+                      ) : null}
+                    </td>
+                    <td>
+                      <span
+                        className={`adm-badge ${
+                          r?.status === "hadir"
+                            ? "aktif"
+                            : r?.status === "telat"
+                              ? "telat"
+                              : r
+                                ? "draft"
+                                : ""
+                        }`}
+                      >
+                        {r ? STATUS_LABEL[r.status] ?? r.status : "belum"}
+                      </span>
+                    </td>
+                    <td>{r?.masukJam ? fmtJam(r.masukJam) : "—"}</td>
+                    <td>
+                      <select
+                        className={`adm-in adm-in-sm adm-select--${r?.status ?? "empty"}`}
+                        value={r?.status ?? ""}
+                        onChange={(e) => {
+                          const v = e.target.value as AbsenRecord["status"];
+                          if (v) setAbsen(s.id, a, v);
+                        }}
+                      >
+                        <option value="" disabled>
+                          Ubah…
+                        </option>
+                        {Object.entries(STATUS_LABEL).map(([k, label]) => (
+                          <option key={k} value={k}>
+                            {label}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          {!anggota.length && (
+            <p className="adm-note">Tambahkan anggota dulu di tab Anggota.</p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       {/* ---------- DAFTAR SESI AKTIF ---------- */}
@@ -265,7 +387,8 @@ export function AbsensiPanel() {
         {sesiBuka.slice(0, 30).map((s) => {
           const aktif = pilih === s.id;
           return (
-            <div key={s.id} className={`adm-item${aktif ? " on" : ""}`}>
+            <Fragment key={s.id}>
+            <div className={`adm-item${aktif ? " on" : ""}`}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
                   <strong>{s.judul}</strong>
@@ -282,7 +405,7 @@ export function AbsensiPanel() {
                   className={`adm-btn small ${aktif ? "" : "ghost"}`}
                   onClick={() => setPilih(aktif ? "" : s.id)}
                 >
-                  {aktif ? "Tutup" : "Rekap"}
+                  {aktif ? "Sembunyikan" : "Lihat rekap"}
                 </button>
                 <button
                   className="adm-btn small danger"
@@ -293,6 +416,8 @@ export function AbsensiPanel() {
                 </button>
               </div>
             </div>
+            {aktif && renderRekap(s)}
+            </Fragment>
           );
         })}
         {!sesiBuka.length && (
@@ -310,85 +435,6 @@ export function AbsensiPanel() {
           </div>
         )}
       </div>
-
-      {/* ---------- REKAP SATU SESI ---------- */}
-      {pilih && (
-        <div className="adm-card">
-          <div className="adm-row adm-between">
-            <h2 className="adm-cardtitle">
-              Rekap — {sesiById[pilih]?.judul ?? "-"}
-            </h2>
-            <button className="adm-btn small" onClick={exportSesi}>
-              Export CSV
-            </button>
-          </div>
-          <div className="adm-rekap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Nama</th>
-                  <th>Status</th>
-                  <th>Masuk</th>
-                  <th>Ubah</th>
-                </tr>
-              </thead>
-              <tbody>
-                {anggota.map((a) => {
-                  const r = absSesiMap[a.email];
-                  return (
-                    <tr key={a.email} className={r ? "" : "belum"}>
-                      <td>
-                        {a.nama}
-                        {r && !r.masukJam ? (
-                          <em className="adm-note"> (manual)</em>
-                        ) : null}
-                      </td>
-                      <td>
-                        <span
-                          className={`adm-badge ${
-                            r?.status === "hadir"
-                              ? "aktif"
-                              : r?.status === "telat"
-                                ? "telat"
-                                : r
-                                  ? "draft"
-                                  : ""
-                          }`}
-                        >
-                          {r ? STATUS_LABEL[r.status] ?? r.status : "belum"}
-                        </span>
-                      </td>
-                      <td>{r?.masukJam ? fmtJam(r.masukJam) : "—"}</td>
-                      <td>
-                        <select
-                          className={`adm-in adm-in-sm adm-select--${r?.status ?? "empty"}`}
-                          value={r?.status ?? ""}
-                          onChange={(e) => {
-                            const v = e.target.value as AbsenRecord["status"];
-                            if (v) setAbsen(pilih, a, v);
-                          }}
-                        >
-                          <option value="" disabled>
-                            Ubah…
-                          </option>
-                          {Object.entries(STATUS_LABEL).map(([k, label]) => (
-                            <option key={k} value={k}>
-                              {label}
-                            </option>
-                          ))}
-                        </select>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            {!anggota.length && (
-              <p className="adm-note">Tambahkan anggota dulu di tab Anggota.</p>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* ---------- REKAP PER ANGGOTA ---------- */}
       <div className="adm-card">
@@ -471,7 +517,8 @@ export function AbsensiPanel() {
           {sesiTutup.slice(0, 50).map((s) => {
             const aktif = pilih === s.id;
             return (
-              <div key={s.id} className={`adm-item${aktif ? " on" : ""}`} style={{ opacity: aktif ? 1 : 0.92 }}>
+              <Fragment key={s.id}>
+              <div className={`adm-item${aktif ? " on" : ""}`} style={{ opacity: aktif ? 1 : 0.92 }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
                     <strong>{s.judul}</strong>
@@ -488,7 +535,7 @@ export function AbsensiPanel() {
                     className={`adm-btn small ${aktif ? "" : "ghost"}`}
                     onClick={() => setPilih(aktif ? "" : s.id)}
                   >
-                    {aktif ? "Tutup" : "Rekap"}
+                    {aktif ? "Sembunyikan" : "Lihat rekap"}
                   </button>
                   <button
                     className="adm-btn small danger"
@@ -499,6 +546,8 @@ export function AbsensiPanel() {
                   </button>
                 </div>
               </div>
+              {aktif && renderRekap(s)}
+              </Fragment>
             );
           })}
           {!sesiTutup.length && <p className="adm-note">Belum ada riwayat — sesi yang ditutup akan muncul di sini.</p>}

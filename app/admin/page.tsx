@@ -12,17 +12,18 @@ import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { KoleksiPanel } from "./KoleksiPanel";
 import { AnggotaPanel } from "./AnggotaPanel";
-import { AbsensiPanel } from "./AbsensiPanel";
 import { PengurusPanel } from "./PengurusPanel";
 import { VisiMisiPanel } from "./VisiMisiPanel";
+import { AbsensiPanel } from "./AbsensiPanel";
+import { AspirasiPanel } from "./AspirasiPanel";
 
-type MenuTab = "proker" | "info" | "pengurus" | "visimisi" | "anggota" | "absensi";
+type MenuTab = "proker" | "info" | "pengurus" | "visimisi" | "anggota" | "absensi" | "aspirasi";
 
 export default function AdminPage() {
   const [user, setUser] = useState<User | null | undefined>(undefined);
   const [tab, setTab] = useState<MenuTab>(() => {
     if (typeof window === "undefined") return "proker";
-    const valid: MenuTab[] = ["proker", "info", "pengurus", "visimisi", "anggota", "absensi"];
+    const valid: MenuTab[] = ["proker", "info", "pengurus", "visimisi", "anggota", "absensi", "aspirasi"];
     try {
       const q = new URLSearchParams(window.location.search).get("tab") as MenuTab | null;
       if (q && valid.includes(q)) return q;
@@ -46,15 +47,15 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (!auth) return;
-    return onAuthStateChanged(auth, setUser);
+    return onAuthStateChanged(auth, (u) => {
+      setUser(u);
+      if (!u) setRole(null); // reset role on sign-out (async callback, not in effect body)
+    });
   }, []);
 
   // hanya yang doc admins/<email>-nya ada yang boleh lihat panel admin
   useEffect(() => {
-    if (!db || !user) {
-      setRole(null);
-      return;
-    }
+    if (!db || !user) return;
     let hidup = true;
     getDoc(doc(db, "admins", user.email!.toLowerCase()))
       .then((d) => hidup && setRole(d.exists() ? "admin" : "staff"))
@@ -143,19 +144,28 @@ export default function AdminPage() {
         >
           Absensi
         </button>
+        <button
+          type="button"
+          className={"adm-tab" + (tab === "aspirasi" ? " on" : "")}
+          onClick={() => setTab("aspirasi")}
+        >
+          Aspirasi
+        </button>
       </div>
 
       {tab === "proker" || tab === "info" ? (
         <KoleksiPanel key={tab} koleksi={tab} />
       ) : tab === "pengurus" ? (
         <PengurusPanel />
+      ) : tab === "visimisi" ? (
+        <VisiMisiPanel />
       ) : tab === "anggota" ? (
         <AnggotaPanel />
       ) : tab === "absensi" ? (
         <AbsensiPanel />
-      ) : (
-        <VisiMisiPanel />
-      )}
+      ) : tab === "aspirasi" ? (
+        <AspirasiPanel />
+      ) : null}
     </div>
   );
 }

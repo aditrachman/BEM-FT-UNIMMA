@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local throwaway scripts (gitignored).
+    "convert.js",
+    "fix-styles.js",
+    ".playwright-mcp/**",
   ]),
 ]);
 
