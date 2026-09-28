@@ -9,7 +9,8 @@ import {
   type User,
 } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "@/lib/firebase";
+import { db } from "@/lib/firebase";
+import { auth } from "@/lib/firebase-auth";
 import { KoleksiPanel } from "./KoleksiPanel";
 import { AnggotaPanel } from "./AnggotaPanel";
 import { PengurusPanel } from "./PengurusPanel";

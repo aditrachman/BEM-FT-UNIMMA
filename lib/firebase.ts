@@ -1,12 +1,10 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-import { getStorage } from "firebase/storage";
 
 // Config dibaca dari env — jangan pernah hardcode key asli di file ini
 export const firebaseEnabled = !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
 
-const app = firebaseEnabled
+export const app = firebaseEnabled
   ? getApps().length
     ? getApp()
     : initializeApp({
@@ -20,5 +18,3 @@ const app = firebaseEnabled
   : null;
 
 export const db = app ? getFirestore(app) : null;
-export const auth = app ? getAuth(app) : null;
-export const storage = app ? getStorage(app) : null;

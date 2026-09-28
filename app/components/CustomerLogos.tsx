@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function CustomerLogos() {
   const logos = [
     { src: "/images/logos/dpm.png", alt: "Logo DPM" },
@@ -16,8 +18,15 @@ export default function CustomerLogos() {
         </p>
         <div className="keluarga__logos">
           {logos.map((l) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img key={l.src} src={l.src} alt={l.alt} className={"keluarga__logo" + ("plain" in l && l.plain ? " keluarga__logo--plain" : "")} />
+            <Image
+              key={l.src}
+              src={l.src}
+              alt={l.alt}
+              width={1000}
+              height={1000}
+              sizes="(max-width: 768px) 88px, 118px"
+              className="keluarga__logo"
+            />
           ))}
         </div>
       </div>

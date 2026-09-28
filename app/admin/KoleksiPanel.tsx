@@ -11,7 +11,8 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { db, storage } from "@/lib/firebase";
+import { db } from "@/lib/firebase";
+import { storage } from "@/lib/firebase-auth";
 import { imageUrlTampil } from "@/lib/imageUrl";
 
 const toLocal = (d: Date) => {

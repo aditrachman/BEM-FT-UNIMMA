@@ -17,7 +17,8 @@ import {
   serverTimestamp,
   setDoc,
 } from "firebase/firestore";
-import { auth, db } from "@/lib/firebase";
+import { db } from "@/lib/firebase";
+import { auth } from "@/lib/firebase-auth";
 import { ABS_GRACE_MIN } from "@/lib/konfig";
 import {
   statusKehadiran,

@@ -9,7 +9,8 @@ import {
   onSnapshot,
   updateDoc,
 } from "firebase/firestore";
-import { db, auth } from "@/lib/firebase";
+import { db } from "@/lib/firebase";
+import { auth } from "@/lib/firebase-auth";
 import { imageUrlTampil } from "@/lib/imageUrl";
 import { PERIODE_AKTIF } from "@/lib/konfig";
 

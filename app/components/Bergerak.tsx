@@ -17,7 +17,7 @@ export default function Bergerak() {
                   </div>
                 </div>
               </div>
-              <div className="imagetextblock-module-scss-module__1jYUnW__media"><Image alt="Bergerak untuk Fakultas Teknik" loading="lazy" width={4032} height={3024} src="/images/2.jpg"  /></div>
+              <div className="imagetextblock-module-scss-module__1jYUnW__media"><Image alt="Bergerak untuk Fakultas Teknik" loading="lazy" width={4032} height={3024} sizes="(max-width: 768px) 100vw, 50vw" src="/images/2.jpg" /></div>
             </div>
           </div>
         </section>
