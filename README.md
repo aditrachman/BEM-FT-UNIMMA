@@ -1,121 +1,84 @@
-# 🏛️ Website Resmi BEM FT UNIMMA
+# Website BEM FT UNIMMA
 
-Situs profil dan manajemen **Badan Eksekutif Mahasiswa Fakultas Teknik, Universitas Muhammadiyah Magelang**. Dibangun dengan Next.js App Router, dilengkapi panel admin berbasis Firebase untuk mengelola pengurus, absensi, dan aspirasi mahasiswa.
+Website resmi Badan Eksekutif Mahasiswa Fakultas Teknik, Universitas Muhammadiyah Magelang. Isinya profil BEM, program kerja, struktur pengurus, sama sistem absensi kaderisasi yang bisa diakses pengurus lewat halaman admin.
 
-**Live:** [bemft.unimma.ac.id](https://bemft.unimma.ac.id) · **Repo:** [aditrachman/BEM-FT-UNIMMA](https://github.com/aditrachman/BEM-FT-UNIMMA)
+Repo ini dipakai buat deployment di Vercel: <https://github.com/aditrachman/BEM-FT-UNIMMA>
 
----
+## Isi website
 
-## ✨ Fitur
+- **Beranda** — hero, sekilas BEM, program kerja, info rekrutmen, form aspirasi buat mahasiswa
+- **Tentang Kami** — struktur organisasi pengurus periode 2026/2027, digambar kayak pohon
+- **Absensi** (`/absen`) — presensi kegiatan kaderisasi. Ada rekap otomatis: yang gak check-in dianggap alpha setelah lewat grace period 30 menit, plus riwayat presensi tiap anggota
+- **Admin** (`/admin`) — panel pengelolaan data, terdiri dari beberapa tab: koleksi (proker & info), anggota, pengurus, visi-misi, absensi, sama aspirasi
 
-- **Landing page** — hero, profil BEM, program kerja, rekrutmen, form aspirasi mahasiswa
-- **Tentang Kami** — struktur organisasi (org chart pohon) pengurus periode 2026/2027
-- **Absensi online** (`/absen`) — presensi kegiatan kaderisasi dengan rekap otomatis (auto-alpha, grace period) dan riwayat per anggota
-- **Panel admin** (`/admin`) — khusus akun terdaftar, 6 tab:
-  - Koleksi (proker & info)
-  - Anggota
-  - Pengurus (+ upload foto via Vercel Blob)
-  - Visi & Misi per periode
-  - Absensi
-  - Aspirasi (review & ubah status masukan mahasiswa)
-- **SEO** — sitemap, robots, metadata + JSON-LD
-- **Responsive** — desktop, tablet, mobile
+Halaman admin dilindungi login Firebase. Email yang belum terdaftar di koleksi `admins` Firestore tetap bisa login, tapi cuma jadi staff dan cuma dikasih akses halaman absensi.
 
-## 🛠️ Tech Stack
+Untuk SEO juga udah disiapin sitemap, robots, sama JSON-LD.
 
-| Layer | Teknologi |
-|---|---|
-| Framework | [Next.js 16](https://nextjs.org) (App Router, Turbopack) |
-| UI | React 19, Tailwind CSS 4 |
-| Backend | Firebase — Auth + Firestore |
-| Storage | [Vercel Blob](https://vercel.com/storage) (foto pengurus) |
-| Deploy | Vercel |
+## Teknologi
 
-## 📄 Routes
+Next.js 16 (App Router + Turbopack), React 19, Tailwind CSS 4, Firebase Auth + Firestore, dan Vercel Blob buat nyimpen foto pengurus. Deploy-nya di Vercel.
 
-| Route | Tipe | Keterangan |
-|---|---|---|
-| `/` | Static | Landing page |
-| `/tentang-kami` | Static | Profil & org chart pengurus |
-| `/absen` | Static | Presensi kegiatan |
-| `/admin` | Static | Panel admin (client-side auth) |
-| `/api/upload-foto-pengurus` | Dynamic | Upload foto ke Vercel Blob |
-| `/sitemap.xml`, `/robots.txt` | Static | SEO |
+## Menjalankan secara lokal
 
-## 🚀 Getting Started
-
-**Prasyarat:** Node.js 20+ dan npm.
+Butuh Node.js 20 ke atas.
 
 ```bash
-# 1. Clone
 git clone https://github.com/aditrachman/BEM-FT-UNIMMA.git
 cd BEM-FT-UNIMMA
-
-# 2. Install dependencies
 npm install
+```
 
-# 3. Salin environment variable (lihat tabel di bawah)
-cp .env.local.example .env.local   # lalu isi manual
+Terus bikin file `.env.local` di root project (ada templatenya di `.env.local.example`, tinggal `cp .env.local.example .env.local`):
 
-# 4. Jalankan dev server
+| Variabel | Sumber nilainya |
+|---|---|
+| `NEXT_PUBLIC_FIREBASE_API_KEY` | Firebase Console → Project settings → Your apps |
+| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | sama |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | sama |
+| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | sama |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | sama |
+| `NEXT_PUBLIC_FIREBASE_APP_ID` | sama |
+| `BLOB_READ_WRITE_TOKEN` | Vercel Dashboard → Storage |
+
+Kalau Firebase belum dikonfigurasi, halaman admin bakal nampilin pesan buat ngisi `.env.local` dulu, jadi aman.
+
+Habis itu:
+
+```bash
 npm run dev
 ```
 
-Buka [http://localhost:3000](http://localhost:3000).
+Buka <http://localhost:3000>.
 
-### Perintah lain
+## Route
 
-```bash
-npm run build   # production build
-npm run lint    # ESLint
-npx tsc --noEmit # type check
-```
-
-## 🔐 Environment Variables
-
-File `.env.local` (tidak di-commit, sudah ada di `.gitignore`):
-
-| Variabel | Keterangan |
+| Path | Keterangan |
 |---|---|
-| `NEXT_PUBLIC_FIREBASE_API_KEY` | Firebase project config |
-| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | ″ |
-| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | ″ |
-| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | ″ |
-| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | ″ |
-| `NEXT_PUBLIC_FIREBASE_APP_ID` | ″ |
-| `BLOB_READ_WRITE_TOKEN` | Token Vercel Blob untuk upload foto |
+| `/` | Beranda |
+| `/tentang-kami` | Profil & struktur pengurus |
+| `/absen` | Presensi kaderisasi |
+| `/admin` | Panel admin |
+| `/api/upload-foto-pengurus` | Endpoint upload foto ke Vercel Blob |
 
-> Ambil nilai Firebase dari **Firebase Console → Project settings → Your apps**. Token Blob dari **Vercel Dashboard → Storage**.
-
-### Akses admin
-
-Login pakai email/password Firebase. Hak admin ditentukan dari dokumen Firestore:
+## Struktur folder
 
 ```
-admins/<email>   →   role: admin (akun <email>-nya harus ada di koleksi ini)
+app/                  # App Router — semua route aktif di sini
+  components/         # Komponen halaman beranda
+  admin/              # Panel admin, satu file per tab
+  absen/              # Halaman presensi
+  tentang-kami/       # Halaman struktur pengurus
+  api/                # Route handler upload
+lib/                  # Client Firebase, konfigurasi, helper absensi
+public/               # Aset statis (logo, gambar)
 ```
 
-Tanpa dokumen tersebut, akun tetap bisa login tapi dialihkan ke `/absen` sebagai staff.
+## Deploy
 
-## 📁 Struktur Folder
+Impor repo ke Vercel, tambahin semua variabel environment di dashboard, beres — build-nya otomatis `next build`.
 
-```
-bem-ft-nextjs/
-├── app/                    # App Router (sumber aktif)
-│   ├── components/         # Komponen landing page
-│   ├── admin/              # Panel admin + sub-panel per tab
-│   ├── absen/              # Halaman presensi
-│   ├── tentang-kami/       # Halaman org chart
-│   └── api/upload-foto-pengurus/
-├── lib/                    # Firebase client, konfigurasi, helper absensi
-├── public/                 # Aset statis
-└── .env.local              # Environment (lokal saja)
-```
+## Catatan buat pengembang
 
-## 📦 Deploy
-
-Termudah lewat [Vercel](https://vercel.com/new): import repo, tambahkan environment variables di dashboard, deploy. Build otomatis `next build`.
-
----
-
-Dibuat untuk BEM FT UNIMMA © 2026.
+- Class CSS lama masih banyak yang namanya aneh (prefix `*-module-scss-module__*`), sisa dari hasil convert. Belum dirapikan.
+- Ada beberapa warning ESLint soal `<img>` vs `next/image` — sengaja dibiarkan dulu karena migrasinya nyentuh banyak komponen.
