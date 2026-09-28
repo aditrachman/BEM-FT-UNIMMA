@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Bergerak() {
   return (
 <section id="bergerak" className="imagetextblock-module-scss-module__1jYUnW__wrapper" data-direction="reverse" data-bg="false" data-border="false" data-zig-zag="true">
@@ -15,7 +17,7 @@ export default function Bergerak() {
                   </div>
                 </div>
               </div>
-              <div className="imagetextblock-module-scss-module__1jYUnW__media"><img alt="Bergerak untuk Fakultas Teknik" fetchPriority="auto" loading="lazy" decoding="async" src="/images/2.jpg"  /></div>
+              <div className="imagetextblock-module-scss-module__1jYUnW__media"><Image alt="Bergerak untuk Fakultas Teknik" loading="lazy" width={4032} height={3024} src="/images/2.jpg"  /></div>
             </div>
           </div>
         </section>

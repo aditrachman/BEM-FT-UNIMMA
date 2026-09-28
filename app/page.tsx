@@ -49,7 +49,7 @@ export default function Home() {
                     item: "#",
                   },
                 ],
-              }),
+              }).replace(/</g, "\\u003c"),
             }}
           />
           <Hero />

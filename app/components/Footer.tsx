@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Footer() {
   return (
 <div id="bottom">
@@ -18,7 +20,7 @@ export default function Footer() {
                 </g>
               </svg></div>
             <div className="footer-module-scss-module__Wscpia__main">
-              <div className="footer-module-scss-module__Wscpia__logo" style={{ marginBottom: '12px' }}><img src="/logo.png" alt="Logo BEM FT" /><span className="logo-text">BEM FT</span></div>
+              <div className="footer-module-scss-module__Wscpia__logo" style={{ marginBottom: '12px' }}><Image src="/logo.png" alt="Logo BEM FT" width={447} height={559} /><span className="logo-text">BEM FT</span></div>
               <p style={{ color: '#5F5F69', fontSize: '14px', lineHeight: '1.5', maxWidth: '240px' }}>Satu Suara, Satu Gerak, Bersama Fakultas Teknik</p>
             </div>
             <div className="footer-module-scss-module__Wscpia__nav">

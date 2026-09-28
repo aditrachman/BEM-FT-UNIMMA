@@ -59,9 +59,9 @@ export function KoleksiPanel({ koleksi }: { koleksi: Koleksi }) {
                 ((b.d.tanggal as { seconds?: number })?.seconds ?? -1) -
                 ((a.d.tanggal as { seconds?: number })?.seconds ?? -1),
             ),
-        ),
+          ),
       ),
-    [],
+    [koleksi],
   );
 
   const set = (k: keyof typeof emptyForm, v: string) =>

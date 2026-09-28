@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { WA_LINK } from "@/lib/konfig";
@@ -41,7 +42,7 @@ export default function Header() {
   return (
 <header className="header-module-scss-module__N7vucW__wrapper" >
       <div className="header-module-scss-module__N7vucW__inner">
-        <div className="header-module-scss-module__N7vucW__logo"><Link href="/"><img src="/logo.png" alt="Logo BEM FT" /><span className="logo-text">BEM FT</span></Link></div>
+        <div className="header-module-scss-module__N7vucW__logo"><Link href="/"><Image src="/logo.png" alt="Logo BEM FT" width={447} height={559} loading="eager" /><span className="logo-text">BEM FT</span></Link></div>
         <div className="header-module-scss-module__N7vucW__mobile">
           <div className="header-module-scss-module__N7vucW__trigger"><button aria-label="Menu Trigger" onClick={toggleMenu}><span className="header-module-scss-module__N7vucW__hamburger" aria-hidden="true"><span></span><span></span><span></span></span></button></div>
         </div>

@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Hero() {
   return (
 <section data-page-hero="true" className="pagehero-module-scss-module__rMNsHa__wrapper in" data-bg-color="transparent" data-bg-image="false" data-expand="false" data-remove-bottom-padding="false">
@@ -254,7 +256,7 @@ export default function Hero() {
                         <path id="Path" d="M9.001 87.662C29.514 70.568 75.481 25.255 97.171 3.7c9.836-9.774 6.845 2.641 9.5 5s5.815.17 9 3-2.185 6.17 1.001 9 3.638.437 7 2c2.69 1.25 1.094 5 1 8-.175 5.542 13.761-1.779 3.184 8.761-13.297 13.252-64.748 62.351-91.684 88.74-16.01 15.683-2-5-11.5-5s2.474-12.306-8.763-12.306-3.82-7.512-5.237-10.195-22.184 4.056-1.67-13.038Z" />
                       </g>
                     </g>
-                  </svg></div>                  <img alt="BEM FT UNIMMA Hero" fetchPriority="high" loading="eager" width="2000" height="1400" decoding="async" src="/images/hero.jpeg"  />
+                  </svg></div>                  <Image alt="BEM FT UNIMMA Hero" priority width={3168} height={1344} src="/images/hero.jpeg"  />
               </div>
             </div>
           </div>

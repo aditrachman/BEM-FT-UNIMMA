@@ -54,9 +54,8 @@ export default function RootLayout({
   return (
     <html lang="id" style={{ "--app-height": "738px" } as React.CSSProperties}>
       <head>
-        <link rel="preload" href="/logo.png" as="image" />
         <link rel="preload" href="/icons/nav-arrow.svg" as="image" />
-        <link rel="preload" as="image" href="/images/hero.jpeg" fetchPriority="high" />
+        {/* hero + logo preload ditangani next/image (priority / loading eager) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -77,7 +76,7 @@ export default function RootLayout({
                 "https://www.tiktok.com/@bemft.unimma",
                 "https://www.youtube.com/@bemftunimma7905",
               ],
-            }),
+            }).replace(/</g, "\\u003c"),
           }}
         />
         <script
@@ -89,7 +88,7 @@ export default function RootLayout({
               name: "BEM FT UNIMMA",
               url: "https://bem-ft-unimma.vercel.app",
               inLanguage: "id-ID",
-            }),
+            }).replace(/</g, "\\u003c"),
           }}
         />
       </head>
