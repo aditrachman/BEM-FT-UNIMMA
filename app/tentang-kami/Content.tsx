@@ -45,6 +45,7 @@ function PersonFoto({ nama, url }: { nama: string; url: string }) {
       src={imageUrlTampil(url)}
       alt={nama}
       loading="lazy"
+      referrerPolicy="no-referrer"
       onError={() => setGagal(true)}
     />
   );

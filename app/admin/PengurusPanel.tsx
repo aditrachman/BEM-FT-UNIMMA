@@ -237,6 +237,7 @@ export function PengurusPanel() {
             className="adm-prev adm-prev-sm"
             src={file ? filePrev : imageUrlTampil(f.foto_url)}
             alt="preview foto"
+            referrerPolicy="no-referrer"
           />
         )}
         {err && <p className="adm-err">{err}</p>}
@@ -294,6 +295,7 @@ export function PengurusPanel() {
                       className="adm-avatar"
                       src={imageUrlTampil(r.foto_url)}
                       alt={r.nama}
+                      referrerPolicy="no-referrer"
                     />
                   )}
                   <div>

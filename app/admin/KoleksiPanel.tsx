@@ -219,7 +219,7 @@ export function KoleksiPanel({ koleksi }: { koleksi: Koleksi }) {
         {file && <p className="adm-note">Akan upload: {file.name}</p>}
         {!file && f.gambar && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img className="adm-prev" src={imageUrlTampil(f.gambar)} alt="preview gambar" />
+          <img className="adm-prev" src={imageUrlTampil(f.gambar)} alt="preview gambar" referrerPolicy="no-referrer" />
         )}
         {err && <p className="adm-err">{err}</p>}
         <div className="adm-row">
