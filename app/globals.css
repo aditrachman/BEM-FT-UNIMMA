@@ -11411,6 +11411,11 @@ body.nav-hide .header-module-scss-module__N7vucW__wrapper {
   width: 100%;
 }
 
+/* versi grid per departemen khusus mobile; default disembunyikan (lihat media query 640px) */
+.tt-org-grid {
+  display: none;
+}
+
 .tt-org-connector {
   width: 0;
   height: 24px;
@@ -11472,77 +11477,53 @@ body.nav-hide .header-module-scss-module__N7vucW__wrapper {
   border-radius: 6px 0 0 0;
 }
 
-/* ===== Mobile: susun vertikal + wrap, tanpa scroll samping ===== */
+/* ===== Mobile: grid kartu per departemen (tree desktop disembunyikan) ===== */
 @media (max-width: 640px) {
-  /* departemen ditumpuk ke bawah, bukan di-scroll ke samping */
-  .tt-dept-row {
-    flex-direction: column;
-    align-items: stretch;
-    overflow: visible;
-    min-width: 0;
-    max-width: none;
-    padding: 0;
-    gap: 20px;
-  }
-  .tt-dept-block {
-    min-width: 0;
-    padding-top: 0;
-  }
-  .tt-org-connector {
-    align-self: center;
-  }
-
-  /* garis pohon dimatikan di mobile: garis horizontal cuma valid
-     untuk satu baris lurus — hierarki diganti jarak + judul */
-  .tt-dept-block::before,
-  .tt-dept-block::after,
-  .tt-tree li::before,
-  .tt-tree li::after,
-  .tt-tree ul::before {
+  .tt-org-wrapper {
     display: none;
   }
-
-  /* baris sejawat (sekretaris/bendahara/staff) wrap jadi grid rapi */
-  .tt-tree ul {
-    flex-wrap: wrap;
-    justify-content: center;
-    overflow: visible;
-    max-width: none;
+  .tt-org-grid {
+    display: block;
+    margin-top: 8px;
+  }
+  .tt-ogroup {
+    margin-bottom: 26px;
+  }
+  .tt-ogroup-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-blue-1);
+    opacity: 0.65;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #21164c1f;
+  }
+  /* kartu anggota: grid 2 kolom */
+  .tt-ocards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
-    padding: 12px 0 0;
   }
-  .tt-tree li {
-    padding: 0;
+  .tt-ocards .tt-person {
+    width: auto;
+    min-width: 0;
+    padding: 14px 10px;
+    border-radius: 16px;
   }
-
-  /* spacer scroll tidak dipakai lagi */
-  .tt-dept-row::after,
-  .tt-tree ul::after {
-    display: none;
+  .tt-ocards .tt-foto {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 10px;
   }
-
-  /* card 150px: cabang 2x2, staff 2-3 sebaris, ketua/wakil/kadiv center */
-  .tt-tree .tt-person {
-    width: 150px;
-    flex: none;
-    background: var(--color-white);
-    border-radius: 22px;
-    padding: 18px;
-    text-align: center;
+  .tt-ocards .tt-nama {
+    font-size: 0.78rem;
+    line-height: 1.25;
   }
-  .tt-tree .tt-foto {
-    width: 64px;
-    height: 64px;
-    flex: none;
-    border-radius: 50%;
-    overflow: hidden;
-    background: var(--color-bg)
-  }
-  .tt-tree .tt-nama {
-    font-size: 0.75rem;
-  }
-  .tt-tree .tt-jabatan {
-    font-size: 0.65rem;
+  .tt-ocards .tt-jabatan {
+    font-size: 0.62rem;
+    padding: 3px 10px;
   }
 }
 

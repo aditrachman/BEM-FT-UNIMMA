@@ -63,11 +63,13 @@ function PersonCard({ p }: { p: Pengurus }) {
   );
 }
 
-// tier 0 = ketua/kadiv, 1 = wakil/wakadiv, 2 = staff/anggota
-// sesuaikan kata kunci di sini kalau penamaan jabatan kalian beda
+// tier 0 (paling tinggi): ketua, kadep/kadiv (kepala departemen/divisi), koordinator
+// tier 1: wakil/wakadiv/wakadep
+// tier 2 (paling bawah): staff/anggota — default, nggak perlu disebut
+// cek "wakil" dulu: "Wakil Kepala" mengandung "kepala" tapi harus tetap tier 1
 function tierOf(jabatan: string): 0 | 1 | 2 {
-  if (/ketua|kadiv|koordinator/i.test(jabatan)) return 0;
-  if (/wakil|wakadiv/i.test(jabatan)) return 1;
+  if (/wakil|wakadiv|wakadep/i.test(jabatan)) return 1;
+  if (/ketua|kadep|kadiv|kepala|koordinator/i.test(jabatan)) return 0;
   return 2;
 }
 
@@ -152,11 +154,14 @@ export default function TentangKamiContent() {
   for (const p of pengurus ?? []) (grouped[p.departemen || "Umum"] ||= []).push(p);
   for (const k of Object.keys(grouped)) grouped[k].sort((a, b) => a.urutan - b.urutan);
 
-  // urutkan departemen: kelompok pimpinan/inti dulu, sisanya alfabetik
+  // urutkan departemen: pimpinan/inti dulu, PSDM di posisi paling kiri, sisanya alfabetik
   const isRoot = (d: string) => /pimpinan|bph|inti|ketua/i.test(d);
+  const isPsdm = (d: string) => /psdm/i.test(d);
   const deptEntries = Object.entries(grouped).sort((a, b) => {
     const ar = isRoot(a[0]), br = isRoot(b[0]);
     if (ar !== br) return ar ? -1 : 1;
+    const apr = isPsdm(a[0]), bpr = isPsdm(b[0]);
+    if (apr !== bpr) return apr ? -1 : 1;
     return a[0].localeCompare(b[0]);
   });
 
@@ -251,6 +256,7 @@ export default function TentangKamiContent() {
                     kami untuk pembaruan.
                   </p>
                 ) : ketua ? (
+                  <>
                   <div className="tt-org-wrapper">
                     {/* ---- Blok BPH: Ketua -> Wakil -> cabang (Sekretaris/Bendahara) ---- */}
                     <ul className="tt-tree">
@@ -294,6 +300,31 @@ export default function TentangKamiContent() {
                       </>
                     )}
                   </div>
+
+                  {/* ---- Mobile: grid per departemen (tree desktop disembunyikan via CSS) ---- */}
+                  <div className="tt-org-grid">
+                    {rootEntry && (
+                      <section className="tt-ogroup">
+                        <h3 className="tt-ogroup-title">{rootEntry[0]}</h3>
+                        <div className="tt-ocards">
+                          {rootEntry[1].map((p) => (
+                            <PersonCard key={p.id} p={p} />
+                          ))}
+                        </div>
+                      </section>
+                    )}
+                    {deptColumns.map(([dep, list]) => (
+                      <section className="tt-ogroup" key={dep}>
+                        <h3 className="tt-ogroup-title">{dep}</h3>
+                        <div className="tt-ocards">
+                          {list.map((p) => (
+                            <PersonCard key={p.id} p={p} />
+                          ))}
+                        </div>
+                      </section>
+                    ))}
+                  </div>
+                  </>
                 ) : null}
               </div>
             </section>
