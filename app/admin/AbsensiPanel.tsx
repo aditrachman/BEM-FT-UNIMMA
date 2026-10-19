@@ -55,7 +55,7 @@ export function AbsensiPanel() {
         setAnggota(
           s.docs
             .map((x) => ({
-              email: x.id,
+              email: x.id.trim().toLowerCase(),
               nama: (x.data().nama as string) ?? x.id,
             }))
             .sort((a, b) => a.nama.localeCompare(b.nama)),
@@ -67,9 +67,11 @@ export function AbsensiPanel() {
     () =>
       onSnapshot(collection(db!, "absensi"), (s) =>
         setAbsAll(
-          s.docs.map(
-            (x) => ({ id: x.id, ...(x.data() as object) }) as AbsenRecord,
-          ),
+          s.docs.map((x) => {
+            const r = { id: x.id, ...(x.data() as object) } as AbsenRecord;
+            // legacy docs may hold mixed-case email; normalize so joins match
+            return { ...r, email: (r.email ?? "").trim().toLowerCase() };
+          }),
         ),
       ),
     [],

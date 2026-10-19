@@ -46,7 +46,7 @@ export default function AbsenPage() {
 
   // profil anggota (nama) utk record absensi
   useEffect(() => {
-    const em = user?.email;
+    const em = user?.email?.trim().toLowerCase();
     if (!db || !em) return;
     getDoc(doc(db, "anggota", em.toLowerCase()))
       .then((d) => {
@@ -71,7 +71,7 @@ export default function AbsenPage() {
       setSesi(buka);
       // ambil record saya utk tiap sesi (get diperbolehkan rules)
       if (user?.email) {
-        const id = user.email.toLowerCase();
+        const id = user.email.trim().toLowerCase();
         buka.forEach((sx) => {
           getDoc(doc(db!, "absensi", `${sx.id}_${id}`))
             .then((d) =>
@@ -126,7 +126,7 @@ export default function AbsenPage() {
     if (!db || !user) return;
     setErr("");
     try {
-      const em = user.email!.toLowerCase();
+      const em = user.email!.trim().toLowerCase();
       const st = statusKehadiran(s.mulai, new Date());
       await setDoc(doc(db, "absensi", `${s.id}_${em}`), {
         sesiId: s.id,

@@ -58,7 +58,7 @@ export default function AdminPage() {
   useEffect(() => {
     if (!db || !user) return;
     let hidup = true;
-    getDoc(doc(db, "admins", user.email!.toLowerCase()))
+    getDoc(doc(db, "admins", user.email!.trim().toLowerCase()))
       .then((d) => hidup && setRole(d.exists() ? "admin" : "staff"))
       .catch(() => hidup && setRole("staff"));
     return () => {
@@ -182,7 +182,11 @@ function Login() {
     e.preventDefault();
     setErr("");
     try {
-      await signInWithEmailAndPassword(auth!, email, pw);
+      await signInWithEmailAndPassword(
+        auth!,
+        email.trim().toLowerCase(),
+        pw,
+      );
     } catch {
       setErr(
         "Gagal login — pastikan email/password benar dan akun sudah dibuat di menu Authentication.",
