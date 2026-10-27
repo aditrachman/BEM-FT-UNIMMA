@@ -66,7 +66,7 @@ export default function AspirasiForm() {
       ) : (
         <form onSubmit={submit}>
           <p className="asp-intro">
-            Sampaikan masukan, kritik, atau ide untuk kampus — dapat disampaikan
+            Sampaikan masukan, kritik, atau ide untuk kampus: dapat disampaikan
             secara anonim, nama tidak wajib diisi.
           </p>
           <div className="asp-grid">
@@ -98,7 +98,7 @@ export default function AspirasiForm() {
               minLength={5}
               maxLength={1000}
               rows={5}
-              placeholder="Ceritain aja — fasilitas, akademik, kegiatan, apa pun."
+              placeholder="Ceritain aja: fasilitas, akademik, kegiatan, apa pun."
               value={pesan}
               onChange={(e) => setPesan(e.target.value)}
             />
@@ -106,7 +106,7 @@ export default function AspirasiForm() {
           </label>
           {status === "err" && (
             <p className="adm-err">
-              Gagal mengirim — pastikan pesan minimal 5 karakter.
+              Gagal mengirim. Pastikan pesan minimal 5 karakter.
             </p>
           )}
           <div className="button-module-scss-module__REpPyW__wrapper primary asp-submit">

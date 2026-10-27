@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://bem-ft-unimma.vercel.app"),
   title: "BEM FT UNIMMA",
   description:
-    "Website resmi BEM Fakultas Teknik UNIMMA — informasi kegiatan, program kerja, dan aspirasi mahasiswa Fakultas Teknik.",
+    "Website resmi BEM Fakultas Teknik UNIMMA: informasi kegiatan, program kerja, dan aspirasi mahasiswa Fakultas Teknik.",
   alternates: { canonical: "https://bem-ft-unimma.vercel.app" },
   icons: {
     icon: "/icon.png",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "BEM FT UNIMMA",
     description:
-      "Website resmi BEM Fakultas Teknik UNIMMA — informasi kegiatan, program kerja, dan aspirasi mahasiswa Fakultas Teknik.",
+      "Website resmi BEM Fakultas Teknik UNIMMA: informasi kegiatan, program kerja, dan aspirasi mahasiswa Fakultas Teknik.",
     url: "https://bem-ft-unimma.vercel.app",
     siteName: "BEM FT UNIMMA",
     locale: "id_ID",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "BEM FT UNIMMA",
     description:
-      "Website resmi BEM Fakultas Teknik UNIMMA — informasi kegiatan, program kerja, dan aspirasi mahasiswa Fakultas Teknik.",
+      "Website resmi BEM Fakultas Teknik UNIMMA: informasi kegiatan, program kerja, dan aspirasi mahasiswa Fakultas Teknik.",
     images: ["/logo.png"],
   },
 };

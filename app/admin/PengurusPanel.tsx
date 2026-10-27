@@ -124,8 +124,8 @@ export function PengurusPanel() {
     } catch (e2) {
       setErr(
         e2 instanceof Error
-          ? `Gagal simpan — ${e2.message}`
-          : "Gagal simpan — periksa rules Firestore.",
+          ? `Gagal simpan: ${e2.message}`
+          : "Gagal simpan: periksa rules Firestore.",
       );
       console.warn(e2);
     } finally {
@@ -138,7 +138,7 @@ export function PengurusPanel() {
     try {
       await deleteDoc(doc(db!, "pengurus", r.id));
     } catch {
-      setErr("Gagal hapus — kemungkinan rules belum di-Publish ulang.");
+      setErr("Gagal hapus: kemungkinan rules belum di-Publish ulang.");
     }
   }
 
@@ -150,7 +150,7 @@ export function PengurusPanel() {
             {f.id ? "Edit pengurus" : "Tambah pengurus baru"}
           </h2>
           <p className="adm-cardsubtitle">
-            Periode aktif: <strong>{PERIODE_AKTIF}</strong> — data periode lama
+            Periode aktif: <strong>{PERIODE_AKTIF}</strong>. Data periode lama
             tetap tersimpan sebagai arsip.
           </p>
         </div>
@@ -279,7 +279,7 @@ export function PengurusPanel() {
 
       {!tampil.length ? (
         <p className="adm-note">
-          Belum ada pengurus periode ini — data sedang disusun.
+          Belum ada pengurus periode ini. Data sedang disusun.
         </p>
       ) : (
         Object.entries(grouped).map(([dep, list]) => (

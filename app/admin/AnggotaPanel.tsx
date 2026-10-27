@@ -57,7 +57,7 @@ export function AnggotaPanel() {
       setEditId("");
       setInfo("Tersimpan ✓");
     } catch {
-      setErr("Gagal simpan — cek rules Firestore.");
+      setErr("Gagal simpan: cek rules Firestore.");
     }
   }
 
@@ -66,7 +66,7 @@ export function AnggotaPanel() {
     try {
       await deleteDoc(doc(db!, "anggota", email));
     } catch {
-      setErr("Gagal hapus — cek rules.");
+      setErr("Gagal hapus: cek rules.");
     }
   }
 
@@ -236,7 +236,7 @@ export function AnggotaPanel() {
           </div>
         ))}
         {!rows.length && (
-          <p className="adm-note">Belum ada anggota — tambah manual atau impor massal.</p>
+          <p className="adm-note">Belum ada anggota: tambah manual atau impor massal.</p>
         )}
       </div>
     </>

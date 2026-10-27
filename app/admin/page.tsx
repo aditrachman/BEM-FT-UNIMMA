@@ -70,7 +70,7 @@ export default function AdminPage() {
     return (
       <div className="adm-wrap">
         <p className="adm-note">
-          Firebase belum dikonfigurasi — isi <code>.env.local</code> lalu
+          Firebase belum dikonfigurasi. Isi <code>.env.local</code> lalu
           restart dev server.
         </p>
       </div>
@@ -189,7 +189,7 @@ function Login() {
       );
     } catch {
       setErr(
-        "Gagal login — pastikan email/password benar dan akun sudah dibuat di menu Authentication.",
+        "Gagal login: pastikan email/password benar dan akun sudah dibuat di menu Authentication.",
       );
     }
   }
@@ -203,7 +203,7 @@ function Login() {
           <span>BEM FT UNIMMA</span>
         </Link>
         <h1>Admin BEM FT</h1>
-        <p>Masuk khusus email admin — kelola proker, info, pengurus & rekap absensi. Anggota? Absen di <a href="/absen" style={{ color: "var(--color-blue-3)", fontWeight: 600 }}> /absen</a>.</p>
+        <p>Masuk khusus email admin: kelola proker, info, pengurus & rekap absensi. Anggota? Absen di <a href="/absen" style={{ color: "var(--color-blue-3)", fontWeight: 600 }}> /absen</a>.</p>
       </div>
       <form onSubmit={submit} className="abs-kartu abs-kartu--login" style={{ gap: 16 }}>
         <label>

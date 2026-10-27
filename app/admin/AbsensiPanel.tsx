@@ -101,7 +101,7 @@ export function AbsensiPanel() {
     if (n >= 5) return "SP 3";
     if (n === 4) return "SP 2";
     if (n === 3) return "SP 1";
-    return "—";
+    return "-";
   }
 
   const perAnggota = useMemo(() => {
@@ -110,14 +110,14 @@ export function AbsensiPanel() {
       { nama: string; hadir: number; telat: number; ijin: number; alpha: number; sp: string }
     >();
     for (const a of anggota)
-      map.set(a.email, { nama: a.nama, hadir: 0, telat: 0, ijin: 0, alpha: 0, sp: "—" });
+      map.set(a.email, { nama: a.nama, hadir: 0, telat: 0, ijin: 0, alpha: 0, sp: "-" });
 
     // hitung dari record eksplisit
     const hadirPerEmail = new Map<string, Set<string>>();
     for (const r of absAll) {
       const baris =
         map.get(r.email) ??
-        { nama: r.nama || r.email, hadir: 0, telat: 0, ijin: 0, alpha: 0, sp: "—" };
+        { nama: r.nama || r.email, hadir: 0, telat: 0, ijin: 0, alpha: 0, sp: "-" };
       if (r.status === "hadir") baris.hadir++;
       else if (r.status === "telat") baris.telat++;
       else if (r.status === "ijin") baris.ijin++;
@@ -216,7 +216,7 @@ export function AbsensiPanel() {
         a.nama,
         a.email,
         r ? STATUS_LABEL[r.status] ?? r.status : "BELUM ABSEN",
-        r?.masukJam ? fmtJam(r.masukJam) : "—",
+        r?.masukJam ? fmtJam(r.masukJam) : "-",
       ]);
     }
     csvUnduh(`absen-${(s?.judul ?? "sesi").replace(/\s+/g, "-")}.csv`, rows);
@@ -263,7 +263,7 @@ export function AbsensiPanel() {
         <div className="adm-row adm-between">
           <div style={{ minWidth: 0 }}>
             <h3 className="adm-cardtitle" style={{ margin: 0 }}>
-              Rekap — {s.judul}
+              Rekap: {s.judul}
             </h3>
             <small style={{ color: "var(--color-grey-3)" }}>
               Hadir {jml.hadir} · Telat {jml.telat} · Ijin {jml.ijin} · Alpha{" "}
@@ -315,7 +315,7 @@ export function AbsensiPanel() {
                         {r ? STATUS_LABEL[r.status] ?? r.status : "belum"}
                       </span>
                     </td>
-                    <td>{r?.masukJam ? fmtJam(r.masukJam) : "—"}</td>
+                    <td>{r?.masukJam ? fmtJam(r.masukJam) : "-"}</td>
                     <td>
                       <select
                         className={`adm-in adm-in-sm adm-select--${r?.status ?? "empty"}`}
@@ -433,7 +433,7 @@ export function AbsensiPanel() {
             }}
           >
             <div style={{ fontWeight: 700, color: "var(--color-blue-1)", fontSize: 14 }}>Belum ada sesi aktif</div>
-            <div style={{ fontSize: 12, color: "var(--color-grey-3)", marginTop: 4 }}>Buat sesi baru di atas — riwayat sesi tutup ada di bawah.</div>
+            <div style={{ fontSize: 12, color: "var(--color-grey-3)", marginTop: 4 }}>Buat sesi baru di atas. Riwayat sesi tutup ada di bawah.</div>
           </div>
         )}
       </div>
@@ -463,7 +463,7 @@ export function AbsensiPanel() {
             </thead>
             <tbody>
               {perAnggota.map(([email, x]) => (
-                <tr key={email} className={x.sp !== "—" ? "row-sp" : ""}>
+                <tr key={email} className={x.sp !== "-" ? "row-sp" : ""}>
                   <td>
                     <div>{x.nama}</div>
                     <small
@@ -486,7 +486,7 @@ export function AbsensiPanel() {
                   </td>
                   <td>
                     <span
-                      className={`adm-badge ${x.sp === "—" ? "draft" : x.sp === "SP 1" ? "aktif" : x.sp === "SP 2" ? "telat" : "draft"}`}
+                      className={`adm-badge ${x.sp === "-" ? "draft" : x.sp === "SP 1" ? "aktif" : x.sp === "SP 2" ? "telat" : "draft"}`}
                       style={
                         x.sp === "SP 3"
                           ? { background: "#991b1b", color: "#fff" }
@@ -513,7 +513,7 @@ export function AbsensiPanel() {
 
       {/* ---------- RIWAYAT RAPAT — SESI DITUTUP ---------- */}
       <div className="adm-card">
-        <h2 className="adm-cardtitle">Riwayat Rapat — Sesi Ditutup</h2>
+        <h2 className="adm-cardtitle">Riwayat Rapat: Sesi Ditutup</h2>
         <p className="adm-cardsubtitle">Arsip sesi yang sudah ditutup. Tetap bisa lihat rekap atau buka lagi jika perlu.</p>
         <div className="adm-list" style={{ marginTop: 16 }}>
           {sesiTutup.slice(0, 50).map((s) => {
@@ -552,7 +552,7 @@ export function AbsensiPanel() {
               </Fragment>
             );
           })}
-          {!sesiTutup.length && <p className="adm-note">Belum ada riwayat — sesi yang ditutup akan muncul di sini.</p>}
+          {!sesiTutup.length && <p className="adm-note">Belum ada riwayat. Sesi yang ditutup akan muncul di sini.</p>}
         </div>
       </div>
     </>
