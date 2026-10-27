@@ -110,12 +110,12 @@ export default function AbsenPage() {
       const m = (e2 as { code?: string; message?: string }).code ?? "";
       setErr(
         m === "EMAIL-TIDAK-TERDAFTAR"
-          ? "Email kamu belum terdaftar sebagai anggota — hubungi admin."
+          ? "Email kamu belum terdaftar sebagai anggota. Hubungi admin."
           : m.includes("already")
-            ? "Akun sudah ada — silakan Masuk."
+            ? "Akun sudah ada. Silakan Masuk."
             : m.includes("password") || m.includes("user-not-found")
               ? "Email/password salah."
-              : "Gagal — coba lagi atau hubungi admin.",
+              : "Gagal. Coba lagi atau hubungi admin.",
       );
     } finally {
       setBusy(false);
@@ -148,7 +148,7 @@ export default function AbsenPage() {
         },
       }));
     } catch {
-      setErr("Check-in gagal — sesi mungkin sudah ditutup.");
+      setErr("Check-in gagal. Sesi mungkin sudah ditutup.");
     }
   }
 
@@ -170,7 +170,7 @@ export default function AbsenPage() {
             <span>BEM FT UNIMMA</span>
           </Link>
           <h1>Absensi Anggota</h1>
-          <p>Khusus anggota BEM FT — masuk untuk absen sesi yang sedang buka. Belum punya akun? Daftar sekali, terverifikasi anggota.</p>
+          <p>Khusus anggota BEM FT. Masuk untuk absen sesi yang sedang buka. Belum punya akun? Daftar sekali, terverifikasi anggota.</p>
         </div>
         <div className="abs-kartu abs-kartu--login">
           <form onSubmit={authSubmit} className="adm-col">
@@ -257,7 +257,7 @@ export default function AbsenPage() {
         <div className="abs-kartu abs-kartu--empty">
           <div className="abs-empty-icon">🗓️</div>
           <h3>Tidak ada sesi buka</h3>
-          <p>Nantikan pengumuman rapat / proker berikutnya — sesi yang dibuka admin akan muncul di sini.</p>
+          <p>Nantikan pengumuman rapat / proker berikutnya. Sesi yang dibuka admin akan muncul di sini.</p>
         </div>
       ) : (
         sesi.map((s) => {
@@ -290,7 +290,7 @@ export default function AbsenPage() {
               ) : (
                 <div className="abs-done">
                   <span className="abs-done-icon">{isTelat ? "⏰" : "✓"}</span>
-                  <span>{isTelat ? "Sudah absen — tercatat telat" : "Sudah absen — kehadiran tercatat"}</span>
+                  <span>{isTelat ? "Sudah absen, tercatat telat" : "Sudah absen, kehadiran tercatat"}</span>
                 </div>
               )}
             </div>

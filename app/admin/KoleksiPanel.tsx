@@ -112,11 +112,11 @@ export function KoleksiPanel({ koleksi }: { koleksi: Koleksi }) {
       const fe = e2 as { code?: string; message?: string };
       const reason =
         fe.code === "permission-denied"
-          ? "Ditolak aturan Firestore — publish ulang firestore.rules DAN pastikan ada dokumen admins/<ID persis email login Anda>."
+          ? "Ditolak aturan Firestore: publish ulang firestore.rules DAN pastikan ada dokumen admins/<ID persis email login Anda>."
           : fe.code === "unavailable"
             ? "Koneksi ke Firestore terputus."
             : `${fe.code ?? "error"}: ${fe.message ?? "gagal menyimpan"}`;
-      setErr(`Gagal simpan — ${reason}`);
+      setErr(`Gagal simpan: ${reason}`);
       console.warn(e2);
     } finally {
       setBusy(false);
@@ -128,7 +128,7 @@ export function KoleksiPanel({ koleksi }: { koleksi: Koleksi }) {
     try {
       await deleteDoc(doc(db!, koleksi, r.id));
     } catch {
-      setErr("Gagal hapus — kemungkinan rules Firestore belum di-Publish ulang.");
+      setErr("Gagal hapus: kemungkinan rules Firestore belum di-Publish ulang.");
     }
   }
 
@@ -209,7 +209,7 @@ export function KoleksiPanel({ koleksi }: { koleksi: Koleksi }) {
             />
           </label>
           <label>
-            atau upload (opsional — butuh Firebase Storage aktif)
+            atau upload (opsional, butuh Firebase Storage aktif)
             <input
               type="file"
               accept="image/*"

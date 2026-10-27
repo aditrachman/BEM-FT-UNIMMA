@@ -52,7 +52,7 @@ export function VisiMisiPanel() {
       setInfo("Tersimpan ✓");
     } catch (e2) {
       setErr(
-        "Gagal simpan — kemungkinan rules Firestore belum di-Publish ulang.",
+        "Gagal simpan: kemungkinan rules Firestore belum di-Publish ulang.",
       );
       console.warn(e2);
     } finally {
@@ -65,7 +65,7 @@ export function VisiMisiPanel() {
       <div>
         <h2 className="adm-cardtitle">Visi &amp; Misi per Periode</h2>
         <p className="adm-cardsubtitle">
-          Simpan visi &amp; misi untuk periode tertentu — tampil di halaman
+          Simpan visi &amp; misi untuk periode tertentu: tampil di halaman
           /tentang-kami.
         </p>
       </div>

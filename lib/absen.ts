@@ -29,7 +29,7 @@ export function statusKehadiran(
 }
 
 export function fmtJam(t: Timestamp | null | undefined): string {
-  if (!t) return "—";
+  if (!t) return "-";
   const d = t.toDate();
   return `${String(d.getHours()).padStart(2, "0")}:${String(
     d.getMinutes(),

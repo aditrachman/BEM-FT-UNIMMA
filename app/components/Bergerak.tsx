@@ -12,7 +12,7 @@ export default function Bergerak() {
                   </div>
                   <div className="imagetextblock-module-scss-module__1jYUnW__copy">
                     <div className="font-medium">
-                      <p>Kami percaya setiap mahasiswa Teknik berhak atas ruang aspirasi yang nyata, bukan sekadar formalitas. Karena itu, kami menyusun program kerja yang berdampak langsung — mulai dari advokasi akademik hingga pengembangan potensi mahasiswa.</p>
+                      <p>Kami percaya setiap mahasiswa Teknik berhak atas ruang aspirasi yang nyata, bukan sekadar formalitas. Karena itu, kami menyusun program kerja yang berdampak langsung: mulai dari advokasi akademik hingga pengembangan potensi mahasiswa.</p>
                     </div>
                   </div>
                 </div>

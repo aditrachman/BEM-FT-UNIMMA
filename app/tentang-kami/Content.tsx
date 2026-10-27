@@ -208,7 +208,7 @@ export default function TentangKamiContent() {
                     <p className="tt-visi-text">{visi}</p>
                   ) : (
                     <p className="tt-empty">
-                      Visi periode ini sedang disusun — nantikan pembaruan dari
+                      Visi periode ini sedang disusun. Nantikan pembaruan dari
                       kami ya.
                     </p>
                   )}
@@ -221,7 +221,7 @@ export default function TentangKamiContent() {
                     </ol>
                   ) : (
                     <p className="tt-empty">
-                      Misi periode ini sedang disusun — nantikan pembaruan dari
+                      Misi periode ini sedang disusun. Nantikan pembaruan dari
                       kami ya.
                     </p>
                   )}
